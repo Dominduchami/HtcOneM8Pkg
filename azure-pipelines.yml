@@ -1,0 +1,71 @@
+# HtcOneM8Pkg CI build on VSTS
+
+trigger:
+  branches:
+    include:
+    - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: sudo apt update 
+  displayName: 'Update APT sources'
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.10'
+    architecture: 'x64'
+  displayName: Install correct Python
+
+- script:  sudo apt -y install build-essential uuid-dev iasl git nasm python3-distutils crossbuild-essential-armel skales gcc-arm-none-eabi mkbootimg
+  displayName: 'Install VSTS dependencies'
+
+- script: sudo ln -sfn $(pwd) ../HtcOneM8Pkg
+  displayName: Fix directory links
+
+- script: |
+      cd /home/vsts/work/1/
+      git clone https://github.com/Tianocore/edk2.git --recursive --depth=1
+      git clone https://github.com/tianocore/edk2-platforms.git --depth=1
+  displayName: Clone sources
+
+- script:  |
+      cd /home/vsts/work/1/edk2
+      make -C BaseTools/
+  displayName: Build BaseTools
+
+- script: |
+      cd /home/vsts/work/1/HtcOneM8Pkg
+      export PACKAGES_PATH=$PWD/home/vsts/work/1/edk2:$PWD/home/vsts/work/1/edk2-platforms:$PWD
+      export WORKSPACE=$PWD/workspace
+      . /home/vsts/work/1/edk2/edksetup.sh
+      chmod a+x *.sh
+
+- script: |
+    ./build.sh -d All
+  displayName: Build uefi for all platforms
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Htc Leo UEFI kernel'
+  inputs: 
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/uefi.img
+    artifactName: Htc Leo UEFI kernel
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Htc Leo UEFI NBH'
+  inputs: 
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/LEOIMG.nbh
+    artifactName: Htc Leo UEFI NBH
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Htc Schubert UEFI payload'
+  inputs: 
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/Schubert/bootpayload.bin
+    artifactName: Htc Schubert UEFI payload
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Htc Schubert UEFI kernel'
+  inputs: 
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/Schubert/uefi.img
+    artifactName: Htc Schubert UEFI kernel
