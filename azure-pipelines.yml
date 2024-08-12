@@ -43,7 +43,7 @@ steps:
       chmod a+x *.sh
 
 - script: |
-    ./build.sh -d All
+    ./build.sh -d OneM8
   displayName: Build uefi for all platforms
 
 - task: PublishBuildArtifacts@1
