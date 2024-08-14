@@ -55,6 +55,6 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Htc One M8 UEFI payload'
   inputs: 
-    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/uefi,img
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/uefi.img
     artifactName: Htc One M8 UEFI kernel
 
