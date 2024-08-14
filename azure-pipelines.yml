@@ -47,7 +47,14 @@ steps:
   displayName: Build uefi for all platforms
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Htc Leo UEFI payload'
+  displayName: 'Publish Htc One M8 UEFI payload'
   inputs: 
     pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/bootpayload.bin
-    artifactName: Htc Leo UEFI payload
+    artifactName: Htc One M8 UEFI payload
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Htc One M8 UEFI payload'
+  inputs: 
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/uefi,img
+    artifactName: Htc One M8 UEFI kernel
+
