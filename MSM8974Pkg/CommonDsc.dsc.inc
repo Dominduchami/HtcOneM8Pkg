@@ -586,8 +586,8 @@
   #
   # SMBIOS Support
   #
-  MSM8974Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf
-  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  # MSM8974Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf
+  # MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
   #
   # Bds

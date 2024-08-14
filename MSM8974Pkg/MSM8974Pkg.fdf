@@ -115,8 +115,8 @@ APRIORI DXE {
   #
   # SMBIOS Support
   #
-  INF MSM8974Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf # or binary?
-  INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  # INF MSM8974Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf # or binary?
+  # INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
   #
   # UEFI applications
