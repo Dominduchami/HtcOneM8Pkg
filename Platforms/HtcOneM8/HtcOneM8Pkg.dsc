@@ -31,11 +31,11 @@
 !include MSM8974Pkg/CommonDsc.dsc.inc
 
 [PcdsFixedAtBuild.common]
-  # System Memory (FIXME!)
-  gArmTokenSpaceGuid.PcdSystemMemoryBase|0
-  gArmTokenSpaceGuid.PcdSystemMemorySize|0
+  # System Memory
+  gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00000000
+  gArmTokenSpaceGuid.PcdSystemMemorySize|0x80000000 # 2GB
 
-  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000 # WP adress (used in Lumia930)
 
   # SMBIOS
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemModel|"HTC One M8"
