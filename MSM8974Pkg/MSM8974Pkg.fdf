@@ -58,15 +58,15 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
   # SoC Drivers (Cross-referenced from EFIDroid and Ben) (use binaries instead?)
-  # INF MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
-  # INF MSM8974Pkg/GPLDrivers/GpioTlmmDxe/GpioTlmmDxe.inf
-  # INF MSM8974Pkg/GPLDrivers/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
-  # INF MSM8974Pkg/Drivers/SpmiDxe/SpmiDxe.inf
-  # INF MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Dxe.inf
-  # INF MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
-  # INF MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
-  # INF MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
-  # INF MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  INF MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
+  INF MSM8974Pkg/GPLDrivers/GpioTlmmDxe/GpioTlmmDxe.inf
+  INF MSM8974Pkg/GPLDrivers/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
+  INF MSM8974Pkg/Drivers/SpmiDxe/SpmiDxe.inf
+  INF MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Dxe.inf
+  INF MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
+  INF MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
+  INF MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
+  INF MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
 
   #
   # Virtual Keyboard

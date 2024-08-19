@@ -179,14 +179,26 @@
   CompilerIntrinsicsLib|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
 
   # SoC Drivers libraries
-  # QTimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf
-  # InterruptsLib|MSM8974Pkg/Library/InterruptsLib/InterruptsLib.inf
-  # StrLib|MSM8974Pkg/Library/StrLib/StrLib.inf
-  # PTableLib|MSM8974Pkg/Library/PTableLib/PTableLib.inf
-  # SmemLib|MSM8974Pkg/Drivers/SmemDxe/SmemImplLib.inf
-  # KeypadDeviceHelperLib|MSM8974Pkg/Library/KeypadDeviceHelperLib/KeypadDeviceHelperLib.inf
-  # KeypadDeviceImplLib|MSM8974Pkg/Library/KeypadDeviceImplLib/KeypadDeviceImplLib.inf
+  QTimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf
+  InterruptsLib|MSM8974Pkg/Library/InterruptsLib/InterruptsLib.inf
+  MallocLib|MSM8974Pkg/Library/MallocLib/MallocLib.inf
+  KeypadDeviceHelperLib|MSM8974Pkg/Library/KeypadDeviceHelperLib/KeypadDeviceHelperLib.inf
+  KeypadDeviceImplLib|MSM8974Pkg/Library/KeypadDeviceImplLib/KeypadDeviceImplLib.inf
+  DloadUtilLib|MSM8974Pkg/Library/DloadUtilLib/DloadUtilLib.inf
+  QcomPlatformClockInitLib|MSM8974Pkg/Library/QcomPlatformClockInitLib/QcomPlatformClockInitLib.inf
+  QcomPlatformMmcLib|MSM8974Pkg/Library/PlatformMmcLib/QcomPlatformMmcLib.inf
+  QcomPlatformMmcClockOverrideLib|MSM8974Pkg/Library/QcomPlatformMmcClockOverrideLib/QcomPlatformMmcClockOverrideLib.inf
+  QcomTargetMmcSdhciLib|MSM8974Pkg/Library/TargetMmcSdhciLib/QcomTargetMmcSdhciLib.inf
+  LcmLib|MSM8974Pkg/Library/LcmLib/LcmLib.inf
+  MicroLibC|MSM8974Pkg/Library/MicroLibC/MicroLibC.inf
+  StrLib|MSM8974Pkg/Library/StrLib/StrLib.inf
 
+  # SoC Drivers
+  GpioTlmmLib|MSM8974Pkg/GPLDrivers/GpioTlmmDxe/GpioTlmmImplLib.inf
+  SpmiLib|MSM8974Pkg/Drivers/SpmiDxe/SpmiImplLib.inf
+  Pm8x41Lib|MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41ImplLib.inf
+  ClockLib|MSM8974Pkg/Drivers/ClockDxe/ClockImplLib.inf
+  
 [LibraryClasses.common.SEC]
   ArmGicArchLib|ArmPkg/Library/ArmGicArchSecLib/ArmGicArchSecLib.inf
   PcdLib|MdePkg/Library/BasePcdLibNull/BasePcdLibNull.inf
@@ -425,6 +437,61 @@
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
 
+  # MSM8974Pkg
+  gArmTokenSpaceGuid.PcdCpuVectorBaseAddress|0x00C40000
+  # gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|19200000
+  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum|18
+  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|19
+  gEmbeddedTokenSpaceGuid.PcdInterruptBaseAddress|0xF9000000
+  gArmTokenSpaceGuid.PcdGicDistributorBase|0xF9000000
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xF9002000
+
+  # SoC Drivers GPIO TLMM
+  gQcomTokenSpaceGuid.PcdGpioTlmmBaseAddress|0xFD510000
+  gQcomTokenSpaceGuid.PcdGpioTlmmSummaryIrq|240
+  gQcomTokenSpaceGuid.PcdGpioTlmmIoOffset|0x1004
+  gQcomTokenSpaceGuid.PcdGpioTlmmIoElementSize|0x10
+  gQcomTokenSpaceGuid.PcdGpioTlmmCtlOffset|0x1000
+  gQcomTokenSpaceGuid.PcdGpioTlmmCtlElementSize|0x10
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrCfgOffset|0x1008
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrCfgElementSize|0x10
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrStatusOffset|0x100c
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrStatusElementSize|0x10
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrTargetOffset|0x1008
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrTargetElementSize|0x10
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrEnableBit|0
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrStatusBit|0
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrAckHigh|FALSE
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrTargetBit|5
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrTargetKpssValue|4
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrRawStatusBit|4
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrPolarityBit|1
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrDetectionBit|2
+  gQcomTokenSpaceGuid.PcdGpioTlmmIntrDetectionWidth|2
+  gQcomTokenSpaceGuid.PcdGpioTlmmInBit|0
+  gQcomTokenSpaceGuid.PcdGpioTlmmOutBit|1
+  gQcomTokenSpaceGuid.PcdGpioTlmmOeBit|9
+  gQcomTokenSpaceGuid.PcdGpioTlmmMuxBit|2
+  gQcomTokenSpaceGuid.PcdGpioTlmmDrvBit|6
+  gQcomTokenSpaceGuid.PcdGpioTlmmPullBit|0
+  gQcomTokenSpaceGuid.PcdGpioTlmmNumFunctions|12
+
+  # SoC Drivers SPMI
+  gQcomTokenSpaceGuid.PcdSpmiBaseAddress|0xFC4C0000
+  
+   # SoC Drivers MMC
+  gQcomTokenSpaceGuid.PcdSdccMciHcMode|0x00000078
+  gQcomTokenSpaceGuid.PcdSdccHcPwrctlStatusReg|0x000000DC
+  gQcomTokenSpaceGuid.PcdSdccHcPwrctlMaskReg|0x000000E0
+  gQcomTokenSpaceGuid.PcdSdccHcPwrctlClearReg|0x000000E4
+  gQcomTokenSpaceGuid.PcdSdccHcPwrctlCtlReg|0x000000E8
+  gQcomTokenSpaceGuid.PcdMmcSdhciDdrCfgVal|0x80040870 # DDR_CFG_DLY_VAL Not using here
+  gQcomTokenSpaceGuid.PcdMmcSdc1HdrvPullCtlOffset|0x00002044
+  gQcomTokenSpaceGuid.PcdMmcSdc2HdrvPullCtlOffset|0x00002048
+
+  # SoC Drivers Misc
+  gQcomTokenSpaceGuid.PcdGicSpiStart|32
+
 [PcdsDynamicHii.common.DEFAULT]
   gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|L"Timeout"|gEfiGlobalVariableGuid|0x0|3 # Variable: L"Timeout"
 
@@ -522,15 +589,15 @@
   MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
 
   # SoC Drivers (Cross-referenced from EFIDroid and Ben) (either that or binary modules)
-  # MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
-  # MSM8974Pkg/GPLDrivers/GpioTlmmDxe/GpioTlmmDxe.inf
-  # MSM8974Pkg/GPLDrivers/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
-  # MSM8974Pkg/Drivers/SpmiDxe/SpmiDxe.inf
-  # MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Dxe.inf
-  # MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
-  # MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
-  # MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
-  # MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
+  MSM8974Pkg/GPLDrivers/GpioTlmmDxe/GpioTlmmDxe.inf
+  MSM8974Pkg/GPLDrivers/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
+  MSM8974Pkg/Drivers/SpmiDxe/SpmiDxe.inf
+  MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Dxe.inf
+  MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
+  MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
+  MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
+  MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
 
   #
   # Virtual Keyboard
