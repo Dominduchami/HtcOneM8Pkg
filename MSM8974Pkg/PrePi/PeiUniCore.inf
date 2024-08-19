@@ -18,6 +18,7 @@
 [Sources]
   PrePi.h
   PrePi.c
+  EarlyQGic/EarlyQGic.c
 
 [Sources.ARM]
   Arm/ArchPrePi.c

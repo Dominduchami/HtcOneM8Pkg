@@ -186,6 +186,15 @@ PrePiMain (
   Status = MemoryPeim (UefiMemoryBase, FixedPcdGet32 (PcdSystemMemoryUefiRegionSize));
   ASSERT_EFI_ERROR (Status);
 
+  // Initialize GIC
+  Status = QGicPeim();
+  if (EFI_ERROR(Status))
+  {
+    DEBUG((EFI_D_ERROR, "Failed to configure GIC\n"));
+    CpuDeadLoop();
+  }
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "GIC configured\n"));
+
   // Create the Stacks HOB
   StacksSize = PcdGet32 (PcdCPUCorePrimaryStackSize);
 
