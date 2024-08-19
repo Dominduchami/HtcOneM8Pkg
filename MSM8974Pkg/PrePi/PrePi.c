@@ -102,6 +102,13 @@ EnableCounter()
 #endif
 }
 
+VOID
+DisableQcomWatchdog()
+{
+  /* Disable Watchdog, if it was enabled by first bootloader. */
+	MmioWrite32(APCS_KPSS_WDT_EN, 0);
+}
+
 /**
   SEC main routine.
   @param[in]  UefiMemoryBase  Start of the PI/UEFI memory region
@@ -122,6 +129,8 @@ PrePiMain (
   UINTN                       CharCount;
   UINTN                       StacksSize;
   FIRMWARE_SEC_PERFORMANCE    Performance;
+
+  DisableQcomWatchdog();
 
   // Initialize the architecture specific bits
   ArchInitialize ();
