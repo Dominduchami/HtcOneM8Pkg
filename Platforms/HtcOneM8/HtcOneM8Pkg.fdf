@@ -1,6 +1,6 @@
 [FD.MSM8974_UEFI]
-# Lumia930 custom uefi adress
-BaseAddress   = 0x7CC00000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
+# Lumia930 custom uefi adress: 0x7CC00000
+BaseAddress   = 0x00200000|gArmTokenSpaceGuid.PcdFdBaseAddress  # The base address of the Firmware in NOR Flash.
 Size          = 0x00100000|gArmTokenSpaceGuid.PcdFdSize         # The size in bytes of the FLASH Device
 ErasePolarity = 1
 

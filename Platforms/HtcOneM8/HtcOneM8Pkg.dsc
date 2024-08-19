@@ -35,7 +35,7 @@
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00000000
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x80000000 # 2GB
 
-  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000 # WP adress (used in Lumia930)
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000 # WP DisplayReserved
 
   # SMBIOS
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemModel|"HTC One M8"
