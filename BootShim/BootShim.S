@@ -1,7 +1,7 @@
 .text
 .globl _start
 _start:
-	b	_Relocate
+	b	_Relocate /* check */
 
 _Relocate:
 	/* see if we need to relocate */
