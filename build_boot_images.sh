@@ -9,6 +9,6 @@ cat ImageResources/HtcOneM8/msm8974-htc-m8.dtb >>ImageResources/HtcOneM8/bootpay
 mkbootimg --kernel ImageResources/HtcOneM8/bootpayload.bin --base 0x00000000 --kernel_offset 0x00008000 -o ImageResources/HtcOneM8/uefi.img
 
 # Create an elf for loading with BootShim
-llvm-objcopy -I binary -O elf32-littlearm --binary-architecture arm workspace/Build/HtcOneM8/DEBUG_CLANGDWARF/FV/MSM8974_UEFI.fd ImageResources/HtcOneM8/MSM8974_EFI.fd.elf 
-llvm-ld ImageResources/HtcOneM8/MSM8974_EFI.fd.elf -T FvWrapper.ld -o ImageResources/HtcOneM8/emmc_appsboot.mbn
-rm ImageResources/HtcOneM8/MSM8926_EFI.fd.elf
+llvm-objcopy -I binary -O elf32-littlearm --binary-architecture arm workspace/Build/HtcOneM8/DEBUG_CLANGDWARF/FV/MSM8974_UEFI.fd ImageResources/HtcOneM8/MSM8974_EFI.fd.elf
+ld.lld ImageResources/HtcOneM8/MSM8974_EFI.fd.elf -T FvWrapper.ld -o ImageResources/HtcOneM8/emmc_appsboot.mbn
+rm ImageResources/HtcOneM8/MSM8974_EFI.fd.elf

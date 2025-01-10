@@ -12,6 +12,7 @@
 #  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 #
 #
+!include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses.common]
 !if $(TARGET) == RELEASE
@@ -67,7 +68,6 @@
   DefaultExceptionHandlerLib|MSM8974Pkg/Library/DefaultExceptionHandlerLib/DefaultExceptionHandlerLib.inf
   CpuExceptionHandlerLib|ArmPkg/Library/ArmExceptionLib/ArmExceptionLib.inf
   ArmDisassemblerLib|ArmPkg/Library/ArmDisassemblerLib/ArmDisassemblerLib.inf
-  ArmPlatformStackLib|ArmPlatformPkg/Library/ArmPlatformStackLib/ArmPlatformStackLib.inf
   ArmSmcLib|ArmPkg/Library/ArmSmcLib/ArmSmcLib.inf
   ArmMmuLib|ArmPkg/Library/ArmMmuLib/ArmMmuBaseLib.inf
   ArmGicLib|ArmPkg/Drivers/ArmGic/ArmGicLib.inf
@@ -127,21 +127,10 @@
   EdkiiSystemCapsuleLib|SignedCapsulePkg/Library/EdkiiSystemCapsuleLib/EdkiiSystemCapsuleLib.inf
   IniParsingLib|SignedCapsulePkg/Library/IniParsingLib/IniParsingLib.inf
 
-  #
-  # It is not possible to prevent the ARM compiler for generic intrinsic functions.
-  # This library provides the instrinsic functions generate by a given compiler.
-  # And NULL mean link this library into all ARM images.
-  #
-  NULL|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
-
-  # Add support for GCC stack protector
-  NULL|MdePkg/Library/BaseStackCheckLib/BaseStackCheckLib.inf
-
   OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmPlatformLib|MSM8974Pkg/Library/MSM8974PkgLib/MSM8974PkgLib.inf
   TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
-  CompilerIntrinsicsLib|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   PlatformBootManagerLib|MSM8974Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
@@ -176,7 +165,6 @@
   # Framebuffer
   FrameBufferBltLib|MdeModulePkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
   MemoryInitPeiLib|MSM8974Pkg/Library/MemoryInitPei/MemoryInitPeiLib.inf
-  CompilerIntrinsicsLib|ArmPkg/Library/CompilerIntrinsicsLib/CompilerIntrinsicsLib.inf
 
   # SoC Drivers libraries
   # QTimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf

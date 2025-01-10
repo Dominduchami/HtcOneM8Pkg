@@ -32,7 +32,6 @@
   UefiDriverEntryPoint
   BaseMemoryLib
   DebugLib
-  CompilerIntrinsicsLib
   
 [Protocols]
   gEfiSmbiosProtocolGuid

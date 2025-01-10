@@ -17,7 +17,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 
 **/
 
-#include "Pi.h"
+#include "PrePi.h"
 
 #include <Guid/LzmaDecompress.h>
 #include <Guid/VariableFormat.h>

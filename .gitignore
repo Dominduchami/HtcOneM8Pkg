@@ -1,4 +1,5 @@
 BootShim/BootShim.bin
 ImageResources/HtcOneM8/*.bin
+ImageResources/HtcOneM8/*.mbn
 ImageResources/HtcOneM8/*.img
 workspace/Build/
