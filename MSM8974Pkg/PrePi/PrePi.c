@@ -72,41 +72,19 @@ ReconfigFb()
 }
 
 VOID
-EnableCounter()
-{
-#if 0
-  /* enable cp10 and cp11 */
-	UINT32 val;
-	__asm__ volatile("mrc	p15, 0, %0, c1, c0, 2" : "=r" (val));
-	val |= (3<<22)|(3<<20);
-	__asm__ volatile("mcr	p15, 0, %0, c1, c0, 2" :: "r" (val));
-
-  ArmInstructionSynchronizationBarrier();
-  ArmDataMemoryBarrier();
-
-	/* set enable bit in fpexc */
-	__asm__ volatile("mrc  p10, 7, %0, c8, c0, 0" : "=r" (val));
-	val |= (1<<30);
-	__asm__ volatile("mcr  p10, 7, %0, c8, c0, 0" :: "r" (val));
-
-  /* enable the cycle count register */
-	UINT32 en;
-	__asm__ volatile("mrc	p15, 0, %0, c9, c12, 0" : "=r" (en));
-	en &= ~(1<<3); /* cycle count every cycle */
-	en |= 1; /* enable all performance counters */
-	__asm__ volatile("mcr	p15, 0, %0, c9, c12, 0" :: "r" (en));
-
-	/* enable cycle counter */
-	en = (1<<31);
-	__asm__ volatile("mcr	p15, 0, %0, c9, c12, 1" :: "r" (en));
-#endif
-}
-
-VOID
 DisableQcomWatchdog()
 {
   /* Disable Watchdog, if it was enabled by first bootloader. */
 	MmioWrite32(APCS_KPSS_WDT_EN, 0);
+}
+
+VOID
+ReadFbConfig()
+{
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "--Framebuffer config--\n"));
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Format: 0x%p\n", MmioRead32(0xFD901E00 + 0x30)));
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Unpack pattern: 0x%p\n", MmioRead32(0xFD901E00 + 0x34)));
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stride: 0x%p\n", MmioRead32(0xFD901E00 + 0x24)));
 }
 
 /**
@@ -141,9 +119,6 @@ PrePiMain (
   // Paint screen to black
   PaintScreen(FB_BGRA8888_BLACK);
 
-  // Enable the counter (code from PrimeG2Pkg)
-  EnableCounter();
-
   // Initialize the Serial Port
   SerialPortInitialize ();
   CharCount = AsciiSPrint (
@@ -168,6 +143,8 @@ PrePiMain (
         "Old framebuffer base = 0x%p\n",
         OldFbAddr
     ));
+
+  ReadFbConfig();
 
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
