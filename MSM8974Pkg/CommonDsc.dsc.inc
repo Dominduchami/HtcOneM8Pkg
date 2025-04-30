@@ -387,7 +387,7 @@
 
   # GUID of the UI app
   gEfiMdeModulePkgTokenSpaceGuid.PcdBootManagerMenuFile|{ 0x21, 0xaa, 0x2c, 0x46, 0x14, 0x76, 0x03, 0x45, 0x83, 0x6e, 0x8a, 0xb6, 0xf4, 0x66, 0x23, 0x31 }
-  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|5
+  gEfiMdePkgTokenSpaceGuid.PcdPlatformBootTimeOut|0
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
 
@@ -501,25 +501,58 @@
   MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
   MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
 
-  # SoC Drivers binaries
-  MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
-  MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
-  MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
-  MSM8974Pkg/QcomDrivers/SmdDxe/SmdDxe.inf
+  #
+  # Binary modules
+  #
 
-  MSM8974Pkg/QcomDrivers/TzDxe/TzDxe.inf
-  MSM8974Pkg/QcomDrivers/DALSYSDxe/DALSYSDxe.inf
-  # MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf
+    MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
+    MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
+    MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
+    MSM8974Pkg/QcomDrivers/SmdDxe/SmdDxe.inf
 
-  MSM8974Pkg/QcomDrivers/HWIODxe/HWIODxe.inf
-  MSM8974Pkg/QcomDrivers/I2CDxe/I2CDxe.inf
-  MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
-  MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
-  MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
-  # MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
-  MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
-  MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
-  MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
+    MSM8974Pkg/QcomDrivers/TzDxe/TzDxe.inf
+    MSM8974Pkg/QcomDrivers/DALSYSDxe/DALSYSDxe.inf
+    MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf
+    MSM8974Pkg/hTCPkg/HardwareInitDxe/HardwareInitDxe.inf
+    MSM8974Pkg/QcomDrivers/HWIODxe/HWIODxe.inf
+    MSM8974Pkg/QcomDrivers/I2CDxe/I2CDxe.inf
+    MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
+    MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
+    MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
+    
+    #INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
+    
+    MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
+    MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
+    MSM8974Pkg/QcomDrivers/TsFwUpgradeDxe/TsFwUpgradeDxe.inf
+    MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
+    MSM8974Pkg/QcomDrivers/ChargerDxe/ChargerDxe.inf
+    MSM8974Pkg/QcomDrivers/AdcDxe/AdcDxe.inf
+    MSM8974Pkg/QcomDrivers/TsensDxe/TsensDxe.inf
+    MSM8974Pkg/QcomDrivers/MpParkDxe/MpParkDxe.inf
+    MSM8974Pkg/QcomDrivers/QiNEMOFwUpdaterDxe/QiNEMOFwUpdaterDxe.inf
+    MSM8974Pkg/QcomDrivers/UsbfnDxe/UsbfnDxe.inf
+    MSM8974Pkg/QcomDrivers/UsbConfigDxe/UsbConfigDxe.inf
+    MSM8974Pkg/QcomDrivers/EhciPciEmulationDxe/EhciPciEmulationDxe.inf
+    MSM8974Pkg/QcomDrivers/XhciPciEmulationDxe/XhciPciEmulationDxe.inf
+    MSM8974Pkg/QcomDrivers/EhciDxe/EhciDxe.inf
+    MSM8974Pkg/QcomDrivers/XhciDxe/XhciDxe.inf
+    MSM8974Pkg/QcomDrivers/UsbBusDxe/UsbBusDxe.inf
+    MSM8974Pkg/QcomDrivers/UsbKbDxe/UsbKbDxe.inf
+    
+    #INF MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
+    #INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+    
+    MSM8974Pkg/QcomDrivers/HashDxe/HashDxe.inf
+    MSM8974Pkg/QcomDrivers/RNGDxe/RngDxe.inf
+    MSM8974Pkg/QcomDrivers/TrEEDxe/TrEEDxe.inf
+    
+    #INF IntelFrameworkModulePkg/Universal/BdsDxe/BdsDxe.inf
+    
+    # INF MSM8974Pkg/QcomDrivers/MemoryMapDxe/MemoryMapDxe.inf
+    MSM8974Pkg/QcomDrivers/DebugPortDxe/DebugPortDxe.inf
+    MSM8974Pkg/QcomDrivers/SerialDxe/SerialDxe.inf
+    MSM8974Pkg/QcomDrivers/AdapterInformationDxe/AdapterInformationDxe.inf
 
   #
   # Virtual Keyboard
@@ -536,7 +569,7 @@
   #
   # USB Host Support
   #
-  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  # MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
 
   #
   # USB Mass Storage Support

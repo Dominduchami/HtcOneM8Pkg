@@ -25,6 +25,59 @@ APRIORI DXE {
     # next, install cpu protocol and enable the interrupt controller
     INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
     # INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf (replace by binary module?)
+
+    #
+    # Binary modules
+    #
+
+    INF MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
+    INF MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
+    INF MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
+    INF MSM8974Pkg/QcomDrivers/SmdDxe/SmdDxe.inf
+
+    INF MSM8974Pkg/QcomDrivers/TzDxe/TzDxe.inf
+    INF MSM8974Pkg/QcomDrivers/DALSYSDxe/DALSYSDxe.inf
+    INF MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf
+    INF MSM8974Pkg/hTCPkg/HardwareInitDxe/HardwareInitDxe.inf
+    INF MSM8974Pkg/QcomDrivers/HWIODxe/HWIODxe.inf
+    INF MSM8974Pkg/QcomDrivers/I2CDxe/I2CDxe.inf
+    INF MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
+    INF MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
+    INF MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
+    
+    #INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
+    
+    INF MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
+    INF MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
+    INF MSM8974Pkg/QcomDrivers/TsFwUpgradeDxe/TsFwUpgradeDxe.inf
+    INF MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
+    INF MSM8974Pkg/QcomDrivers/ChargerDxe/ChargerDxe.inf
+    INF MSM8974Pkg/QcomDrivers/AdcDxe/AdcDxe.inf
+    INF MSM8974Pkg/QcomDrivers/TsensDxe/TsensDxe.inf
+    INF MSM8974Pkg/QcomDrivers/MpParkDxe/MpParkDxe.inf
+    INF MSM8974Pkg/QcomDrivers/QiNEMOFwUpdaterDxe/QiNEMOFwUpdaterDxe.inf
+    INF MSM8974Pkg/QcomDrivers/UsbfnDxe/UsbfnDxe.inf
+    INF MSM8974Pkg/QcomDrivers/UsbConfigDxe/UsbConfigDxe.inf
+    INF MSM8974Pkg/QcomDrivers/EhciPciEmulationDxe/EhciPciEmulationDxe.inf
+    INF MSM8974Pkg/QcomDrivers/XhciPciEmulationDxe/XhciPciEmulationDxe.inf
+    INF MSM8974Pkg/QcomDrivers/EhciDxe/EhciDxe.inf
+    INF MSM8974Pkg/QcomDrivers/XhciDxe/XhciDxe.inf
+    INF MSM8974Pkg/QcomDrivers/UsbBusDxe/UsbBusDxe.inf
+    INF MSM8974Pkg/QcomDrivers/UsbKbDxe/UsbKbDxe.inf
+    
+    #INF MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
+    #INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+    
+    INF MSM8974Pkg/QcomDrivers/HashDxe/HashDxe.inf
+    INF MSM8974Pkg/QcomDrivers/RNGDxe/RngDxe.inf
+    INF MSM8974Pkg/QcomDrivers/TrEEDxe/TrEEDxe.inf
+    
+    #INF IntelFrameworkModulePkg/Universal/BdsDxe/BdsDxe.inf
+    
+    # INF MSM8974Pkg/QcomDrivers/MemoryMapDxe/MemoryMapDxe.inf
+    INF MSM8974Pkg/QcomDrivers/DebugPortDxe/DebugPortDxe.inf
+    INF MSM8974Pkg/QcomDrivers/SerialDxe/SerialDxe.inf
+    INF MSM8974Pkg/QcomDrivers/AdapterInformationDxe/AdapterInformationDxe.inf
   }
 
   # Architecture services (PI Stage)
@@ -57,7 +110,10 @@ APRIORI DXE {
 
   INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
-  # SoC Drivers binaries
+  #
+  # Binary modules
+  #
+
   INF MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
   INF MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
   INF MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
@@ -65,17 +121,47 @@ APRIORI DXE {
 
   INF MSM8974Pkg/QcomDrivers/TzDxe/TzDxe.inf
   INF MSM8974Pkg/QcomDrivers/DALSYSDxe/DALSYSDxe.inf
-  # INF MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf (seems to hang)
-
+  INF MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf
+  INF MSM8974Pkg/hTCPkg/HardwareInitDxe/HardwareInitDxe.inf
   INF MSM8974Pkg/QcomDrivers/HWIODxe/HWIODxe.inf
   INF MSM8974Pkg/QcomDrivers/I2CDxe/I2CDxe.inf
   INF MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
   INF MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
   INF MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
-  # INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
+    
+  #INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
+    
   INF MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
   INF MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
+  INF MSM8974Pkg/QcomDrivers/TsFwUpgradeDxe/TsFwUpgradeDxe.inf
   INF MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
+  INF MSM8974Pkg/QcomDrivers/ChargerDxe/ChargerDxe.inf
+  INF MSM8974Pkg/QcomDrivers/AdcDxe/AdcDxe.inf
+  INF MSM8974Pkg/QcomDrivers/TsensDxe/TsensDxe.inf
+  INF MSM8974Pkg/QcomDrivers/MpParkDxe/MpParkDxe.inf
+  INF MSM8974Pkg/QcomDrivers/QiNEMOFwUpdaterDxe/QiNEMOFwUpdaterDxe.inf
+  INF MSM8974Pkg/QcomDrivers/UsbfnDxe/UsbfnDxe.inf
+  INF MSM8974Pkg/QcomDrivers/UsbConfigDxe/UsbConfigDxe.inf
+  INF MSM8974Pkg/QcomDrivers/EhciPciEmulationDxe/EhciPciEmulationDxe.inf
+  INF MSM8974Pkg/QcomDrivers/XhciPciEmulationDxe/XhciPciEmulationDxe.inf
+  INF MSM8974Pkg/QcomDrivers/EhciDxe/EhciDxe.inf
+  INF MSM8974Pkg/QcomDrivers/XhciDxe/XhciDxe.inf
+  INF MSM8974Pkg/QcomDrivers/UsbBusDxe/UsbBusDxe.inf
+  INF MSM8974Pkg/QcomDrivers/UsbKbDxe/UsbKbDxe.inf
+    
+  #INF MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
+  #INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
+    
+  INF MSM8974Pkg/QcomDrivers/HashDxe/HashDxe.inf
+  INF MSM8974Pkg/QcomDrivers/RNGDxe/RngDxe.inf
+  INF MSM8974Pkg/QcomDrivers/TrEEDxe/TrEEDxe.inf
+    
+  #INF IntelFrameworkModulePkg/Universal/BdsDxe/BdsDxe.inf
+    
+  # INF MSM8974Pkg/QcomDrivers/MemoryMapDxe/MemoryMapDxe.inf
+  INF MSM8974Pkg/QcomDrivers/DebugPortDxe/DebugPortDxe.inf
+  INF MSM8974Pkg/QcomDrivers/SerialDxe/SerialDxe.inf
+  INF MSM8974Pkg/QcomDrivers/AdapterInformationDxe/AdapterInformationDxe.inf
 
   #
   # Virtual Keyboard
@@ -88,7 +174,7 @@ APRIORI DXE {
   #
   # USB Host Support
   #
-  INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
+  # INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
 
   #
   # USB Mass Storage Support
