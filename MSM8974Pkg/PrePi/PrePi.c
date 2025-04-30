@@ -10,6 +10,7 @@
 
 #include <Library/CacheMaintenanceLib.h>
 #include <Library/DebugAgentLib.h>
+#include <Library/IoLib.h>
 #include <Library/PrePiLib.h>
 #include <Library/PrintLib.h>
 #include <Library/PrePiHobListPointerLib.h>
@@ -65,42 +66,20 @@ ReconfigFb()
   // Read old FB location
   OldFbAddr = MmioRead32(FB_ADDR_REG);
   // Move Framebuffer to the top
-  MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
+  //MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
   // Flush using CTL0_FLUSH and Flush VIG0
-  MmioWrite32(0xfd900618, 0x00000001);
-  MmioWrite32(0xfd900718, 0x00000001); 
+  //MmioWrite32(0xfd900618, 0x00000001);
+  //MmioWrite32(0xfd900718, 0x00000001); 
 }
 
-VOID
-EnableCounter()
+/*VOID
+ReadFbConfig()
 {
-#if 0
-  /* enable cp10 and cp11 */
-	UINT32 val;
-	__asm__ volatile("mrc	p15, 0, %0, c1, c0, 2" : "=r" (val));
-	val |= (3<<22)|(3<<20);
-	__asm__ volatile("mcr	p15, 0, %0, c1, c0, 2" :: "r" (val));
-
-  ArmInstructionSynchronizationBarrier();
-  ArmDataMemoryBarrier();
-
-	/* set enable bit in fpexc */
-	__asm__ volatile("mrc  p10, 7, %0, c8, c0, 0" : "=r" (val));
-	val |= (1<<30);
-	__asm__ volatile("mcr  p10, 7, %0, c8, c0, 0" :: "r" (val));
-
-  /* enable the cycle count register */
-	UINT32 en;
-	__asm__ volatile("mrc	p15, 0, %0, c9, c12, 0" : "=r" (en));
-	en &= ~(1<<3); /* cycle count every cycle */
-	en |= 1; /* enable all performance counters */
-	__asm__ volatile("mcr	p15, 0, %0, c9, c12, 0" :: "r" (en));
-
-	/* enable cycle counter */
-	en = (1<<31);
-	__asm__ volatile("mcr	p15, 0, %0, c9, c12, 1" :: "r" (en));
-#endif
-}
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "--Framebuffer config--\n"));
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Format: 0x%p\n", MmioRead32(0xFD901E00 + 0x30)));
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Unpack pattern: 0x%p\n", MmioRead32(0xFD901E00 + 0x34)));
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stride: 0x%p\n", MmioRead32(0xFD901E00 + 0x24)));
+}*/
 
 /**
   SEC main routine.
@@ -123,6 +102,16 @@ PrePiMain (
   UINTN                       StacksSize;
   FIRMWARE_SEC_PERFORMANCE    Performance;
 
+  PaintScreen(FB_BGRA8888_BLACK);
+  MmioWrite32(0xfd90061c, 1);//refresh
+  MicroSecondDelay( 32000 );
+
+  /* Disable Watchdog, if it was enabled by first bootloader. */
+	MmioWrite32(APCS_KPSS_WDT_EN, 0);
+
+  // reboot
+  //MmioWrite32(0xFC4AB000, 1);
+
   // Initialize the architecture specific bits
   ArchInitialize ();
 
@@ -131,9 +120,6 @@ PrePiMain (
 
   // Paint screen to black
   PaintScreen(FB_BGRA8888_BLACK);
-
-  // Enable the counter (code from PrimeG2Pkg)
-  EnableCounter();
 
   // Initialize the Serial Port
   SerialPortInitialize ();
@@ -173,9 +159,19 @@ PrePiMain (
               );
   PrePeiSetHobList (HobList);
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "------------------------Init MMU------------------------------------\n"));
   // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
   Status = MemoryPeim (UefiMemoryBase, FixedPcdGet32 (PcdSystemMemoryUefiRegionSize));
   ASSERT_EFI_ERROR (Status);
+
+  // Initialize GIC
+  Status = QGicPeim();
+  if (EFI_ERROR(Status))
+  {
+    DEBUG((EFI_D_ERROR, "Failed to configure GIC\n"));
+    CpuDeadLoop();
+  }
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "GIC configured\n"));
 
   // Create the Stacks HOB
   StacksSize = PcdGet32 (PcdCPUCorePrimaryStackSize);

@@ -18,8 +18,8 @@
   PcdLib
   IoLib
   HobLib
-  CompilerIntrinsicsLib
   CacheMaintenanceLib
+  QTimerLib
 
 [Pcd]
   gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress

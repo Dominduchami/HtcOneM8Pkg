@@ -18,7 +18,7 @@ steps:
     architecture: 'x64'
   displayName: Install correct Python
 
-- script:  sudo apt -y install build-essential uuid-dev iasl git nasm python3-distutils crossbuild-essential-armel skales gcc-arm-none-eabi mkbootimg
+- script:  sudo apt -y install build-essential uuid-dev iasl git nasm python3-distutils crossbuild-essential-armel skales gcc-arm-linux-gnueabihf gcc-arm-none-eabi mkbootimg
   displayName: 'Install VSTS dependencies'
 
 - script: sudo ln -sfn $(pwd) ../HtcOneM8Pkg
@@ -43,29 +43,29 @@ steps:
       chmod a+x *.sh
 
 - script: |
-    ./build.sh -d All
-  displayName: Build uefi for all platforms
+    NUM_CPUS=$((`getconf _NPROCESSORS_ONLN` + 2))
+    build -n $NUM_CPUS -a ARM -t CLANGDWARF -p Platforms/HtcOneM8/HtcOneM8Pkg.dsc -b DEBUG
+    chmod +x build_boot_shim.sh
+    ./build_boot_shim.sh
+    chmod +x build_boot_images.sh
+    ./build_boot_images.sh
+  displayName: Build uefi m8
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Htc Leo UEFI kernel'
+  displayName: 'Publish Htc One M8 UEFI payload'
+  inputs: 
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/bootpayload.bin
+    artifactName: Htc One M8 UEFI payload
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Htc One M8 UEFI payload'
   inputs: 
     pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/uefi.img
-    artifactName: Htc Leo UEFI kernel
+    artifactName: Htc One M8 UEFI kernel
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Htc Leo UEFI NBH'
+  displayName: 'Publish Htc One M8 UEFI payload'
   inputs: 
-    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/LEOIMG.nbh
-    artifactName: Htc Leo UEFI NBH
+    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/HtcOneM8/emmc_appsboot.mbn
+    artifactName: Htc One M8 UEFI elf
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Htc Schubert UEFI payload'
-  inputs: 
-    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/Schubert/bootpayload.bin
-    artifactName: Htc Schubert UEFI payload
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Htc Schubert UEFI kernel'
-  inputs: 
-    pathtoPublish: /home/vsts/work/1/HtcOneM8Pkg/ImageResources/Schubert/uefi.img
-    artifactName: Htc Schubert UEFI kernel

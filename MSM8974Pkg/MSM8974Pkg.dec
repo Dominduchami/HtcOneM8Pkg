@@ -53,7 +53,7 @@
   gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|1920|UINT32|0x0000a405
 
   # Memory serial
-  gMSM8974PkgTokenSpaceGuid.PcdPstoreAddress|0x2FE00000|UINT32|0x0000a406
+  gMSM8974PkgTokenSpaceGuid.PcdPstoreAddress|0|UINT32|0x0000a406
   gMSM8974PkgTokenSpaceGuid.PcdPstoreSize|0x200000|UINT32|0x0000a407
 
   # PcdSerialRegisterBase   - Define a base address of UEFI console UART
@@ -70,3 +70,6 @@
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemModel|"MSM8974 Device"|VOID*|0x0000a301
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Qualcomm Snapdragon 801 Processor (MSM8974AB)"|VOID*|0x0000a302
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"Codename"|VOID*|0x0000a303
+
+  # QTimer 
+  gQcomTokenSpaceGuid.PcdQTimerBase|0xF9021000|UINT64|0x00000050
