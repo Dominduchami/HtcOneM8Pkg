@@ -32,10 +32,17 @@
 #define FB_BGRA8888_RED 0xffff0000
 #define FB_BGRA8888_GREEN 0xff00ff00
 
+/* PSHOLD */
+#define PSHOLD_ADRESS               0xFC4AB000
+
 /* KPSS regs */
 #define KPSS_BASE                   0xF9000000
 #define APCS_KPSS_WDT_BASE          (KPSS_BASE + 0x00017000)
 #define APCS_KPSS_WDT_EN            (APCS_KPSS_WDT_BASE + 0x8)
+
+/* MDP regs */
+#define MDP_CTL_0_BASE				      (0xFD902000)
+#define CTL_START                   0x1C
 
 extern UINT64  mSystemMemoryEnd;
 

@@ -10,6 +10,7 @@
 
 #include <Library/CacheMaintenanceLib.h>
 #include <Library/DebugAgentLib.h>
+#include <Library/IoLib.h>
 #include <Library/PrePiLib.h>
 #include <Library/PrintLib.h>
 #include <Library/PrePiHobListPointerLib.h>
@@ -65,26 +66,25 @@ ReconfigFb()
   // Read old FB location
   OldFbAddr = MmioRead32(FB_ADDR_REG);
   // Move Framebuffer to the top
-  MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
+  //MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
   // Flush using CTL0_FLUSH and Flush VIG0
-  MmioWrite32(0xfd900618, 0x00000001);
-  MmioWrite32(0xfd900718, 0x00000001); 
+  //MmioWrite32(0xfd900618, 0x00000001);
+  //MmioWrite32(0xfd900718, 0x00000001); 
 }
 
-VOID
-DisableQcomWatchdog()
-{
-  /* Disable Watchdog, if it was enabled by first bootloader. */
-	MmioWrite32(APCS_KPSS_WDT_EN, 0);
-}
-
-VOID
+/*VOID
 ReadFbConfig()
 {
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "--Framebuffer config--\n"));
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "Format: 0x%p\n", MmioRead32(0xFD901E00 + 0x30)));
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "Unpack pattern: 0x%p\n", MmioRead32(0xFD901E00 + 0x34)));
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stride: 0x%p\n", MmioRead32(0xFD901E00 + 0x24)));
+}*/
+
+VOID
+MdpRefresh()
+{
+  MmioWrite32(MDP_CTL_0_BASE + CTL_START, 1);
 }
 
 /**
@@ -108,7 +108,11 @@ PrePiMain (
   UINTN                       StacksSize;
   FIRMWARE_SEC_PERFORMANCE    Performance;
 
-  DisableQcomWatchdog();
+  /* Disable Watchdog, if it was enabled by first bootloader. */
+	MmioWrite32(APCS_KPSS_WDT_EN, 0);
+
+  // reboot
+  //MmioWrite32(0xFC4AB000, 1);
 
   // Initialize the architecture specific bits
   ArchInitialize ();
@@ -118,6 +122,8 @@ PrePiMain (
 
   // Paint screen to black
   PaintScreen(FB_BGRA8888_BLACK);
+
+  MdpRefresh();
 
   // Initialize the Serial Port
   SerialPortInitialize ();
@@ -130,6 +136,8 @@ PrePiMain (
                 __DATE__
                 );
   SerialPortWrite ((UINT8 *)Buffer, CharCount);
+
+  MdpRefresh();
 
   DEBUG((
         EFI_D_INFO | EFI_D_LOAD,
@@ -144,7 +152,9 @@ PrePiMain (
         OldFbAddr
     ));
 
-  ReadFbConfig();
+  //ReadFbConfig();
+
+  MdpRefresh();
 
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
