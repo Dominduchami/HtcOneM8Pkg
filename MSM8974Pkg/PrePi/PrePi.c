@@ -81,12 +81,6 @@ ReadFbConfig()
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stride: 0x%p\n", MmioRead32(0xFD901E00 + 0x24)));
 }*/
 
-VOID
-MdpRefresh()
-{
-  MmioWrite32(0xfd90061c, 1);
-}
-
 /**
   SEC main routine.
   @param[in]  UefiMemoryBase  Start of the PI/UEFI memory region
@@ -109,7 +103,7 @@ PrePiMain (
   FIRMWARE_SEC_PERFORMANCE    Performance;
 
   PaintScreen(FB_BGRA8888_BLACK);
-  MdpRefresh();
+  MmioWrite32(0xfd90061c, 1);//refresh
 
   /* Disable Watchdog, if it was enabled by first bootloader. */
 	MmioWrite32(APCS_KPSS_WDT_EN, 0);
@@ -126,8 +120,6 @@ PrePiMain (
   // Paint screen to black
   PaintScreen(FB_BGRA8888_BLACK);
 
-  MdpRefresh();
-
   // Initialize the Serial Port
   SerialPortInitialize ();
   CharCount = AsciiSPrint (
@@ -139,8 +131,6 @@ PrePiMain (
                 __DATE__
                 );
   SerialPortWrite ((UINT8 *)Buffer, CharCount);
-
-  MdpRefresh();
 
   DEBUG((
         EFI_D_INFO | EFI_D_LOAD,
@@ -154,10 +144,6 @@ PrePiMain (
         "Old framebuffer base = 0x%p\n",
         OldFbAddr
     ));
-
-  //ReadFbConfig();
-
-  MdpRefresh();
 
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);

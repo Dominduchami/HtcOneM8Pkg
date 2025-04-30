@@ -3,6 +3,7 @@
 #include <Library/ArmLib.h>
 #include <Library/CacheMaintenanceLib.h>
 #include <Library/HobLib.h>
+#include <Library/IoLib.h>
 #include <Library/SerialPortLib.h>
 
 #include <Resources/font5x12.h>
@@ -41,6 +42,12 @@ void FbConReset(void);
 void FbConScrollUp(void);
 void FbConFlush(void);
 
+VOID
+MdpRefresh()
+{
+  MmioWrite32(0xfd90061c, 1);
+}
+
 RETURN_STATUS
 EFIAPI
 SerialPortInitialize
@@ -59,6 +66,9 @@ SerialPortInitialize
 
 	// Reset console
 	FbConReset();
+
+	// Refresh once
+	MdpRefresh();
 
 	// Set flag
 	m_Initialized = TRUE;
@@ -366,6 +376,9 @@ SerialPortWrite
 		FbConPutCharWithFactor(*Buffer++, FBCON_COMMON_MSG, SCALE_FACTOR);
 	}
 
+	// Refresh once
+	MdpRefresh();
+
 	if (InterruptState) ArmEnableInterrupts();
 	return NumberOfBytes;
 }
@@ -391,6 +404,9 @@ SerialPortWriteCritical
 	}
 
 	m_Color.Foreground = CurrentForeground;
+
+	// Refresh once
+	MdpRefresh();
 
 	if (InterruptState) ArmEnableInterrupts();
 	return NumberOfBytes;
