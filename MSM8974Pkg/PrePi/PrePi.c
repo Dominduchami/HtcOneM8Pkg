@@ -68,10 +68,10 @@ ReconfigFb()
   MmioWrite32(0xFD900600 + 0x18, (1 << (3)));
 
   // Move Framebuffer to the top
-  //MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
+  MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
   // Flush using CTL0_FLUSH and Flush VIG0
-  //MmioWrite32(0xfd900618, 0x00000001);
-  //MmioWrite32(0xfd900718, 0x00000001); 
+  MmioWrite32(0xfd900618, 0x00000001);
+  MmioWrite32(0xfd900718, 0x00000001); 
 }
 
 /**
