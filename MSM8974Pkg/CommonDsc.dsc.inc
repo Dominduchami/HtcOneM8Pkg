@@ -391,6 +391,17 @@
 
   gEfiMdeModulePkgTokenSpaceGuid.PcdResetOnMemoryTypeInformationChange|FALSE
 
+  # gArmTokenSpaceGuid.PcdCpuVectorBaseAddress|0x00C40000
+  # gArmTokenSpaceGuid.PcdArmArchTimerFreqInHz|19200000
+  gArmTokenSpaceGuid.PcdArmArchTimerSecIntrNum|18
+  gArmTokenSpaceGuid.PcdArmArchTimerIntrNum|19
+  gEmbeddedTokenSpaceGuid.PcdInterruptBaseAddress|0xF9000000
+  gArmTokenSpaceGuid.PcdGicDistributorBase|0xF9000000
+  gArmTokenSpaceGuid.PcdGicInterruptInterfaceBase|0xF9002000
+
+  # SoC Drivers Misc
+  # gQcomTokenSpaceGuid.PcdGicSpiStart|32
+
   gEmbeddedTokenSpaceGuid.PcdMetronomeTickPeriod|1000
 
   #
@@ -474,6 +485,8 @@
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   EmbeddedPkg/EmbeddedMonotonicCounter/EmbeddedMonotonicCounter.inf
+  MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
+  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
 
   MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
