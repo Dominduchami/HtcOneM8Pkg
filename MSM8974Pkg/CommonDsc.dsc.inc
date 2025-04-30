@@ -470,14 +470,10 @@
   # Architectural Protocols
   #
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   EmbeddedPkg/EmbeddedMonotonicCounter/EmbeddedMonotonicCounter.inf
-  MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
-  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
 
   MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
@@ -488,18 +484,19 @@
 
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
   MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
 
-  EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf {
-    <LibraryClasses>
-	  # RealTimeClockLib|MSM8974Pkg/Library/VirtualRealTimeClockLib/VirtualRealTimeClockLib.inf
-    RealTimeClockLib|OvmfPkg/Library/XenRealTimeClockLib/XenRealTimeClockLib.inf
-  }
+  EmbeddedPkg/Drivers/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
 
-  MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
-  MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
+  MSM8974Pkg/Drivers/MSM8974PkgDxe/MSM8974PkgDxe.inf
+  MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+  MSM8974Pkg/Drivers/LogoDxe/LogoDxe.inf
 
   # SoC Drivers binaries
   MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
@@ -522,39 +519,12 @@
   MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
 
   #
-  # Virtual Keyboard
+  # ACPI Support 
   #
-  EmbeddedPkg/Drivers/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
-  
-  #
-  # MSM8974 necessary driver execution environment
-  #
-  MSM8974Pkg/Drivers/MSM8974PkgDxe/MSM8974PkgDxe.inf
-  MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
-  MSM8974Pkg/Drivers/LogoDxe/LogoDxe.inf
-
-  #
-  # USB Host Support
-  #
-  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-
-  #
-  # USB Mass Storage Support
-  #
-  MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
-
-  #
-  # USB Peripheral Support
-  #
-  EmbeddedPkg/Drivers/AndroidFastbootTransportUsbDxe/FastbootTransportUsbDxe.inf
-
-  #
-  # Fastboot
-  #
-  EmbeddedPkg/Application/AndroidFastboot/AndroidFastbootApp.inf
-
-  # Tetris
-  # MSM8974Pkg/Application/TetrisApp/tetris.inf
+  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
+  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
+  # MSM8974Pkg/AcpiTables/AcpiTables.inf # prebuilt
 
   #
   # FAT filesystem + GPT/MBR partitioning
@@ -565,20 +535,6 @@
   FatPkg/EnhancedFatDxe/Fat.inf
 
   #
-  # ACPI Support 
-  #
-  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
-  MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
-  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
-  # MSM8974Pkg/AcpiTables/AcpiTables.inf # prebuilt
-
-  #
-  # SMBIOS Support
-  #
-  # MSM8974Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf
-  # MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
-
-  #
   # Bds
   #
   MdeModulePkg/Universal/PrintDxe/PrintDxe.inf
@@ -587,10 +543,8 @@
     <LibraryClasses>
       PcdLib|MdePkg/Library/DxePcdLib/DxePcdLib.inf
   }
-
-  MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
   MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
-  MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
+  MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
   MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   # MSM8974Pkg/Application/HtcOneM8MenuApp/HtcOneM8MenuApp.inf
   MdeModulePkg/Application/UiApp/UiApp.inf {
@@ -609,7 +563,7 @@
       NULL|ShellPkg/Library/UefiShellDriver1CommandsLib/UefiShellDriver1CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellDebug1CommandsLib/UefiShellDebug1CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellInstall1CommandsLib/UefiShellInstall1CommandsLib.inf
-      NULL|ShellPkg/Library/UefiShellNetwork1CommandsLib/UefiShellNetwork1CommandsLib.inf
+      # NULL|ShellPkg/Library/UefiShellNetwork1CommandsLib/UefiShellNetwork1CommandsLib.inf
       NULL|ShellPkg/Library/UefiShellAcpiViewCommandLib/UefiShellAcpiViewCommandLib.inf
       HandleParsingLib|ShellPkg/Library/UefiHandleParsingLib/UefiHandleParsingLib.inf
       PrintLib|MdePkg/Library/BasePrintLib/BasePrintLib.inf

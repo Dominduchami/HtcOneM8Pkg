@@ -19,32 +19,57 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
 APRIORI DXE {
-    # first, install the PCD driver and call DxeInit
-    INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
-
-    # next, install cpu protocol and enable the interrupt controller
-    INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-    # INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf (replace by binary module?)
-  }
-
-  # Architecture services (PI Stage)
-  INF MdeModulePkg/Core/Dxe/DxeMain.inf
-  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
-  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
-
-  # Core Drivers
-  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-
   #
   # PI DXE Drivers producing Architectural Protocols (EFI Services)
   #
+  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+
+  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
+
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf
+  INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
+  INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+  INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
+  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+
+  #
+  # FAT filesystem + GPT/MBR partitioning
+  #
+  INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+  INF FatPkg/EnhancedFatDxe/Fat.inf
+  INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+
+  INF EmbeddedPkg/EmbeddedMonotonicCounter/EmbeddedMonotonicCounter.inf
+  INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
+  INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+
+  INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
+  INF MSM8974Pkg/Drivers/ConSplitterDxe/ConSplitterDxe.inf
+  INF MSM8974Pkg/Drivers/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+
+  INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
+}
+
+  INF MdeModulePkg/Core/Dxe/DxeMain.inf
+  
+  #
+  # PI DXE Drivers producing Architectural Protocols (EFI Services)
+  #
+  INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
+  INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   INF EmbeddedPkg/EmbeddedMonotonicCounter/EmbeddedMonotonicCounter.inf
-  INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
-  INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
+  # INF MdeModulePkg/Universal/ResetSystemRuntimeDxe/ResetSystemRuntimeDxe.inf
+  # INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
 
   #
@@ -56,6 +81,15 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
 
   INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
+
+  #
+  # Virtual Keyboard
+  #
+  INF EmbeddedPkg/Drivers/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
+
+  INF MSM8974Pkg/Drivers/MSM8974PkgDxe/MSM8974PkgDxe.inf
+  INF MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
+
 
   # SoC Drivers binaries
   INF MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
@@ -72,38 +106,10 @@ APRIORI DXE {
   INF MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
   INF MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
   INF MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
-  # INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
+  # INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf # hopefully soon
   INF MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
   INF MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
   INF MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
-
-  #
-  # Virtual Keyboard
-  #
-  INF EmbeddedPkg/Drivers/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
-
-  INF MSM8974Pkg/Drivers/MSM8974PkgDxe/MSM8974PkgDxe.inf
-  INF MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
-
-  #
-  # USB Host Support
-  #
-  INF MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-
-  #
-  # USB Mass Storage Support
-  #
-  INF MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
-
-  #
-  # USB Peripheral Support
-  #
-  INF EmbeddedPkg/Drivers/AndroidFastbootTransportUsbDxe/FastbootTransportUsbDxe.inf
-
-  #
-  # Fastboot
-  #
-  INF EmbeddedPkg/Application/AndroidFastboot/AndroidFastbootApp.inf
 
   #
   # FAT filesystem + GPT/MBR partitioning
@@ -112,6 +118,17 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
   INF FatPkg/EnhancedFatDxe/Fat.inf
   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
+
+  #
+  # UEFI applications
+  #
+  INF ShellPkg/Application/Shell/Shell.inf
+!ifdef $(INCLUDE_TFTP_COMMAND)
+  INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
+!endif #$(INCLUDE_TFTP_COMMAND)
 
   #
   # ACPI Support
@@ -122,34 +139,16 @@ APRIORI DXE {
   # INF RuleOverride = ACPITABLE MSM8974Pkg/AcpiTables/AcpiTables.inf # binary tables 
 
   #
-  # SMBIOS Support
-  #
-  # INF MSM8974Pkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf # or binary?
-  # INF MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
-
-  #
-  # UEFI applications
-  #
-  INF ShellPkg/Application/Shell/Shell.inf
-!ifdef $(INCLUDE_TFTP_COMMAND)
-  INF ShellPkg/DynamicCommand/TftpDynamicCommand/TftpDynamicCommand.inf
-!endif #$(INCLUDE_TFTP_COMMAND)
-
-  # Tetris App
-  # INF MSM8974Pkg/Application/TetrisApp/tetris.inf
-
-  #
   # Bds
   #
-  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
-  INF MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
   INF MdeModulePkg/Universal/PrintDxe/PrintDxe.inf
   INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
   INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
   INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
-  INF MdeModulePkg/Universal/DriverHealthManagerDxe/DriverHealthManagerDxe.inf
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
   INF MdeModulePkg/Application/UiApp/UiApp.inf
   # INF MSM8974Pkg/Application/HtcOneM8MenuApp/HtcOneM8MenuApp.inf
-  INF MSM8974Pkg/Drivers/LogoDxe/LogoDxe.inf
+  # INF MSM8974Pkg/Drivers/LogoDxe/LogoDxe.inf
+
+  
 
