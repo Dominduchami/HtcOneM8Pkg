@@ -471,7 +471,7 @@
   #
   ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
-  # ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
+  ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
   MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
