@@ -27,8 +27,10 @@
   BaseMemoryLib
   DebugLib
   PcdLib
+  IoLib # added
   FrameBufferBltLib
   CacheMaintenanceLib
+  QTimerLib # added
 
 [Protocols]
   gEfiGraphicsOutputProtocolGuid ## PRODUCES
