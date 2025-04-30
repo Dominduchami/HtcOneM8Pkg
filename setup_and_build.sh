@@ -1,7 +1,7 @@
 #!/bin/bash
 # based on the instructions from edk2-platform
 set -e
-rm -rf ImageResources/*.img ImageResources/Tools/*.bin BootShim/*.bin
+rm -rf ImageResources/HtcOneM8/uefi.img ImageResources/HtcOneM8/*.bin BootShim/*.bin
 export PACKAGES_PATH=$PWD/../edk2:$PWD/../edk2-platforms:$PWD
 export WORKSPACE=$PWD/workspace
 . ../edk2/edksetup.sh
