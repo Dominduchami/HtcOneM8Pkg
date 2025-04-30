@@ -104,6 +104,7 @@ PrePiMain (
 
   PaintScreen(FB_BGRA8888_BLACK);
   MmioWrite32(0xfd90061c, 1);//refresh
+  MicroSecondDelay( 32000 );
 
   /* Disable Watchdog, if it was enabled by first bootloader. */
 	MmioWrite32(APCS_KPSS_WDT_EN, 0);

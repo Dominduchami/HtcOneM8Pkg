@@ -164,7 +164,7 @@
   MemoryInitPeiLib|MSM8974Pkg/Library/MemoryInitPei/MemoryInitPeiLib.inf
 
   # SoC Drivers libraries
-  # QTimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf
+  QTimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf
   # InterruptsLib|MSM8974Pkg/Library/InterruptsLib/InterruptsLib.inf
   # StrLib|MSM8974Pkg/Library/StrLib/StrLib.inf
   # PTableLib|MSM8974Pkg/Library/PTableLib/PTableLib.inf

@@ -70,3 +70,6 @@
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemModel|"MSM8974 Device"|VOID*|0x0000a301
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosProcessorModel|"Qualcomm Snapdragon 801 Processor (MSM8974AB)"|VOID*|0x0000a302
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemRetailModel|"Codename"|VOID*|0x0000a303
+
+  # QTimer 
+  gQcomTokenSpaceGuid.PcdQTimerBase|0xF9021000|UINT64|0x00000050

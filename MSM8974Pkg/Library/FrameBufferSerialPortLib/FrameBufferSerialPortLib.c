@@ -5,6 +5,7 @@
 #include <Library/HobLib.h>
 #include <Library/IoLib.h>
 #include <Library/SerialPortLib.h>
+#include <Library/TimerLib.h>
 
 #include <Resources/font5x12.h>
 #include <Resources/FbColor.h>
@@ -46,6 +47,7 @@ VOID
 MdpRefresh()
 {
   MmioWrite32(0xfd90061c, 1);
+  MicroSecondDelay( 32000 );
 }
 
 RETURN_STATUS
