@@ -1,7 +1,23 @@
 .text
 .globl _start
 _start:
-	b	_Relocate
+	b	_PaintFb
+
+_PaintFb:
+  ldr  r0, FbBase   // load the FB adress into r0
+  ldr  r1, FbSize   // load the FB size into r1
+  ldr  r3, =0x07E0 // load the color ( in this case rgb565 green )
+
+_PaintLoop:
+  /* memcpy */
+  str  r3, [r0], #4  // write to fb
+  subs  r2, r2, #4  // substract
+  bgt  _PaintLoop
+
+_RefreshScreen:
+   ldr r0, MdpRegAddr
+   ldr r3, =0x1
+   str r3, [r0], #4 // write 0x1 to the refresh reg
 
 _Relocate:
 	/* see if we need to relocate */
@@ -29,6 +45,15 @@ UefiBase:
 
 UefiSize:
 	.word UEFI_SIZE
+
+FbBase:
+  .word 0x10A44000
+
+FbSize:
+  .word 0x000C0000
+
+MdpRegAddr:
+  .word 0xfd90061c
 
 .ltorg
 

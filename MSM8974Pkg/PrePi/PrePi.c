@@ -84,7 +84,7 @@ ReadFbConfig()
 VOID
 MdpRefresh()
 {
-  MmioWrite32(MDP_CTL_0_BASE + CTL_START, 1);
+  MmioWrite32(0xfd90061c, 1);
 }
 
 /**
@@ -107,6 +107,9 @@ PrePiMain (
   UINTN                       CharCount;
   UINTN                       StacksSize;
   FIRMWARE_SEC_PERFORMANCE    Performance;
+
+  PaintScreen(FB_BGRA8888_BLACK);
+  MdpRefresh();
 
   /* Disable Watchdog, if it was enabled by first bootloader. */
 	MmioWrite32(APCS_KPSS_WDT_EN, 0);
