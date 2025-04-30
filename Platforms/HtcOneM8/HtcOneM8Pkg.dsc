@@ -35,7 +35,8 @@
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00000000
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x80000000 # 2GB
 
-  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x10a44000 #0x00400000 # WP adress
+  # 0x10a44000 LA adress
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000 # WP address
 
   # SMBIOS
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemModel|"HTC One M8"

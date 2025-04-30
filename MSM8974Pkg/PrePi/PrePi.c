@@ -53,23 +53,23 @@ PaintScreen(
 			}
 		}
 	}
+
+  MmioWrite32(0xfd90061c, 1);//refresh
+  MicroSecondDelay( 32000 );
 }
 
 #define FB_ADDR_REG             0xFD901E14
 #define FB_NEW_ADDR             FixedPcdGet32(PcdMipiFrameBufferAddress)
 
-UINT32 OldFbAddr = 0;
-
 VOID
 ReconfigFb()
 {
-  // Read old FB location
-  OldFbAddr = MmioRead32(FB_ADDR_REG);
-  // Move Framebuffer to the top
-  //MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
+  // Move Framebuffer to the WP addr
+  MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
   // Flush using CTL0_FLUSH and Flush VIG0
-  //MmioWrite32(0xfd900618, 0x00000001);
-  //MmioWrite32(0xfd900718, 0x00000001); 
+  MmioWrite32(0xfd900618, 0x00000001);
+  MmioWrite32(0xfd900718, 0x00000001); 
+  // TODO: format change
 }
 
 /*VOID
@@ -102,15 +102,8 @@ PrePiMain (
   UINTN                       StacksSize;
   FIRMWARE_SEC_PERFORMANCE    Performance;
 
-  PaintScreen(FB_BGRA8888_BLACK);
-  MmioWrite32(0xfd90061c, 1);//refresh
-  MicroSecondDelay( 32000 );
-
   /* Disable Watchdog, if it was enabled by first bootloader. */
 	MmioWrite32(APCS_KPSS_WDT_EN, 0);
-
-  // reboot
-  //MmioWrite32(0xFC4AB000, 1);
 
   // Initialize the architecture specific bits
   ArchInitialize ();
@@ -140,12 +133,6 @@ PrePiMain (
         StacksBase
     ));
 
-  DEBUG((
-        EFI_D_INFO | EFI_D_LOAD,
-        "Old framebuffer base = 0x%p\n",
-        OldFbAddr
-    ));
-
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
   SaveAndSetDebugTimerInterrupt (TRUE);
@@ -159,9 +146,13 @@ PrePiMain (
               );
   PrePeiSetHobList (HobList);
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Init MMU\n"));
+
   // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
   Status = MemoryPeim (UefiMemoryBase, FixedPcdGet32 (PcdSystemMemoryUefiRegionSize));
   ASSERT_EFI_ERROR (Status);
+
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "MMU configured\n"));
 
   // Initialize GIC
   Status = QGicPeim();

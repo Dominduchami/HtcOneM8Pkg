@@ -1,7 +1,5 @@
 #!/bin/bash
-#cat BootShim/BootShim.bin workspace/Build/HtcOneM8/DEBUG_CLANGDWARF/FV/MSM8974_UEFI.fd >>ImageResources/HtcOneM8/bootpayload.bin
-
-cp workspace/Build/HtcOneM8/DEBUG_CLANGDWARF/FV/MSM8974_UEFI.fd ImageResources/HtcOneM8/bootpayload.bin
+cat BootShim/BootShim.bin workspace/Build/HtcOneM8/DEBUG_CLANGDWARF/FV/MSM8974_UEFI.fd >>ImageResources/HtcOneM8/bootpayload.bin
 
 mkbootimg --kernel ImageResources/HtcOneM8/bootpayload.bin --base 0x00000000 --kernel_offset 0x00008000 --ramdisk_offset 0x02008000 --dtb ImageResources/HtcOneM8/qcdt.img -o ImageResources/HtcOneM8/uefi.img
 
