@@ -159,6 +159,7 @@ PrePiMain (
               );
   PrePeiSetHobList (HobList);
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "------------------------Init MMU------------------------------------\n"));
   // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
   Status = MemoryPeim (UefiMemoryBase, FixedPcdGet32 (PcdSystemMemoryUefiRegionSize));
   ASSERT_EFI_ERROR (Status);
