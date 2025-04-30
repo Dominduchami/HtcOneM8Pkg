@@ -501,16 +501,25 @@
   MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
   MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
 
-  # SoC Drivers (Cross-referenced from EFIDroid and Ben) (either that or binary modules)
-  # MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
-  # MSM8974Pkg/GPLDrivers/GpioTlmmDxe/GpioTlmmDxe.inf
-  # MSM8974Pkg/GPLDrivers/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
-  # MSM8974Pkg/Drivers/SpmiDxe/SpmiDxe.inf
-  # MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Dxe.inf
-  # MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
-  # MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
-  # MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
-  # MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  # SoC Drivers binaries
+  MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
+  MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
+  MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
+  MSM8974Pkg/QcomDrivers/SmdDxe/SmdDxe.inf
+
+  MSM8974Pkg/QcomDrivers/TzDxe/TzDxe.inf
+  MSM8974Pkg/QcomDrivers/DALSYSDxe/DALSYSDxe.inf
+  # MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf
+
+  MSM8974Pkg/QcomDrivers/HWIODxe/HWIODxe.inf
+  MSM8974Pkg/QcomDrivers/I2CDxe/I2CDxe.inf
+  MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
+  MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
+  MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
+  # MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
+  MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
+  MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
+  MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
 
   #
   # Virtual Keyboard

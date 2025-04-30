@@ -57,16 +57,25 @@ APRIORI DXE {
 
   INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
-  # SoC Drivers (Cross-referenced from EFIDroid and Ben) (use binaries instead?)
-  # INF MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
-  # INF MSM8974Pkg/GPLDrivers/GpioTlmmDxe/GpioTlmmDxe.inf
-  # INF MSM8974Pkg/GPLDrivers/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
-  # INF MSM8974Pkg/Drivers/SpmiDxe/SpmiDxe.inf
-  # INF MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Dxe.inf
-  # INF MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
-  # INF MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
-  # INF MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
-  # INF MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  # SoC Drivers binaries
+  INF MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
+  INF MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
+  INF MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
+  INF MSM8974Pkg/QcomDrivers/SmdDxe/SmdDxe.inf
+
+  INF MSM8974Pkg/QcomDrivers/TzDxe/TzDxe.inf
+  INF MSM8974Pkg/QcomDrivers/DALSYSDxe/DALSYSDxe.inf
+  # INF MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf (seems to hang)
+
+  INF MSM8974Pkg/QcomDrivers/HWIODxe/HWIODxe.inf
+  INF MSM8974Pkg/QcomDrivers/I2CDxe/I2CDxe.inf
+  INF MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
+  INF MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
+  INF MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
+  # INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
+  INF MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
+  INF MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
+  INF MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
 
   #
   # Virtual Keyboard
