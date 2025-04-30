@@ -58,28 +58,21 @@ PaintScreen(
 #define FB_ADDR_REG             0xFD901E14
 #define FB_NEW_ADDR             FixedPcdGet32(PcdMipiFrameBufferAddress)
 
-UINT32 OldFbAddr = 0;
-
 VOID
 ReconfigFb()
 {
-  // Read old FB location
-  OldFbAddr = MmioRead32(FB_ADDR_REG);
+  /*Change screen format to 32BPP BGRA for Windows*/
+  MmioWrite32(0xFD901E00 + 0x30, 0x000236FF);
+  MmioWrite32(0xFD901E00 + 0x34, 0x03020001);
+  MmioWrite32(0xFD901E00 + 0x24, 1080*4);
+  MmioWrite32(0xFD900600 + 0x18, (1 << (3)));
+
   // Move Framebuffer to the top
   //MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
   // Flush using CTL0_FLUSH and Flush VIG0
   //MmioWrite32(0xfd900618, 0x00000001);
   //MmioWrite32(0xfd900718, 0x00000001); 
 }
-
-/*VOID
-ReadFbConfig()
-{
-  DEBUG((EFI_D_INFO | EFI_D_LOAD, "--Framebuffer config--\n"));
-  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Format: 0x%p\n", MmioRead32(0xFD901E00 + 0x30)));
-  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Unpack pattern: 0x%p\n", MmioRead32(0xFD901E00 + 0x34)));
-  DEBUG((EFI_D_INFO | EFI_D_LOAD, "Stride: 0x%p\n", MmioRead32(0xFD901E00 + 0x24)));
-}*/
 
 /**
   SEC main routine.
@@ -102,15 +95,8 @@ PrePiMain (
   UINTN                       StacksSize;
   FIRMWARE_SEC_PERFORMANCE    Performance;
 
-  PaintScreen(FB_BGRA8888_BLACK);
-  MmioWrite32(0xfd90061c, 1);//refresh
-  MicroSecondDelay( 32000 );
-
   /* Disable Watchdog, if it was enabled by first bootloader. */
 	MmioWrite32(APCS_KPSS_WDT_EN, 0);
-
-  // reboot
-  //MmioWrite32(0xFC4AB000, 1);
 
   // Initialize the architecture specific bits
   ArchInitialize ();
@@ -120,6 +106,10 @@ PrePiMain (
 
   // Paint screen to black
   PaintScreen(FB_BGRA8888_BLACK);
+
+  // Refresh once
+  MmioWrite32(0xfd90061c, 1);
+  MicroSecondDelay( 32000 );
 
   // Initialize the Serial Port
   SerialPortInitialize ();
@@ -140,12 +130,6 @@ PrePiMain (
         StacksBase
     ));
 
-  DEBUG((
-        EFI_D_INFO | EFI_D_LOAD,
-        "Old framebuffer base = 0x%p\n",
-        OldFbAddr
-    ));
-
   // Initialize the Debug Agent for Source Level Debugging
   InitializeDebugAgent (DEBUG_AGENT_INIT_POSTMEM_SEC, NULL, NULL);
   SaveAndSetDebugTimerInterrupt (TRUE);
@@ -159,7 +143,6 @@ PrePiMain (
               );
   PrePeiSetHobList (HobList);
 
-  DEBUG((EFI_D_INFO | EFI_D_LOAD, "------------------------Init MMU------------------------------------\n"));
   // Initialize MMU and Memory HOBs (Resource Descriptor HOBs)
   Status = MemoryPeim (UefiMemoryBase, FixedPcdGet32 (PcdSystemMemoryUefiRegionSize));
   ASSERT_EFI_ERROR (Status);
