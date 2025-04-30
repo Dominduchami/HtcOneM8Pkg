@@ -22,6 +22,7 @@
 #include <Library/DevicePathLib.h>
 #include <Library/HobLib.h>
 #include <Library/PcdLib.h>
+#include <Library/DebugLib.h>
 #include <Library/UefiBootManagerLib.h>
 #include <Library/UefiLib.h>
 #include <Library/PrintLib.h>
@@ -400,6 +401,8 @@ PlatformRegisterOptionsAndKeys (
 {
   INTN ShellOption;
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Register shell\n"));
+
   ShellOption = PlatformRegisterFvBootOption(
       &gUefiShellFileGuid, 
       L"UEFI Shell",
@@ -458,6 +461,8 @@ PlatformBootManagerBeforeConsole (
   EFI_STATUS                    Status;
   ESRT_MANAGEMENT_PROTOCOL      *EsrtManagement;
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: PLatformBootMgr BeforeConsole\n"));
+
   if (GetBootModeHob() == BOOT_ON_FLASH_UPDATE) {
     DEBUG ((DEBUG_INFO, "ProcessCapsules Before EndOfDxe ......\n"));
     Status = ProcessCapsules ();
@@ -508,6 +513,8 @@ PlatformBootManagerBeforeConsole (
   //
   EfiEventGroupSignal (&gEfiEndOfDxeEventGroupGuid);
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: EndOfDxe()\n"));
+
   //
   // Dispatch deferred images after EndOfDxe event and ReadyToLock installation.
   //
@@ -534,6 +541,8 @@ PlatformBootManagerAfterConsole (
   ESRT_MANAGEMENT_PROTOCOL      *EsrtManagement;
   EFI_STATUS                    Status;
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: After console\n"));
+
   //
   // Show the splash screen.
   //
@@ -543,6 +552,8 @@ PlatformBootManagerAfterConsole (
   // Connect the rest of the devices.
   //
   EfiBootManagerConnectAll ();
+
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Devices connected\n"));
 
   Status = gBS->LocateProtocol (&gEsrtManagementProtocolGuid, NULL,
                   (VOID **)&EsrtManagement);
@@ -556,10 +567,13 @@ PlatformBootManagerAfterConsole (
     DEBUG((DEBUG_INFO, "ProcessCapsules returned %r\n", Status));
   }
 
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: ProcessCaosukes done\n"));
+
   //EfiBootManagerRefreshAllBootOption ();
 	//	
   // Register UEFI Shell	
   //	
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Register shell FV boot\n"));
   PlatformRegisterFvBootOption (	
     &gUefiShellFileGuid, L"UEFI Shell", LOAD_OPTION_ACTIVE	
     );	
@@ -579,6 +593,7 @@ PlatformBootManagerWaitCallback (
   UINT16          TimeoutRemain
   )
 {
+#if 0
   EFI_GRAPHICS_OUTPUT_BLT_PIXEL_UNION Black;
   EFI_GRAPHICS_OUTPUT_BLT_PIXEL_UNION White;
   UINT16                              Timeout;
@@ -588,6 +603,8 @@ PlatformBootManagerWaitCallback (
 
   Black.Raw = 0x00000000;
   White.Raw = 0x00FFFFFF;
+
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Wait callback\n"));
 
   Status = BootLogoUpdateProgress (
              White.Pixel,
@@ -599,7 +616,12 @@ PlatformBootManagerWaitCallback (
              );
   if (EFI_ERROR (Status)) {
     Print (L".");
+    DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Wait callback err\n"));
   }
+#endif
+    DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Wait callback\n"));
+    TimeoutRemain = 0;
+    DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: --------------\n"));
 }
 
 /**
@@ -628,6 +650,8 @@ PlatformBootManagerUnableToBoot (
   if (EFI_ERROR (Status)) {
     return;
   }
+
+  DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Unable to boot\n"));
   //
   // Normally BdsDxe does not print anything to the system console, but this is
   // a last resort -- the end-user will likely not see any DEBUG messages
