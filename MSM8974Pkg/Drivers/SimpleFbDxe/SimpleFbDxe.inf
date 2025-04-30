@@ -30,7 +30,7 @@
   IoLib # added
   FrameBufferBltLib
   CacheMaintenanceLib
-  QTimerLib # added
+  TimerLib # added
 
 [Protocols]
   gEfiGraphicsOutputProtocolGuid ## PRODUCES

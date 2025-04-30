@@ -127,7 +127,7 @@
   OrderedCollectionLib|MdePkg/Library/BaseOrderedCollectionRedBlackTreeLib/BaseOrderedCollectionRedBlackTreeLib.inf
   ArmLib|ArmPkg/Library/ArmLib/ArmBaseLib.inf
   ArmPlatformLib|MSM8974Pkg/Library/MSM8974PkgLib/MSM8974PkgLib.inf
-  TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
+  # TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
   PlatformBootManagerLib|MSM8974Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
@@ -164,7 +164,7 @@
   MemoryInitPeiLib|MSM8974Pkg/Library/MemoryInitPei/MemoryInitPeiLib.inf
 
   # SoC Drivers libraries
-  QTimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf
+  # TimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf
   # InterruptsLib|MSM8974Pkg/Library/InterruptsLib/InterruptsLib.inf
   # StrLib|MSM8974Pkg/Library/StrLib/StrLib.inf
   # PTableLib|MSM8974Pkg/Library/PTableLib/PTableLib.inf

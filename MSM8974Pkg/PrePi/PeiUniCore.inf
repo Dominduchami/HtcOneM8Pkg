@@ -55,7 +55,7 @@
   PrePiHobListPointerLib
   PlatformPeiLib
   MemoryInitPeiLib
-  QTimerLib
+  TimerLib
 
 [Ppis]
   gArmMpCoreInfoPpiGuid
