@@ -129,7 +129,7 @@
   ArmPlatformLib|MSM8974Pkg/Library/MSM8974PkgLib/MSM8974PkgLib.inf
   # TimerLib|ArmPkg/Library/ArmArchTimerLib/ArmArchTimerLib.inf
   CapsuleLib|MdeModulePkg/Library/DxeCapsuleLibNull/DxeCapsuleLibNull.inf
-  PlatformBootManagerLib|ArmPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
+  PlatformBootManagerLib|MSM8974Pkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf
   UefiBootManagerLib|MdeModulePkg/Library/UefiBootManagerLib/UefiBootManagerLib.inf
   CustomizedDisplayLib|MdeModulePkg/Library/CustomizedDisplayLib/CustomizedDisplayLib.inf
 
@@ -452,7 +452,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|1920
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoHorizontalResolution|1080
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupVideoVerticalResolution|1920
-  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow|45
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutRow|160
   gEfiMdeModulePkgTokenSpaceGuid.PcdSetupConOutColumn|135  # HorizontalResolution / 8
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|45           # VerticalResolution / 19
   gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|135

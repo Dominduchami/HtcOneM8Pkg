@@ -619,9 +619,7 @@ PlatformBootManagerWaitCallback (
     DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Wait callback err\n"));
   }
 #endif
-    DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: Wait callback\n"));
     TimeoutRemain = 0;
-    DEBUG((EFI_D_INFO | EFI_D_LOAD, "PlatformBm: --------------\n"));
 }
 
 /**
