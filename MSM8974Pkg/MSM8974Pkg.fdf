@@ -25,9 +25,13 @@ APRIORI DXE {
   INF MSM8974Pkg/hTCPkg/HardwareInitDxe/HardwareInitDxe.inf
   # INF MSM8974Pkg/QcomDrivers/EnvDxe/EnvDxe.inf
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
-  INF MSM8974Pkg/QcomDrivers/InterruptDxe/InterruptGICDxe.inf
-  # INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  
+  # Next, install cpu protocol and enable the interrupt controller
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+
+  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   
   INF MSM8974Pkg/QcomDrivers/SecurityDxe/SecurityDxe.inf
   INF MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
@@ -36,8 +40,6 @@ APRIORI DXE {
   INF MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
   INF MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
   
-  INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
-  INF MSM8974Pkg/QcomDrivers/TimerDxe/TimerDxe.inf
   INF MSM8974Pkg/QcomDrivers/SmdDxe/SmdDxe.inf
   INF MSM8974Pkg/QcomDrivers/ULogDxe/ULogDxe.inf
   INF MSM8974Pkg/QcomDrivers/NpaDxe/NpaDxe.inf
@@ -104,9 +106,9 @@ APRIORI DXE {
   #
   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-  INF MSM8974Pkg/QcomDrivers/InterruptDxe/InterruptGICDxe.inf
-  # INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
-  INF MSM8974Pkg/QcomDrivers/TimerDxe/TimerDxe.inf
+
+  INF ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
+  INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
