@@ -19,8 +19,8 @@ READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
 !if $(USE_FULL_PREBUILT_DXE) == 1
-   !include MSM8974Pkg/APRIORI.inc
-   !include MSM8974Pkg/QcomPkg.fdf.inc
+   !include QcomPkg/APRIORI.inc
+   !include QcomPkg/QcomPkg.fdf.inc
 !else
   !include MSM8974Pkg/MinimalApriori.inc
 !endif

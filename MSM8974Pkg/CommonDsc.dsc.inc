@@ -511,11 +511,6 @@
   MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
   MSM8974Pkg/Drivers/LogoDxe/LogoDxe.inf
 
-  # SoC Drivers binaries
-!if $(USE_FULL_PREBUILT_DXE) == 1
-   !include MSM8974Pkg/QcomPkg.dsc.inc
-!endif
-
   #
   # ACPI Support 
   #

@@ -27,9 +27,13 @@
   FLASH_DEFINITION               = Platforms/$(PLATFORM_NAME)/$(PLATFORM_NAME)Pkg.fdf
 
   DEFINE USE_SCREEN_FOR_SERIAL_OUTPUT = TRUE
-  DEFINE USE_FULL_PREBUILT_DXE = FALSE
+  DEFINE USE_FULL_PREBUILT_DXE = TRUE
 
 !include MSM8974Pkg/CommonDsc.dsc.inc
+# SoC Drivers binaries
+!if $(USE_FULL_PREBUILT_DXE) == 1
+   !include QcomPkg/QcomPkg.dsc.inc
+!endif
 
 [PcdsFixedAtBuild.common]
   # System Memory
