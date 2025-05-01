@@ -337,7 +337,7 @@
   #  DEBUG_EVENT     0x00080000  // Event messages
   #  DEBUG_ERROR     0x80000000  // Error
   
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel| 0x80000005
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x800000C5
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x00
 
 
@@ -533,6 +533,7 @@
   MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
   MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
   MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
+  MSM8974Pkg/hTCPkg/PartitionIODxe/PartitionIODxe.inf
   MSM8974Pkg/QcomDrivers/HashDxe/HashDxe.inf
   MSM8974Pkg/QcomDrivers/RNGDxe/RngDxe.inf
   MSM8974Pkg/QcomDrivers/TrEEDxe/TrEEDxe.inf
