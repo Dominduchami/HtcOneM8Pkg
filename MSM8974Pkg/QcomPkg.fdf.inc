@@ -17,7 +17,6 @@
   INF MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
   
   # INF MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf # hopefully soon
-  INF MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
   INF MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
   INF MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
   INF MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf

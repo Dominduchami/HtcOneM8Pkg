@@ -498,8 +498,6 @@
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 
   ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
-  #MSM8974Pkg/QcomDrivers/InterruptDxe/InterruptGICDxe.inf
-  #MSM8974Pkg/QcomDrivers/TimerDxe/TimerDxe.inf
   ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
