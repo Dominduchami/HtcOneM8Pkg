@@ -5,7 +5,7 @@
 #include <Library/HobLib.h>
 #include <Library/IoLib.h>
 #include <Library/SerialPortLib.h>
-#include <Library/TimerLib.h>
+#include <Library/FramebufferHelperLib.h>
 
 #include <Resources/font5x12.h>
 #include <Resources/FbColor.h>
@@ -42,15 +42,6 @@ void FbConDrawglyph
 void FbConReset(void);
 void FbConScrollUp(void);
 void FbConFlush(void);
-
-VOID
-MdpRefresh()
-{
-#if DISPLAY_ENABLE_AUTOREFRESH == 0
-  MmioWrite32(0xfd90061c, 1);
-  MicroSecondDelay( 32000 );
-#endif
-}
 
 RETURN_STATUS
 EFIAPI

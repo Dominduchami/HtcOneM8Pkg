@@ -19,7 +19,7 @@
   IoLib
   HobLib
   CacheMaintenanceLib
-  TimerLib
+  FramebufferHelperLib
 
 [Pcd]
   gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress

@@ -27,60 +27,6 @@
 UINT64  mSystemMemoryEnd = FixedPcdGet64 (PcdSystemMemoryBase) +
                            FixedPcdGet64 (PcdSystemMemorySize) - 1;
 
-UINTN Width = FixedPcdGet32(PcdMipiFrameBufferWidth);
-UINTN Height = FixedPcdGet32(PcdMipiFrameBufferHeight);
-UINTN Bpp = FixedPcdGet32(PcdMipiFrameBufferPixelBpp);
-UINTN FbAddr = FixedPcdGet32(PcdMipiFrameBufferAddress);
-
-/* TODO: Move to the fb helper lib */
-VOID
-PaintScreen(
-  IN  UINTN   BgColor
-)
-{
-  // Code from FramebufferSerialPortLib
-	char* Pixels = (void*)FixedPcdGet32(PcdMipiFrameBufferAddress);
-
-	// Set color.
-	for (UINTN i = 0; i < Width; i++)
-	{
-		for (UINTN j = 0; j < Height; j++)
-		{
-			// Set pixel bit
-			for (UINTN p = 0; p < (Bpp / 8); p++)
-			{
-				*Pixels = (unsigned char)BgColor;
-				BgColor = BgColor >> 8;
-				Pixels++;
-			}
-		}
-	}
-}
-
-#define FB_ADDR_REG             0xFD901E14
-#define FB_NEW_ADDR             FixedPcdGet32(PcdMipiFrameBufferAddress)
-
-/* TODO: Move to the fb helper lib */
-VOID
-ReconfigFb()
-{
-  /*Change screen format to 32BPP BGRA for Windows*/
-  MmioWrite32(0xFD901E00 + 0x30, 0x000236FF);
-  MmioWrite32(0xFD901E00 + 0x34, 0x03020001);
-  MmioWrite32(0xFD901E00 + 0x24, 1080*4);
-  MmioWrite32(0xFD900600 + 0x18, (1 << (3)));
-
-  // Move Framebuffer to the top
-  MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
-  // Flush using CTL0_FLUSH and Flush VIG0
-  MmioWrite32(0xfd900618, 0x00000001);
-  MmioWrite32(0xfd900718, 0x00000001);
-
-#if DISPLAY_ENABLE_AUTOREFRESH == 1
-  DisplayAutorefresh(ENABLE);
-#endif
-}
-
 /**
   SEC main routine.
   @param[in]  UefiMemoryBase  Start of the PI/UEFI memory region
@@ -114,10 +60,12 @@ PrePiMain (
   // Paint screen to black
   PaintScreen(FB_BGRA8888_BLACK);
 
+#if DISPLAY_ENABLE_AUTOREFRESH == 1
+  // Enable autorefresh
+  DisplayAutorefresh(ENABLE);
+#else
   // Refresh once
-#if DISPLAY_ENABLE_AUTOREFRESH == 0
-  MmioWrite32(0xfd90061c, 1);
-  MicroSecondDelay( 32000 );
+  MdpRefresh();
 #endif
 
   // Initialize the Serial Port
