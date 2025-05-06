@@ -16,6 +16,7 @@
 #include <Library/PrePiHobListPointerLib.h>
 #include <Library/TimerLib.h>
 #include <Library/PerformanceLib.h>
+#include <Library/FramebufferHelperLib.h>
 
 #include <Ppi/GuidedSectionExtraction.h>
 #include <Ppi/ArmMpCoreInfo.h>
@@ -31,6 +32,7 @@ UINTN Height = FixedPcdGet32(PcdMipiFrameBufferHeight);
 UINTN Bpp = FixedPcdGet32(PcdMipiFrameBufferPixelBpp);
 UINTN FbAddr = FixedPcdGet32(PcdMipiFrameBufferAddress);
 
+/* TODO: Move to the fb helper lib */
 VOID
 PaintScreen(
   IN  UINTN   BgColor
@@ -58,6 +60,7 @@ PaintScreen(
 #define FB_ADDR_REG             0xFD901E14
 #define FB_NEW_ADDR             FixedPcdGet32(PcdMipiFrameBufferAddress)
 
+/* TODO: Move to the fb helper lib */
 VOID
 ReconfigFb()
 {
@@ -71,7 +74,11 @@ ReconfigFb()
   MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
   // Flush using CTL0_FLUSH and Flush VIG0
   MmioWrite32(0xfd900618, 0x00000001);
-  MmioWrite32(0xfd900718, 0x00000001); 
+  MmioWrite32(0xfd900718, 0x00000001);
+
+#if DISPLAY_ENABLE_AUTOREFRESH == 1
+  DisplayAutorefresh(ENABLE);
+#endif
 }
 
 /**
@@ -108,8 +115,10 @@ PrePiMain (
   PaintScreen(FB_BGRA8888_BLACK);
 
   // Refresh once
+#if DISPLAY_ENABLE_AUTOREFRESH == 0
   MmioWrite32(0xfd90061c, 1);
   MicroSecondDelay( 32000 );
+#endif
 
   // Initialize the Serial Port
   SerialPortInitialize ();

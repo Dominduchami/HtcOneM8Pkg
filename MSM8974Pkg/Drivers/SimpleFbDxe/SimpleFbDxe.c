@@ -133,13 +133,14 @@ DisplaySetMode(IN EFI_GRAPHICS_OUTPUT_PROTOCOL *This, IN UINT32 ModeNumber)
   return EFI_SUCCESS;
 }
 
-//MdpRefresh
 VOID
 MdpDisplayRefresh()
 {
+#if DISPLAY_ENABLE_AUTOREFRESH == 0
   DEBUG((EFI_D_INFO | EFI_D_LOAD, "SimpleFbDxe: Display refresh\n"));
   MmioWrite32(0xfd90061c, 1);
   MicroSecondDelay( 32000 );
+#endif
 }
 
 STATIC

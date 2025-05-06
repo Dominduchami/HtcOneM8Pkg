@@ -1,0 +1,26 @@
+[Defines]
+  INF_VERSION    = 0x00010005
+  BASE_NAME      = FramebufferHelperLib
+  FILE_GUID      = B9BBFDB5-108A-4989-9668-4901007083DA
+  MODULE_TYPE    = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS  = FramebufferHelperLib
+
+[Sources.common]
+  FramebufferHelperLib.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  MSM8974Pkg/MSM8974Pkg.dec
+
+[LibraryClasses]
+  ArmLib
+  PcdLib
+  IoLib
+
+[Pcd]
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferWidth
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferHeight
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp

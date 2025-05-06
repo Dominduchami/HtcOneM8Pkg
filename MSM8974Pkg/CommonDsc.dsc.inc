@@ -161,6 +161,8 @@
 
   # Framebuffer
   FrameBufferBltLib|MdeModulePkg/Library/FrameBufferBltLib/FrameBufferBltLib.inf
+  FramebufferHelperLib|MSM8974Pkg/Library/FramebufferHelperLib/FramebufferHelperLib.inf
+  
   MemoryInitPeiLib|MSM8974Pkg/Library/MemoryInitPei/MemoryInitPeiLib.inf
 
   # SoC Drivers
@@ -507,6 +509,7 @@
   MemoryInitPeiLib|MSM8974Pkg/Library/MemoryInitPei/MemoryInitPeiLib.inf
   PlatformPeiLib|ArmPlatformPkg/PlatformPei/PlatformPeiLib.inf
   PrePiHobListPointerLib|ArmPlatformPkg/Library/PrePiHobListPointerLib/PrePiHobListPointerLib.inf
+  FramebufferHelperLib|MSM8974Pkg/Library/FramebufferHelperLib/FramebufferHelperLib.inf
 
 ################################################################################
 #

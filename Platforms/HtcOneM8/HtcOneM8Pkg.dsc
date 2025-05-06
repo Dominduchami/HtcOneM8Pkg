@@ -30,6 +30,9 @@
 
 !include MSM8974Pkg/CommonDsc.dsc.inc
 
+[BuildOptions.common]
+  GCC:*_*_ARM_CC_FLAGS = -DDISPLAY_ENABLE_AUTOREFRESH=1
+
 [PcdsFixedAtBuild.common]
   # System Memory
   gArmTokenSpaceGuid.PcdSystemMemoryBase|0x00000000

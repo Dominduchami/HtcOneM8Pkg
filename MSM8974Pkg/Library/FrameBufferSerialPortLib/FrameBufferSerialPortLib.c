@@ -46,8 +46,10 @@ void FbConFlush(void);
 VOID
 MdpRefresh()
 {
+#if DISPLAY_ENABLE_AUTOREFRESH == 0
   MmioWrite32(0xfd90061c, 1);
   MicroSecondDelay( 32000 );
+#endif
 }
 
 RETURN_STATUS
