@@ -4,7 +4,7 @@
 Boots to shell, drivers tbd
 
 ## Credits
- - Rick Liu for Lumia930Pkg
+ - Rick Liu for Lumia930 Pkg
  - sonic011gamer for edk2-msm8226 :-)
  - ivoszbg for Msm8916Pkg
 

@@ -23,6 +23,7 @@
   EmbeddedPkg/EmbeddedPkg.dec
   MdeModulePkg/MdeModulePkg.dec
   MSM8974Pkg/MSM8974Pkg.dec
+  
 
 [LibraryClasses]
   BaseLib
@@ -32,6 +33,7 @@
   UefiDriverEntryPoint
   BaseMemoryLib
   DebugLib
+  CompilerIntrinsicsLib
   
 [Protocols]
   gEfiSmbiosProtocolGuid

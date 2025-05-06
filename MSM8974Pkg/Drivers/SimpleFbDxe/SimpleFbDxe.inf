@@ -26,11 +26,9 @@
   UefiDriverEntryPoint
   BaseMemoryLib
   DebugLib
-  PcdLib
-  IoLib # added
-  FrameBufferBltLib
   CacheMaintenanceLib
-  TimerLib # added
+  FrameBufferBltLib
+  PcdLib
 
 [Protocols]
   gEfiGraphicsOutputProtocolGuid ## PRODUCES
