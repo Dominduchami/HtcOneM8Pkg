@@ -129,7 +129,20 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   INF MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
-  # INF RuleOverride = ACPITABLE MSM8974Pkg/AcpiTables/AcpiTables.inf # binary tables 
+  # ACPI Tables
+  FILE FREEFORM = 7E374E25-8E01-4FEE-87F2-390C23C606CD {
+    SECTION RAW = MSM8974Pkg/AcpiTables/bgrt.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/csrt.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/dbg2.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/dsdt.aml
+    SECTION RAW = MSM8974Pkg/AcpiTables/facp.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/facs.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/fpdt.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/gtdt.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/madt.acp
+    SECTION RAW = MSM8974Pkg/AcpiTables/tpm2.acp
+    SECTION UI = "AcpiTables"
+  }
 
   #
   # Bds

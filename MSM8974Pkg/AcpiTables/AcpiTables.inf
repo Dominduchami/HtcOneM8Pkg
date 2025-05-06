@@ -22,14 +22,8 @@
   MODULE_TYPE                    = USER_DEFINED
   VERSION_STRING                 = 1.0
 
-[Sources]
-  # DSDT.aml
-  # Csrt.aml
-  # Dbg2.aml
-  # Fadt.aml
-  # Madt.aml
-  # Facs.aml
-  # Gtdt.aml
+# [Sources]
+  # Sources/Madt.asl #single-core
 
 [Packages]
   ArmPkg/ArmPkg.dec
