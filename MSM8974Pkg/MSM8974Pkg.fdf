@@ -93,7 +93,16 @@ APRIORI DXE {
   INF MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
 
 
-  # SoC Drivers
+  # SoC Drivers (Cross-referenced from EFIDroid and Ben)
+  INF MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
+  INF MSM8974Pkg/GPLDriver/GpioTlmmDxe/GpioTlmmDxe.inf
+  INF MSM8974Pkg/GPLDriver/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf
+  INF MSM8974Pkg/Drivers/SpmiDxe/SpmiDxe.inf
+  INF MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Dxe.inf
+  INF MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
+  INF MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
+  INF MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
+  INF MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
   
   #
   # FAT filesystem + GPT/MBR partitioning
