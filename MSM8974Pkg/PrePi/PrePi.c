@@ -17,6 +17,8 @@
 #include <Library/TimerLib.h>
 #include <Library/PerformanceLib.h>
 
+//#include <Library/mdp5.h>
+
 #include <Ppi/GuidedSectionExtraction.h>
 #include <Ppi/ArmMpCoreInfo.h>
 #include <Ppi/SecPerformance.h>
@@ -55,6 +57,29 @@ PaintScreen(
 	}
 }
 
+#define MDP_PP_SYNC_CONFIG_VSYNC	0x004
+#define MDP_PP_AUTOREFRESH_CONFIG	0x030
+
+#define BIT(bit) (1 << (bit))
+
+static void mdp5_enable_auto_refresh()
+{
+	UINT32 vsync_count = 19200000 / (Height * 60); /* 60 fps */
+	UINT32 mdss_mdp_rev = MmioRead32(MDP_HW_REV);
+	UINT32 pp0_base;
+
+	if (mdss_mdp_rev >= MDSS_MDP_HW_REV_105)
+		pp0_base = (0xFD900000 + 0x71000);
+	else if (mdss_mdp_rev >= MDSS_MDP_HW_REV_102)
+		pp0_base = (0xFD900000 + 0x12D00);
+	else
+		pp0_base = (0xFD900000 + 0x21B00);
+
+	MmioWrite32(pp0_base + MDP_PP_SYNC_CONFIG_VSYNC, vsync_count | BIT(19));
+	MmioWrite32(pp0_base + MDP_PP_AUTOREFRESH_CONFIG, BIT(31) | 1);
+  MmioWrite32(0xfd90061c, 0x1); //writel(1, MDP_CTL_0_BASE + CTL_START);
+}
+
 #define FB_ADDR_REG             0xFD901E14
 #define FB_NEW_ADDR             FixedPcdGet32(PcdMipiFrameBufferAddress)
 
@@ -71,7 +96,10 @@ ReconfigFb()
   MmioWrite32(FB_ADDR_REG, FB_NEW_ADDR);
   // Flush using CTL0_FLUSH and Flush VIG0
   MmioWrite32(0xfd900618, 0x00000001);
-  MmioWrite32(0xfd900718, 0x00000001); 
+  MmioWrite32(0xfd900718, 0x00000001);
+
+  // Enable autorefresh
+  mdp5_enable_auto_refresh();
 }
 
 /**
@@ -106,10 +134,6 @@ PrePiMain (
 
   // Paint screen to black
   PaintScreen(FB_BGRA8888_BLACK);
-
-  // Refresh once
-  MmioWrite32(0xfd90061c, 1);
-  MicroSecondDelay( 32000 );
 
   // Initialize the Serial Port
   SerialPortInitialize ();

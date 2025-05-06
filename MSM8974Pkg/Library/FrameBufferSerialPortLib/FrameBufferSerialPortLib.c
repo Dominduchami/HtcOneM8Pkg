@@ -43,13 +43,6 @@ void FbConReset(void);
 void FbConScrollUp(void);
 void FbConFlush(void);
 
-VOID
-MdpRefresh()
-{
-  MmioWrite32(0xfd90061c, 1);
-  MicroSecondDelay( 32000 );
-}
-
 RETURN_STATUS
 EFIAPI
 SerialPortInitialize
@@ -68,9 +61,6 @@ SerialPortInitialize
 
 	// Reset console
 	FbConReset();
-
-	// Refresh once
-	MdpRefresh();
 
 	// Set flag
 	m_Initialized = TRUE;
@@ -378,9 +368,6 @@ SerialPortWrite
 		FbConPutCharWithFactor(*Buffer++, FBCON_COMMON_MSG, SCALE_FACTOR);
 	}
 
-	// Refresh once
-	MdpRefresh();
-
 	if (InterruptState) ArmEnableInterrupts();
 	return NumberOfBytes;
 }
@@ -406,9 +393,6 @@ SerialPortWriteCritical
 	}
 
 	m_Color.Foreground = CurrentForeground;
-
-	// Refresh once
-	MdpRefresh();
 
 	if (InterruptState) ArmEnableInterrupts();
 	return NumberOfBytes;

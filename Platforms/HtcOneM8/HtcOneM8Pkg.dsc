@@ -36,6 +36,11 @@
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x80000000 # 2GB
 
   gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferAddress|0x00400000 # WP adress
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferWidth|1080
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferHeight|1920
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferPixelBpp|3
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleWidth|1080
+  gMSM8974PkgTokenSpaceGuid.PcdMipiFrameBufferVisibleHeight|1920
 
   # SMBIOS
   gMSM8974PkgTokenSpaceGuid.PcdSmbiosSystemModel|"HTC One M8"
