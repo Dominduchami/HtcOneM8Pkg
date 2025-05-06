@@ -498,7 +498,7 @@
   MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 
   ArmPkg/Drivers/ArmGicDxe/ArmGicDxe.inf
-  MSM8974Pkg/QcomDrivers/TimerDxe/TimerDxe.inf
+  ArmPkg/Drivers/TimerDxe/TimerDxe.inf
 
   MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
 
@@ -511,25 +511,7 @@
   MSM8974Pkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf
   MSM8974Pkg/Drivers/LogoDxe/LogoDxe.inf
 
-  # SoC Drivers binaries
-  MSM8974Pkg/QcomDrivers/TLMMDxe/TLMMDxe.inf
-  MSM8974Pkg/QcomDrivers/SmemDxe/SmemDxe.inf
-  MSM8974Pkg/QcomDrivers/ChipInfoDxe/ChipInfoDxe.inf
-  MSM8974Pkg/QcomDrivers/SmdDxe/SmdDxe.inf
-
-  MSM8974Pkg/QcomDrivers/TzDxe/TzDxe.inf
-  MSM8974Pkg/QcomDrivers/DALSYSDxe/DALSYSDxe.inf
-  # MSM8974Pkg/QcomDrivers/ClockDxe/ClockDxe.inf
-
-  MSM8974Pkg/QcomDrivers/HWIODxe/HWIODxe.inf
-  MSM8974Pkg/QcomDrivers/I2CDxe/I2CDxe.inf
-  MSM8974Pkg/QcomDrivers/SPIDxe/SPIDxe.inf
-  MSM8974Pkg/QcomDrivers/SPMIDxe/SPMIDxe.inf
-  MSM8974Pkg/QcomDrivers/MMCHSDxe/MMCHSDxe.inf
-  # MSM8974Pkg/QcomDrivers/DisplayDxe/DisplayDxe.inf
-  MSM8974Pkg/QcomDrivers/PlatformInfoDxe/PlatformInfoDxe.inf
-  MSM8974Pkg/QcomDrivers/ButtonsDxe/ButtonsDxe.inf
-  MSM8974Pkg/QcomDrivers/PmicDxe/PmicDxe.inf
+  # SoC Drivers
 
   #
   # ACPI Support 
