@@ -226,18 +226,15 @@ static uint32_t mmc_decode_and_save_csd(struct mmc_card *card)
 	memcpy((struct mmc_csd *)&card->csd,(struct mmc_csd *)&mmc_csd,
 			sizeof(struct mmc_csd));
 
-  if (MMC_CARD_MMC(card)) {
-    if (card->ext_csd[MMC_ERASE_GRP_DEF])
-      card->wp_grp_size =
-          MMC_HC_ERASE_MULT * card->ext_csd[MMC_HC_ERASE_GRP_SIZE] / MMC_BLK_SZ;
-    else
-      card->wp_grp_size = (card->csd.wp_grp_size + 1) *
-                          (card->csd.erase_grp_size + 1) *
-                          (card->csd.erase_grp_mult + 1);
+	/* Calculate the wp grp size */
+	if (card->ext_csd[MMC_ERASE_GRP_DEF])
+		card->wp_grp_size = MMC_HC_ERASE_MULT * card->ext_csd[MMC_HC_ERASE_GRP_SIZE] / MMC_BLK_SZ;
+	else
+		card->wp_grp_size = (card->csd.wp_grp_size + 1) * (card->csd.erase_grp_size + 1) \
+					  * (card->csd.erase_grp_mult + 1);
 
-    card->rpmb_size    = RPMB_PART_MIN_SIZE * card->ext_csd[RPMB_SIZE_MULT];
-    card->rel_wr_count = card->ext_csd[REL_WR_SEC_C];
-  }
+	card->rpmb_size = RPMB_PART_MIN_SIZE * card->ext_csd[RPMB_SIZE_MULT];
+	card->rel_wr_count = card->ext_csd[REL_WR_SEC_C];
 
 	dprintf(SPEW, "Decoded CSD fields:\n");
 	dprintf(SPEW, "cmmc_structure: %u\n", mmc_csd.cmmc_structure);
@@ -394,7 +391,7 @@ static uint32_t mmc_send_op_cond(struct sdhci_host *host, struct mmc_card *card)
 		/* Check the response for busy status */
 		if (!(mmc_resp & MMC_OCR_BUSY)) {
 			mmc_retry++;
-      		gBS->Stall(1000);
+			mdelay(1);
 			continue;
 		} else
 			break;
@@ -1220,7 +1217,7 @@ uint32_t mmc_sd_card_init(struct sdhci_host *host, struct mmc_card *card)
 		/* As per SDCC the spec try for max three times with
 		 * 1 ms delay
 		 */
-		gBS->Stall(1000);
+		mdelay(1);
 	}
 
 	if (i == SD_CMD8_MAX_RETRY && (cmd.resp[0] != MMC_SD_HC_VOLT_SUPPLIED))
@@ -1265,7 +1262,7 @@ uint32_t mmc_sd_card_init(struct sdhci_host *host, struct mmc_card *card)
 		/*
 		 * As per SDCC spec try for max 1 second
 		 */
-		gBS->Stall(50 * 1000);
+		mdelay(50);
 	}
 
 	if (i == SD_ACMD41_MAX_RETRY && !(cmd.resp[0] & MMC_SD_DEV_READY))
@@ -1479,14 +1476,18 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 		if (mmc_return)
 		{
 			dprintf(CRITICAL, "Failed to initialize SD card\n");
+			for(;;) {};
 			return mmc_return;
 		}
 	}
 	DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Identifing (CMD2, CMD3 & CMD9) and select the card (CMD7)  \n"));
 	/* Identify (CMD2, CMD3 & CMD9) and select the card (CMD7) */
 	mmc_return = mmc_identify_card(host, card);
-	if (mmc_return)
+	if (mmc_return) {
+		DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Identifing failed\n"));
+		for(;;) {};
 		return mmc_return;
+	}
 
 	DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Setting interface speed \n"));
 
@@ -1497,6 +1498,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 		if (mmc_return)
 		{
 			dprintf(CRITICAL, "Failed to set HS for SD card\n");
+			for(;;) {};
 			return mmc_return;
 		}
 	}
@@ -1505,6 +1507,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 		mmc_return = mmc_set_hs_interface(host, card);
 		if (mmc_return) {
 			dprintf(CRITICAL, "Error adjusting interface speed!\n");
+			for(;;) {};
 			return mmc_return;
 		}
 	}
@@ -1520,6 +1523,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 			DEBUG ((EFI_D_INFO | EFI_D_LOAD, "[Success] \n"));
 			if (mmc_return) {
 				dprintf(CRITICAL, "Failure getting card's ExtCSD information!\n");
+				for(;;) {};
 				return mmc_return;
 			}
 	}
@@ -1531,6 +1535,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 		{
 			dprintf(CRITICAL, "Failure getting card's SCR register\n");
 			DEBUG ((EFI_D_INFO | EFI_D_LOAD, "[Failed]\n"));
+			for(;;) {};
 			return 1;
 		}
 		/* Read SSR for the SD card */
@@ -1538,6 +1543,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 		{
 			dprintf(CRITICAL, "Failed to get SSR from the card\n");
 			DEBUG ((EFI_D_INFO | EFI_D_LOAD, "[Failed]\n"));
+			for(;;) {};
 			return 1;
 		}
 		DEBUG ((EFI_D_INFO | EFI_D_LOAD, "[Success]\n"));
@@ -1549,6 +1555,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 	mmc_return = mmc_decode_and_save_csd(card);
 	if (mmc_return) {
 		dprintf(CRITICAL, "Failure decoding card's CSD information!\n");
+		for(;;) {};
 		return mmc_return;
 	}
 
@@ -1573,6 +1580,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 
 		if (mmc_return) {
 			dprintf(CRITICAL, "Failed to set bus width for host controller\n");
+			for(;;) {};
 			return 1;
 		}
 
@@ -1591,6 +1599,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 			{
 				dprintf(CRITICAL, "Failure to set HS400 mode for Card(RCA:%x)\n",
 								  card->rca);
+								  for(;;) {};
 				return mmc_return;
 			}
 		}
@@ -1606,6 +1615,7 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 			if (mmc_return) {
 				dprintf(CRITICAL, "Failure to set HS200 mode for Card(RCA:%x)\n",
 								  card->rca);
+								  for(;;) {};
 				return mmc_return;
 			}
 		} else if (host->caps.ddr_support && mmc_card_supports_ddr_mode(card)) {
@@ -1666,13 +1676,14 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 	DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Enabling RST_n_FUNCTION  \n"));
 
 	/* Enable RST_n_FUNCTION */
-	if (MMC_CARD_MMC(card) && !card->ext_csd[MMC_EXT_CSD_RST_N_FUNC])
+	if (!card->ext_csd[MMC_EXT_CSD_RST_N_FUNC])
 	{
 		mmc_return = mmc_switch_cmd(host, card, MMC_SET_BIT, MMC_EXT_CSD_RST_N_FUNC, RST_N_FUNC_ENABLE);
 
 		if (mmc_return)
 		{
 			dprintf(CRITICAL, "Failed to enable RST_n_FUNCTION\n");
+			for(;;) {};
 			return mmc_return;
 		}
 	}
@@ -1729,7 +1740,6 @@ struct mmc_device *mmc_init(struct mmc_config_data *data)
 	memcpy((void*)&dev->config, (void*)data, sizeof(struct mmc_config_data));
 
 	memset((struct mmc_card *)&dev->card, 0, sizeof(struct mmc_card));
-  	dev->card.slot = data->slot;
     DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Initializing MMC host data structure and clock\n"));
 	/* Initialize the host & clock */
 	dprintf(SPEW, " Initializing MMC host data structure and clock!\n");
@@ -2086,7 +2096,7 @@ static uint32_t mmc_send_erase(struct mmc_device *dev, uint64_t erase_timeout)
 			dprintf(CRITICAL, "Write Protect set for the region, only partial space was erased\n");
 
 		retry++;
-		gBS->Stall(1000);
+		udelay(1000);
 		if (retry == MMC_MAX_CARD_STAT_RETRY)
 		{
 			dprintf(CRITICAL, "Card status check timed out after sending erase command\n");
@@ -2333,7 +2343,7 @@ uint32_t mmc_set_clr_power_on_wp_user(struct mmc_device *dev, uint32_t addr, uin
 
 		/* Time out for WP command */
 		retry++;
-		gBS->Stall(1000);
+		udelay(1000);
 		if (retry == MMC_MAX_CARD_STAT_RETRY)
 		{
 			dprintf(CRITICAL, "Card status timed out after sending write protect command\n");
@@ -2344,13 +2354,6 @@ uint32_t mmc_set_clr_power_on_wp_user(struct mmc_device *dev, uint32_t addr, uin
 	}
 
 	return 0;
-}
-
-/* Function to put the mmc card to sleep and disable HC */
-void mmc_put_card_to_sleep_disable_hc(struct mmc_device *dev)
-{
-  mmc_put_card_to_sleep(dev);
-  sdhci_mode_disable(&dev->host);
 }
 
 /* Function to put the mmc card to sleep */
@@ -2465,7 +2468,7 @@ uint32_t mmc_sdhci_rpmb_send(struct mmc_device *dev, struct mmc_command *cmd)
 			}
 
 			retry--;
-			gBS->Stall(500);
+			udelay(500);
 			if (!retry)
 			{
 				dprintf(CRITICAL, "Card status check timed out after rpmb operations\n");

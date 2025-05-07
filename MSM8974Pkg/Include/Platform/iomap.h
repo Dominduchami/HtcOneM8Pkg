@@ -271,6 +271,7 @@
 
 /* DRV strength for sdcc */
 #define SDC1_HDRV_PULL_CTL           (TLMM_BASE_ADDR + 0x00002044)
+#define SDC2_HDRV_PULL_CTL           (TLMM_BASE_ADDR + 0x00002048)
 
 /* SDHCI */
 #define SDCC_MCI_HC_MODE            (0x00000078)
@@ -278,4 +279,5 @@
 #define SDCC_HC_PWRCTL_MASK_REG     (0x000000E0)
 #define SDCC_HC_PWRCTL_CLEAR_REG    (0x000000E4)
 #define SDCC_HC_PWRCTL_CTL_REG      (0x000000E8)
+
 #endif

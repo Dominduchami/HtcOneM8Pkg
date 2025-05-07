@@ -82,8 +82,8 @@ static const uint32_t tuning_block_128[] = {
  */
 static enum handler_return sdhci_int_handler(struct sdhci_msm_data *data)
 {
-	uint32_t ack = 0;
-	uint32_t status = 0;
+	uint32_t ack;
+	uint32_t status;
 
 	/*
 	 * Read the mask register to check if BUS & IO level
@@ -91,17 +91,21 @@ static enum handler_return sdhci_int_handler(struct sdhci_msm_data *data)
 	 */
 	status = readl(data->pwrctl_base + SDCC_HC_PWRCTL_MASK_REG);
 
-	if (status & (SDCC_HC_BUS_ON | SDCC_HC_BUS_OFF))
+	if (status & (SDCC_HC_BUS_ON | SDCC_HC_BUS_OFF)) {
 		ack = SDCC_HC_BUS_ON_OFF_SUCC;
-	if (status & (SDCC_HC_IO_SIG_LOW | SDCC_HC_IO_SIG_HIGH))
+
+		/* Write success to power control register */
+		writel(ack, (data->pwrctl_base + SDCC_HC_PWRCTL_CTL_REG));
+	}
+
+	if (status & (SDCC_HC_IO_SIG_LOW | SDCC_HC_IO_SIG_HIGH)) {
 		ack |= SDCC_HC_IO_SIG_SUCC;
 
-	/* Write success to power control register */
-	writel(ack, (data->pwrctl_base + SDCC_HC_PWRCTL_CTL_REG));
+		/* Write success to power control register */
+		writel(ack, (data->pwrctl_base + SDCC_HC_PWRCTL_CTL_REG));
+	}
 
-	if (data->sdhc_event != NULL) {
-    	gBS->SignalEvent(data->sdhc_event);
-  	}
+	gBS->SignalEvent(data->sdhc_event);
 
 	return 0;
 }
@@ -346,7 +350,7 @@ static uint32_t sdhci_msm_init_dll(struct sdhci_host *host)
 
 		REG_WRITE32(host, ((REG_READ32(host, SDCC_HC_REG_DLL_CONFIG_2) & ~(0xFF << 10)) | (mclk_clk_freq << 10)), SDCC_HC_REG_DLL_CONFIG_2);
 
-		gBS->Stall(5);
+		udelay(5);
 	}
 
 	/* Write 0 to DLL_RST */
@@ -367,7 +371,7 @@ static uint32_t sdhci_msm_init_dll(struct sdhci_host *host)
 	/* Wait for DLL_LOCK in DLL_STATUS register, wait time 50us */
 	while(!((REG_READ32(host, SDCC_REG_DLL_STATUS)) & SDCC_DLL_LOCK_STAT))
 	{
-		gBS->Stall(1);
+		udelay(1);
 		timeout--;
 		if (!timeout)
 		{
@@ -430,7 +434,7 @@ static uint32_t sdhci_msm_config_dll(struct sdhci_host *host, uint32_t phase)
 	while(!(REG_READ32(host, SDCC_DLL_CONFIG_REG) & SDCC_DLL_CLK_OUT_EN))
 	{
 		timeout--;
-		gBS->Stall(1);
+		udelay(1);
 		if (!timeout)
 		{
 			dprintf(CRITICAL, "%s: clk_out_en timed out: %08x\n", __func__, REG_READ32(host, SDCC_DLL_CONFIG_REG));
@@ -570,7 +574,7 @@ static uint32_t sdhci_msm_cm_dll_sdc4_calibration(struct sdhci_host *host)
 	while (!(REG_READ32(host, SDCC_REG_DLL_STATUS) & DDR_DLL_LOCK_JDR))
 	{
 		timeout--;
-		gBS->Stall(1000);
+		mdelay(1);
 		if (!timeout)
 		{
 			dprintf(CRITICAL, "Error: DLL lock for hs400 operation is not set\n");
@@ -647,7 +651,7 @@ static uint32_t sdhci_msm_cdclp533_calibration(struct sdhci_host *host)
 	while (!(REG_READ32(host, SDCC_CSR_CDC_STATUS0) & BIT(0)))
 	{
 		timeout--;
-		gBS->Stall(1000);
+		mdelay(1);
 		if (!timeout)
 		{
 			dprintf(CRITICAL, "Error: Calibration done in CDC status not set\n");

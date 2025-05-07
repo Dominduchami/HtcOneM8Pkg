@@ -134,7 +134,7 @@ APRIORI DXE {
     SECTION RAW = MSM8974Pkg/AcpiTables/bgrt.acp
     SECTION RAW = MSM8974Pkg/AcpiTables/csrt.acp
     SECTION RAW = MSM8974Pkg/AcpiTables/dbg2.acp
-    SECTION RAW = MSM8974Pkg/AcpiTables/dsdt.aml
+    SECTION RAW = MSM8974Pkg/AcpiTables/dsdt_sd.aml
     SECTION RAW = MSM8974Pkg/AcpiTables/facp.acp
     SECTION RAW = MSM8974Pkg/AcpiTables/facs.acp
     SECTION RAW = MSM8974Pkg/AcpiTables/fpdt.acp
