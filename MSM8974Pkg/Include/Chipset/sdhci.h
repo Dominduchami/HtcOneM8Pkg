@@ -31,6 +31,12 @@
 
 //#define DEBUG_SDHCI
 
+#ifdef DEBUG_SDHCI
+#define DBG(...) dprintf(ALWAYS, __VA_ARGS__)
+#else
+#define DBG(...)
+#endif
+
 /*
  * Capabilities for the host controller
  * These values are read from the capabilities
@@ -92,6 +98,7 @@ struct mmc_command {
 	uint64_t cmd_timeout;   /* Command timeout in us */
 	bool write_flag;        /* Write flag, for reliable write cases */
 	struct mmc_data data;   /* Data pointer */
+	uint8_t rel_write;      /* Reliable write enable flag */
 };
 
 /*
@@ -280,7 +287,7 @@ typedef enum {
 #define SDHCI_READ_MODE                           BIT(4)
 #define SDHCI_SWITCH_CMD                          6
 #define SDHCI_CMD_TIMEOUT                         0xF
-#define SDHCI_MAX_CMD_RETRY                       5000000
+#define SDHCI_MAX_CMD_RETRY                       9000000
 #define SDHCI_MAX_TRANS_RETRY                     10000000
 
 #define SDHCI_PREP_CMD(c, f)                      ((((c) & 0xff) << 8) | ((f) & 0xff))
@@ -357,4 +364,16 @@ typedef enum {
 #define DATA_DDR_BUS_WIDTH_4BIT                   5
 #define DATA_DDR_BUS_WIDTH_8BIT                   6
 
+/* API: to initialize the controller */
+void     sdhci_init(struct sdhci_host *);
+/* API: Send the command & transfer data using adma */
+uint32_t sdhci_send_command(struct sdhci_host *, struct mmc_command *);
+/* API: Set the bus width for the contoller */
+uint8_t  sdhci_set_bus_width(struct sdhci_host *, uint16_t);
+/* API: Clock supply for the controller */
+uint32_t sdhci_clk_supply(struct sdhci_host *, uint32_t);
+/* API: To enable SDR/DDR mode */
+void sdhci_set_uhs_mode(struct sdhci_host *, uint32_t);
+/* API: Soft reset for the controller */
+void sdhci_reset(struct sdhci_host *host, uint8_t mask);
 #endif

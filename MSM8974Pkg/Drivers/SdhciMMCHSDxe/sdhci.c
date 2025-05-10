@@ -188,6 +188,52 @@ clk_ctrl:
 
 	return 0;
 }
+#if 0
+/*
+ * Function: sdhci stop sdcc clock
+ * Arg     : Host structure
+ * Return  : 0 on Success, 1 on Failure
+ * Flow:   : 1. Stop the clock
+ */
+static uint32_t sdhci_stop_sdcc_clk(struct sdhci_host *host)
+{
+	uint32_t reg;
+
+	reg = REG_READ32(host, SDHCI_PRESENT_STATE_REG);
+
+	if (reg & (SDHCI_CMD_ACT | SDHCI_DAT_ACT)) {
+		dprintf(CRITICAL, "Error: SDCC command & data line are active\n");
+		return 1;
+	}
+
+	REG_WRITE16(host, SDHCI_CLK_DIS, SDHCI_CLK_CTRL_REG);
+
+	return 0;
+}
+
+
+/*
+ * Function: sdhci change frequency
+ * Arg     : Host structure & clock value
+ * Return  : 0 on Success, 1 on Failure
+ * Flow:   : 1. Stop the clock
+ *           2. Star the clock with new frequency
+ */
+static uint32_t sdhci_change_freq_clk(struct sdhci_host *host, uint32_t clk)
+{
+	if (sdhci_stop_sdcc_clk(host)) {
+		dprintf(CRITICAL, "Error: Card is busy, cannot change frequency\n");
+		return 1;
+	}
+
+	if (sdhci_clk_supply(host, clk)) {
+		dprintf(CRITICAL, "Error: cannot change frequency\n");
+		return 1;
+	}
+
+	return 0;
+}
+#endif
 
 /*
  * Function: sdhci set bus power
@@ -198,19 +244,19 @@ clk_ctrl:
  */
 static void sdhci_set_bus_power_on(struct sdhci_host *host)
 {
-	uint8_t voltage; 
+	uint8_t voltage;
+
 	voltage = host->caps.voltage;
 
 	voltage <<= SDHCI_BUS_VOL_SEL;
-    //MmioWrite8((UINTN)(host->base + SDHCI_PWR_CTRL_REG), (UINT8)(voltage));
 	REG_WRITE8(host, voltage, SDHCI_PWR_CTRL_REG);
-    
+
 	voltage |= SDHCI_BUS_PWR_EN;
 
 	DBG("\n %s: voltage: 0x%02x\n", __func__, voltage);
-	
-    //MmioWrite8((UINTN)(host->base + SDHCI_PWR_CTRL_REG), (UINT8)(voltage));
-	REG_WRITE8(host, voltage, SDHCI_PWR_CTRL_REG); 
+
+	REG_WRITE8(host, voltage, SDHCI_PWR_CTRL_REG);
+
 }
 
 
@@ -388,11 +434,19 @@ static uint8_t sdhci_cmd_complete(struct sdhci_host *host, struct mmc_command *c
 	uint64_t max_trans_retry = (cmd->cmd_timeout ? cmd->cmd_timeout : SDHCI_MAX_TRANS_RETRY);
 
 	do {
+
 		int_status = REG_READ16(host, SDHCI_NRML_INT_STS_REG);
 
-		if (int_status  & SDHCI_INT_STS_CMD_COMPLETE)
+		if((int_status  & SDHCI_INT_STS_CMD_COMPLETE) &&
+			!(REG_READ16(host, SDHCI_ERR_INT_STS_REG) & SDHCI_CMD_TIMEOUT_MASK))
 			break;
-		else if (int_status & SDHCI_ERR_INT_STAT_MASK && !host->tuning_in_progress)
+		/*
+		* Some controllers set the data timout first on issuing an erase & take time
+		* to set data complete interrupt. We need to wait hoping the controller would
+		* set data complete
+		*/
+		else if (int_status & SDHCI_ERR_INT_STAT_MASK && !host->tuning_in_progress &&
+				!((REG_READ16(host, SDHCI_ERR_INT_STS_REG) & SDHCI_DAT_TIMEOUT_MASK)))
 			goto err;
 
 		/*
@@ -402,17 +456,17 @@ static uint8_t sdhci_cmd_complete(struct sdhci_host *host, struct mmc_command *c
 		{
 			err_status = REG_READ16(host, SDHCI_ERR_INT_STS_REG);
 			if ((err_status & SDHCI_CMD_CRC_MASK) || (err_status & SDHCI_CMD_END_BIT_MASK)
-				|| err_status & SDHCI_CMD_TIMEOUT_MASK)
+				|| (err_status & SDHCI_CMD_TIMEOUT_MASK)
+				|| (err_status & SDHCI_CMD_IDX_MASK))
 			{
 				sdhci_reset(host, (SOFT_RESET_CMD | SOFT_RESET_DATA));
-				return 0;
+				return 1;
 			}
 		}
 
 		retry++;
 		udelay(1);
 		if (retry == SDHCI_MAX_CMD_RETRY) {
-			DEBUG ((EFI_D_INFO | EFI_D_LOAD,"Error: Command never completed\n"));
 			dprintf(CRITICAL, "Error: Command never completed\n");
 			ret = 1;
 			goto err;
@@ -475,14 +529,13 @@ static uint8_t sdhci_cmd_complete(struct sdhci_host *host, struct mmc_command *c
 				if ((err_status & SDHCI_DAT_TIMEOUT_MASK) || (err_status & SDHCI_DAT_CRC_MASK))
 				{
 					sdhci_reset(host, (SOFT_RESET_CMD | SOFT_RESET_DATA));
-					return 0;
+					return 1;
 				}
 			}
 
 			retry++;
 			udelay(1);
 			if (retry == max_trans_retry) {
-				DEBUG ((EFI_D_INFO | EFI_D_LOAD,"Error: Command never completed\n"));
 				dprintf(CRITICAL, "Error: Transfer never completed\n");
 				ret = 1;
 				goto err;
@@ -519,7 +572,6 @@ err:
 		}
 		else if (sdhci_cmd_err_status(host))
 		{
-			DEBUG ((EFI_D_INFO | EFI_D_LOAD,"Error: sdhci_cmd_err\n"));
 			ret = 1;
 			/* Dump sdhc registers on error */
 			sdhci_dumpregs(host);
@@ -819,13 +871,16 @@ uint32_t sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 		/* Enable auto cmd23 or cmd12 for multi block transfer
 		 * based on what command card supports
 		 */
-		if (cmd->data.num_blocks > 1) {
+		if ((cmd->data.num_blocks > 1) && !cmd->rel_write) {
 			if (cmd->cmd23_support) {
 				trans_mode |= SDHCI_TRANS_MULTI | SDHCI_AUTO_CMD23_EN | SDHCI_BLK_CNT_EN;
 				REG_WRITE32(host, cmd->data.num_blocks, SDHCI_ARG2_REG);
 			}
 			else
 				trans_mode |= SDHCI_TRANS_MULTI | SDHCI_AUTO_CMD12_EN | SDHCI_BLK_CNT_EN;
+		}
+		else if ((cmd->data.num_blocks > 1) && cmd->rel_write) {
+			trans_mode |= SDHCI_TRANS_MULTI | SDHCI_BLK_CNT_EN;
 		}
 	}
 
@@ -838,7 +893,6 @@ uint32_t sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 	/* Command complete sequence */
 	if (sdhci_cmd_complete(host, cmd))
 	{
-		DEBUG ((EFI_D_INFO | EFI_D_LOAD,"Sequence not completed"));
 		ret = 1;
 		goto err;
 	}
@@ -853,17 +907,13 @@ uint32_t sdhci_send_command(struct sdhci_host *host, struct mmc_command *cmd)
 									(cmd->data.num_blocks * cmd->data.blk_sz) : \
 									(cmd->data.num_blocks * SDHCI_MMC_BLK_SZ));
 	}
-	//DEBUG ((EFI_D_INFO | EFI_D_LOAD, "MMC Command: END: cmd:%04d, arg:0x%08x, resp:0x%08x 0x%08x 0x%08x 0x%08x\n",
-				// cmd->cmd_index, cmd->argument, cmd->resp[0], cmd->resp[1], cmd->resp[2], cmd->resp[3]));
+
 	DBG("\n %s: END: cmd:%04d, arg:0x%08x, resp:0x%08x 0x%08x 0x%08x 0x%08x\n",
 				__func__, cmd->cmd_index, cmd->argument, cmd->resp[0], cmd->resp[1], cmd->resp[2], cmd->resp[3]);
 err:
 	/* Free the scatter/gather list */
-	if (sg_list){
-		//DEBUG ((EFI_D_INFO | EFI_D_LOAD, "Free"));
+	if (sg_list)
 		free(sg_list);
-		//DEBUG ((EFI_D_INFO | EFI_D_LOAD, "[Success] \n"));
-	}
 
 	return ret;
 }
@@ -882,16 +932,16 @@ err:
  */
 void sdhci_init(struct sdhci_host *host)
 {
-	uint32_t caps[2];
-	uint32_t version;
 	UINTN       Index;
 	EFI_STATUS  Status;
+	uint32_t caps[2];
+	uint32_t version;
 
 	/* Read the capabilities register & store the info */
 	caps[0] = REG_READ32(host, SDHCI_CAPS_REG1);
 	caps[1] = REG_READ32(host, SDHCI_CAPS_REG2);
 
-    DEBUG ((EFI_D_INFO | EFI_D_LOAD, "\n %s: Host capability: cap1:0x%08x, cap2: 0x%08x\n", __func__, caps[0], caps[1]));
+
 	DBG("\n %s: Host capability: cap1:0x%08x, cap2: 0x%08x\n", __func__, caps[0], caps[1]);
 
 	host->caps.base_clk_rate = (caps[0] & SDHCI_CLK_RATE_MASK) >> SDHCI_CLK_RATE_BIT;
@@ -947,7 +997,7 @@ void sdhci_init(struct sdhci_host *host)
 
 	/* Set Adma mode */
 	sdhci_set_adma_mode(host);
-	
+
 	/*
 	 * Enable error status
 	 */

@@ -32,6 +32,9 @@
 #include <Chipset/bam.h>
 
 #define MMC_BOOT_MCI_REG(offset)          ((host->mci_base) + offset)
+extern unsigned int mmc_boot_mci_base;
+
+#define MMC_BOOT_MCI_REG(offset)          ((mmc_boot_mci_base) + offset)
 
 /*
  * Define Macros for SDCC Registers
@@ -400,7 +403,7 @@
 #define MMC_BOOT_EXT_ERASE_TIMEOUT_MULT   223
 #define MMC_BOOT_EXT_HC_ERASE_GRP_SIZE    224
 
-#define IS_BIT_SET_EXT_CSD(val, bit)      ((card->ext_csd_buf[val]) & (1<<(bit)))
+#define IS_BIT_SET_EXT_CSD(val, bit)      ((ext_csd_buf[val]) & (1<<(bit)))
 #define IS_ADDR_OUT_OF_RANGE(resp)        ((resp >> 31) & 0x01)
 
 #define MMC_BOOT_US_PERM_WP_EN            2
@@ -514,8 +517,6 @@ struct mmc_card {
 	struct mmc_cid cid;
 	struct mmc_csd csd;
 	struct mmc_boot_scr scr;
-	unsigned char ext_csd_buf[512];
-	unsigned char wp_status_buf[8];
 };
 
 #define MMC_BOOT_XFER_MULTI_BLOCK        0
@@ -535,21 +536,6 @@ struct mmc_host {
 	unsigned int cmd_retry;
 	uint32_t mmc_cont_version;
 	struct mmc_caps caps;
-	unsigned int  mci_base;
-};
-
-#define MMC_BOOT_BAM_FIFO_SIZE           100
-
-struct mmc_device {
-	struct mmc_host host;
-	struct mmc_card card;
-
-	unsigned char slot;
-
-	uint32_t dml_base;
-	struct bam_instance bam;
-	/* Align at BAM_DESC_SIZE boundary */
-	struct bam_desc desc_fifo[MMC_BOOT_BAM_FIFO_SIZE] __attribute__ ((aligned(BAM_DESC_SIZE)));
 };
 
 /* MACRO used to evoke regcomp */
@@ -584,7 +570,7 @@ struct mmc_device {
     ({                                                             \
      unsigned int indx = (start) / (size_of);                  \
      unsigned int offset = (start) % (size_of);                \
-     unsigned int mask = (((len)<(size_of))? 1llu<<(len):0) - 1; \
+     unsigned int mask = (((len)<(size_of))? 1<<(len):0) - 1; \
      unsigned int unpck = array[indx] >> offset;               \
      unsigned int indx2 = ((start) + (len) - 1) / (size_of);       \
      if(indx2 > indx)                                          \
@@ -600,8 +586,6 @@ struct mmc_device {
 #define MMC_BOOT_MCI_FIFO_DEPTH       16
 #define MMC_BOOT_MCI_HFIFO_COUNT      ( MMC_BOOT_MCI_FIFO_DEPTH / 2 )
 #define MMC_BOOT_MCI_FIFO_SIZE        ( MMC_BOOT_MCI_FIFO_DEPTH * 4 )
-
-#define MAX_PARTITIONS 64
 
 #define MMC_BOOT_CHECK_PATTERN        0xAA	/* 10101010b */
 
@@ -625,4 +609,30 @@ struct mmc_device {
 #define CORE_SW_RST_START                          0x7
 #define CORE_SW_RST_WIDTH                          0x1
 
+uint32_t mmc_get_device_blocksize(void);
+uint32_t mmc_page_size(void);
+uint8_t mmc_get_lun(void);
+void mmc_set_lun(uint8_t lun);
+
+unsigned int mmc_boot_main(unsigned char slot, unsigned int base);
+unsigned int mmc_write(unsigned long long data_addr,
+		       unsigned int data_len, void *in);
+
+unsigned int mmc_read(unsigned long long data_addr, unsigned int *out,
+		      unsigned int data_len);
+unsigned mmc_get_psn(void);
+
+unsigned int mmc_erase_card(unsigned long long data_addr,
+			    unsigned long long data_len);
+
+void mmc_mclk_reg_wr_delay(void);
+void mmc_boot_mci_clk_enable(void);
+void mmc_boot_mci_clk_disable(void);
+uint8_t card_supports_ddr_mode(void);
+uint8_t card_supports_hs200_mode(void);
+uint64_t mmc_get_device_capacity(void);
+void mmc_put_card_to_sleep(void);
+
+void target_mmc_caps(struct mmc_host *host);
+#endif
 #endif

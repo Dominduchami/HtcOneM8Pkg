@@ -1,4 +1,4 @@
-/* Copyright (c) 2013-2015, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2013-2017, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -82,7 +82,7 @@ static const uint32_t tuning_block_128[] = {
  */
 static enum handler_return sdhci_int_handler(struct sdhci_msm_data *data)
 {
-	uint32_t ack;
+	uint32_t ack = 0; // initialized
 	uint32_t status;
 
 	/*
@@ -91,19 +91,13 @@ static enum handler_return sdhci_int_handler(struct sdhci_msm_data *data)
 	 */
 	status = readl(data->pwrctl_base + SDCC_HC_PWRCTL_MASK_REG);
 
-	if (status & (SDCC_HC_BUS_ON | SDCC_HC_BUS_OFF)) {
+	if (status & (SDCC_HC_BUS_ON | SDCC_HC_BUS_OFF))
 		ack = SDCC_HC_BUS_ON_OFF_SUCC;
-
-		/* Write success to power control register */
-		writel(ack, (data->pwrctl_base + SDCC_HC_PWRCTL_CTL_REG));
-	}
-
-	if (status & (SDCC_HC_IO_SIG_LOW | SDCC_HC_IO_SIG_HIGH)) {
+	if (status & (SDCC_HC_IO_SIG_LOW | SDCC_HC_IO_SIG_HIGH))
 		ack |= SDCC_HC_IO_SIG_SUCC;
 
-		/* Write success to power control register */
-		writel(ack, (data->pwrctl_base + SDCC_HC_PWRCTL_CTL_REG));
-	}
+	/* Write success to power control register */
+	writel(ack, (data->pwrctl_base + SDCC_HC_PWRCTL_CTL_REG));
 
 	gBS->SignalEvent(data->sdhc_event);
 
@@ -717,6 +711,7 @@ uint32_t sdhci_msm_execute_tuning(struct sdhci_host *host, struct mmc_card *card
 	bool drv_type_changed = false;
 	int ret = 0;
 	uint32_t i;
+	uint32_t err = 0;
 	struct sdhci_msm_data *msm_host;
 
 	msm_host = host->msm_host;
@@ -759,6 +754,9 @@ retry_tuning:
 	tuned_phase_cnt = 0;
 	phase = 0;
 	struct mmc_command cmd = {0};
+	struct mmc_command sts_cmd = {0};
+	uint32_t sts_retry;
+	uint32_t sts_err;
 
 	while (phase < MAX_PHASES)
 	{
@@ -780,7 +778,30 @@ retry_tuning:
 		cmd.data.num_blocks = 0x1;
 
 		/* send command */
-		if (!sdhci_send_command(host, &cmd) && !memcmp(tuning_data, tuning_block, size))
+		err = sdhci_send_command(host, &cmd);
+		if(err)
+		{
+
+			sts_retry = 50;
+			sts_cmd.cmd_index = CMD13_SEND_STATUS;
+			sts_cmd.argument = card->rca << 16;
+			sts_cmd.cmd_type = SDHCI_CMD_TYPE_NORMAL;
+			sts_cmd.resp_type = SDHCI_CMD_RESP_R1;
+			while(sts_retry)
+			{
+				sts_err = sdhci_send_command(host, &sts_cmd);
+				DBG(" response is %d err is %d phase is %d\n",sts_cmd.resp[0],sts_err, phase);
+				if( sts_err || (MMC_CARD_STATUS(sts_cmd.resp[0]) != MMC_TRAN_STATE) )
+				{
+					udelay(10);
+					sts_retry--;
+					continue;
+				}
+				break;
+			}
+		}
+
+		if (!err && !memcmp(tuning_data, tuning_block, size))
 				tuned_phases[tuned_phase_cnt++] = phase;
 
 		phase++;
@@ -793,11 +814,12 @@ retry_tuning:
 		/* Change the driver type & rerun tuning */
 		while(++drv_type <= MX_DRV_SUPPORTED_HS200)
 		{
-			drv_type_changed = mmc_set_drv_type(host, card, drv_type);
-			if (drv_type_changed)
-			{
+			/* Marking driver type changed if we try to change it */
+			if(!drv_type_changed)
+				drv_type_changed = true;
+
+			if (mmc_set_drv_type(host, card, drv_type))
 				goto retry_tuning;
-			}
 		}
 	}
 
@@ -884,4 +906,3 @@ void sdhci_mode_disable(struct sdhci_host *host)
 	/* Disable HC mode */
 	RMWREG32((host->msm_host->pwrctl_base + SDCC_MCI_HC_MODE), SDHCI_HC_START_BIT, SDHCI_HC_WIDTH, 0);
 }
-
