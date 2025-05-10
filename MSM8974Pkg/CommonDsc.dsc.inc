@@ -167,6 +167,12 @@
 
   # SoC Drivers
   QTimerLib|MSM8974Pkg/Library/QTimerLib/QTimerLib.inf
+  BoardLib|MSM8974Pkg/Drivers/BoardDxe/BoardImplLib.inf
+  QcomTargetBoardLib|MSM8974Pkg/Library/QcomTargetBoardLib/QcomTargetBoardLib.inf
+  PlatformIdLib|MSM8974Pkg/Library/PlatformIdLib/PlatformIdLib.inf
+  SmemLib|MSM8974Pkg/Drivers/SmemDxe/SmemImplLib.inf
+  SmemPtableLib|MSM8974Pkg/Drivers/SmemPtableDxe/SmemPtableImplLib.inf
+  PTableLib|MSM8974Pkg/Library/PTableLib/PTableLib.inf
   InterruptsLib|MSM8974Pkg/Library/InterruptsLib/InterruptsLib.inf
   MallocLib|MSM8974Pkg/Library/MallocLib/MallocLib.inf
   KeypadDeviceHelperLib|MSM8974Pkg/Library/KeypadDeviceHelperLib/KeypadDeviceHelperLib.inf
@@ -597,6 +603,9 @@
   MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
   MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
   MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  MSM8974Pkg/Drivers/SmemDxe/SmemDxe.inf
+  MSM8974Pkg/Drivers/SmemPtableDxe/SmemPtableDxe.inf
+  MSM8974Pkg/Drivers/BoardDxe/BoardDxe.inf
 
   #
   # ACPI Support 

@@ -42,13 +42,13 @@
 
 static uint32_t smem_get_base_addr(void)
 {
-  /*struct smem_addr_info *smem_info = NULL;
+  struct smem_addr_info *smem_info = NULL;
 
   smem_info =
       (struct smem_addr_info *)(UINTN)PcdGet64(PcdSmemTargetInfoAddress);
   if (smem_info && (smem_info->identifier == SMEM_TARGET_INFO_IDENTIFIER))
     return smem_info->phy_addr;
-  else*/
+  else
     return (UINT32)PcdGet64(PcdMsmSharedBase);
 }
 

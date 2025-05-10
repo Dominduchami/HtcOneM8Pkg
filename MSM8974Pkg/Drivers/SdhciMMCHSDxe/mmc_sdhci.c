@@ -1470,7 +1470,8 @@ static uint32_t mmc_card_init(struct mmc_device *dev)
 	mmc_return = mmc_reset_card_and_send_op(host, card);
 	if (mmc_return)
 	{
-		dprintf(CRITICAL, "MMC card failed to respond, try for SD card\n");
+		dprintf(CRITICAL, "MMC card failed to respond, loop\n"); // hmm
+		for(;;) {};
 		/* Reset the card & get the OCR */
 		mmc_return = mmc_sd_card_init(host, card);
 		if (mmc_return)

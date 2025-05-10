@@ -31,7 +31,7 @@ STATIC struct mmc_device* PlatformCallbackInitSlot (struct mmc_config_data *conf
               &gEfiDevicePathProtocolGuid, &Instance->DevicePath,
               NULL
               );
-
+      
   return dev;
 }
 
@@ -326,6 +326,9 @@ MMCHSInitialize (
 {
   // let the target register MMC devices
   LibQcomTargetMmcSdhciInit (PlatformCallbackInitSlot);
+
+  DEBUG((EFI_D_ERROR, "EMMC init end, loop forever\n"));// hmm
+  for(;;) {};
 
   return EFI_SUCCESS;
 }

@@ -103,6 +103,9 @@ APRIORI DXE {
   INF MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
   INF MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
   INF MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  INF MSM8974Pkg/Drivers/SmemDxe/SmemDxe.inf
+  INF MSM8974Pkg/Drivers/SmemPtableDxe/SmemPtableDxe.inf
+  INF MSM8974Pkg/Drivers/BoardDxe/BoardDxe.inf
   
   #
   # FAT filesystem + GPT/MBR partitioning

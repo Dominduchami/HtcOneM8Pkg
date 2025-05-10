@@ -15,6 +15,10 @@ UINT32 LibQcomPlatformMmcTranslateClockRate(UINT32 freq)
     }
     else if(freq == MMC_CLK_192MHZ)
     {
+        return 192000000;
+    }
+    else if(freq == MMC_CLK_200MHZ)
+    {
         return 200000000;
     }
 

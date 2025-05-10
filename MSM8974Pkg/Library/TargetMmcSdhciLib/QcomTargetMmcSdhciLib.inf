@@ -27,3 +27,9 @@
   gQcomTokenSpaceGuid.PcdMmcSdc1HdrvPullCtlOffset
   gQcomTokenSpaceGuid.PcdMmcSdc2HdrvPullCtlOffset
 
+[Protocols]
+  gQcomBoardProtocolGuid
+
+[Depex]
+  gQcomBoardProtocolGuid
+

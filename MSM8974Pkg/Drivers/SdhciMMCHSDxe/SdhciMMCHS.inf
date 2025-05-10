@@ -51,4 +51,4 @@
   gQcomTokenSpaceGuid.PcdMmcSdhciDdrCfgVal
 
 [Depex]
-  TRUE
+  gQcomBoardProtocolGuid
