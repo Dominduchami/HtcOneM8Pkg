@@ -16,5 +16,8 @@ uint32_t board_pmic_target(uint8_t num_ent);
 uint32_t board_soc_version(void);
 size_t   board_get_hw_platform_name(void *buf, uint32_t buf_size);
 size_t   board_chip_serial_char8(void *buf);
+int platform_is_8974(void);
+int platform_is_8974Pro(void);
+int platform_is_8974ac(void);
 
 #endif // _SMEM_PRIVATE_H

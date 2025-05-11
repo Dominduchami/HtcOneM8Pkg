@@ -31,6 +31,7 @@
   InterruptsLib
   QcomPlatformMmcLib
   QcomTargetMmcSdhciLib
+  GpioTlmmLib
 
 [BuildOptions.ARM]
   GCC:*_*_*_CC_FLAGS = -Wno-pointer-to-int-cast
@@ -49,6 +50,9 @@
   gQcomTokenSpaceGuid.PcdSdccHcPwrctlClearReg
   gQcomTokenSpaceGuid.PcdSdccHcPwrctlCtlReg
   gQcomTokenSpaceGuid.PcdMmcSdhciDdrCfgVal
+
+[Protocols]
+  gQcomBoardProtocolGuid
 
 [Depex]
   gQcomBoardProtocolGuid

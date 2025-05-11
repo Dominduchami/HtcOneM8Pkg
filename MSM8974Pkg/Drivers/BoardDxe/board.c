@@ -351,3 +351,78 @@ size_t board_get_hw_platform_name(void *buf, uint32_t buf_size)
   return snprintf(
       buf, strlen(hw_platform[hw_id]) + 1, "%s\n", hw_platform[hw_id]);
 }
+
+/* Check for 8974 chip */
+int platform_is_8974(void)
+{
+	uint32_t platform = board_platform_id();
+	int ret = 0;
+
+	switch(platform)
+	{
+		case APQ8074:
+		case MSM8274:
+		case MSM8674:
+		case MSM8974:
+			ret = 1;
+			break;
+		default:
+			ret = 0;
+	};
+
+	return ret;
+}
+
+/* Check for 8974Pro AC chip */
+int platform_is_8974ac(void)
+{
+	uint32_t platform = board_platform_id();
+	int ret = 0;
+
+	switch(platform)
+	{
+		case MSM8974AC:
+		case MSM8674AC:
+		case MSM8274AC:
+		case APQ8074AC:
+			ret = 1;
+			break;
+		default:
+			ret = 0;
+	};
+
+	return ret;
+}
+
+/* Check for 8974Pro chip */
+int platform_is_8974Pro(void)
+{
+	uint32_t platform = board_platform_id();
+	int ret = 0;
+
+	switch(platform)
+	{
+		case APQ8074AA:
+		case APQ8074AB:
+		case APQ8074AC:
+
+		case MSM8274AA:
+		case MSM8274AB:
+		case MSM8274AC:
+
+		case MSM8674AA:
+		case MSM8674AB:
+		case MSM8674AC:
+
+		case MSM8974AA:
+		case MSM8974AB:
+		case MSM8974AC:
+
+			ret = 1;
+			break;
+		default:
+			ret = 0;
+	};
+
+	return ret;
+}

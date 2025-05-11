@@ -26,13 +26,23 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <Library/LKEnvLib.h>
+ #include <Uefi.h>
+
+ #include <Library/LKEnvLib.h>
+ #include <Library/BaseLib.h>
+#include <Library/DebugLib.h>
 #include <Chipset/clock.h>
 #include <Chipset/clock_pll.h>
 #include <Chipset/clock_lib2.h>
 #include <Platform/clock.h>
 #include <Platform/iomap.h>
 
+#include <Library/UefiBootServicesTableLib.h>
+
+#include <Protocol/QcomBoard.h>
+
+/* Protocol reference */
+QCOM_BOARD_PROTOCOL* gBoardProtocol = NULL;
 
 /* Mux source select values */
 #define cxo_source_val    0
@@ -114,7 +124,6 @@ static struct pll_vote_clk gpll0_clk_src =
 	},
 };
 
-/*
 static struct pll_vote_clk gpll4_clk_src =
 {
 	.en_reg       = (void *) APCS_GPLL_ENA_VOTE,
@@ -129,13 +138,9 @@ static struct pll_vote_clk gpll4_clk_src =
 		.ops      = &clk_ops_pll_vote,
 	},
 };
-*/
 
 /* SDCC Clocks */
 /* This table is for sdc1 apps clk only for MSM8974 PRO AC */
-/* Because is for MSM8974AC and we are not using that and the 
-   configuration will treat all warnings as errors so comment
-   them out
 static struct clk_freq_tbl ftbl_gcc_sdcc1_apps_clk_ac[] =
 {
 	F(   144000,    cxo,  16,   3,  25),
@@ -148,7 +153,6 @@ static struct clk_freq_tbl ftbl_gcc_sdcc1_apps_clk_ac[] =
 	F(384000000,  gpll4,   2,   0,   0),
 	F_END
 };
-*/
 
 /* This table is for
  * sdc[1-4] for all MSM8974 excluding MSM8974PROAC
@@ -899,6 +903,11 @@ static struct clk_lookup msm_clocks_8974[] =
 	CLK_LOOKUP("usb30_master_clk", gcc_usb30_master_clk.c),
 };
 
+void msm8974_ac_clock_override(void)
+{
+	sdcc1_apps_clk_src.freq_tbl = ftbl_gcc_sdcc1_apps_clk_ac;
+}
+
 RETURN_STATUS
 EFIAPI
 LibQcomPlatformClockInit (
@@ -906,10 +915,22 @@ LibQcomPlatformClockInit (
   unsigned *num
   )
 {
+	// Locate Qualcomm Board Protocol
+	EFI_STATUS    Status = gBS->LocateProtocol(
+		&gQcomBoardProtocolGuid,
+		NULL,
+		(VOID *)&gBoardProtocol
+	  );
 
+	if (gBoardProtocol->platform_is_8974ac()) {
+	  dprintf(CRITICAL, "msm8974_ac_clock_override()\n");
+	  msm8974_ac_clock_override();
+	}
+
+	// clk_init()
 	*clist = msm_clocks_8974;
 	*num = ARRAY_SIZE(msm_clocks_8974);
 
-	return RETURN_SUCCESS;
+	return Status;
 }
 

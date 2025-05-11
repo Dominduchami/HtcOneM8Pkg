@@ -217,7 +217,6 @@ VOID LibQcomTargetMmcSdhciInit(INIT_SLOT_CB InitSlot)
 
     /* Try slot 1 */
     config.slot = 1;
-    config.hs200_support = 1;
     /*
     * For 8974 AC platform the software clock
     * plan recommends to use the following frequencies:
@@ -228,7 +227,6 @@ VOID LibQcomTargetMmcSdhciInit(INIT_SLOT_CB InitSlot)
     if (platform_is_8974ac()) {
       config.max_clk_rate = MMC_CLK_192MHZ;
       config.hs400_support = 1;
-      config.hs200_support = 0;
       DEBUG((DEBUG_ERROR, "HS400, AC, 192MHZ\n"));
     } else {
       config.max_clk_rate = MMC_CLK_200MHZ;

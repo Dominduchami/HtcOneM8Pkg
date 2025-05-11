@@ -1,5 +1,16 @@
 #include "MMCHS.h"
 
+#include <Chipset/gpio.h>
+#include <Library/QcomGpioTlmmLib.h>
+#include <Platform/iomap.h>
+#include <Platform/irqs.h>
+
+#include <Protocol/QcomBoard.h>
+
+/* Protocol reference */
+QCOM_BOARD_PROTOCOL* mBoardProtocol = NULL;
+
+#if 0
 STATIC struct mmc_device* PlatformCallbackInitSlot (struct mmc_config_data *config)
 {
   EFI_STATUS    Status;
@@ -34,6 +45,7 @@ STATIC struct mmc_device* PlatformCallbackInitSlot (struct mmc_config_data *conf
       
   return dev;
 }
+#endif
 
 STATIC BIO_INSTANCE mBioTemplate = {
   BIO_INSTANCE_SIGNATURE,
@@ -317,6 +329,171 @@ BioInstanceContructor (
   return EFI_SUCCESS;
 }
 
+// lk2nd target.c start:
+struct mmc_device *dev;
+
+static uint32_t mmc_pwrctl_base[] =
+	{ MSM_SDC1_BASE, MSM_SDC2_BASE };
+
+static uint32_t mmc_sdhci_base[] =
+	{ MSM_SDC1_SDHCI_BASE, MSM_SDC2_SDHCI_BASE };
+
+static uint32_t  mmc_sdc_pwrctl_irq[] =
+	{ SDCC1_PWRCTL_IRQ, SDCC2_PWRCTL_IRQ };
+
+#define BOARD_SOC_VERSION1(soc_rev) (soc_rev >= 0x10000 && soc_rev < 0x20000)
+
+static void set_sdc_power_ctrl(void)
+{
+	uint8_t tlmm_hdrv_clk = 0;
+	uint32_t platform_id = 0;
+
+	platform_id = mBoardProtocol->board_platform_id();
+
+	switch(platform_id)
+	{
+		case MSM8274AA:
+		case MSM8274AB:
+		case MSM8674AA:
+		case MSM8674AB:
+		case MSM8974AA:
+		case MSM8974AB:
+			if (mBoardProtocol->board_hardware_id() == HW_PLATFORM_MTP)
+				tlmm_hdrv_clk = TLMM_CUR_VAL_10MA;
+			else
+				tlmm_hdrv_clk = TLMM_CUR_VAL_16MA;
+			break;
+		default:
+			tlmm_hdrv_clk = TLMM_CUR_VAL_16MA;
+	};
+
+	/* Drive strength configs for sdc pins */
+	struct tlmm_cfgs sdc1_hdrv_cfg[] =
+	{
+		{ SDC1_CLK_HDRV_CTL_OFF,  tlmm_hdrv_clk, TLMM_HDRV_MASK, 0 },
+		{ SDC1_CMD_HDRV_CTL_OFF,  TLMM_CUR_VAL_10MA, TLMM_HDRV_MASK, 0 },
+		{ SDC1_DATA_HDRV_CTL_OFF, TLMM_CUR_VAL_10MA, TLMM_HDRV_MASK, 0 },
+	};
+
+	/* Pull configs for sdc pins */
+	struct tlmm_cfgs sdc1_pull_cfg[] =
+	{
+		{ SDC1_CLK_PULL_CTL_OFF,  TLMM_NO_PULL, TLMM_PULL_MASK, 0 },
+		{ SDC1_CMD_PULL_CTL_OFF,  TLMM_PULL_UP, TLMM_PULL_MASK, 0 },
+		{ SDC1_DATA_PULL_CTL_OFF, TLMM_PULL_UP, TLMM_PULL_MASK, 0 },
+	};
+
+	struct tlmm_cfgs sdc1_rclk_cfg[] =
+	{
+		{ SDC1_RCLK_PULL_CTL_OFF, TLMM_PULL_DOWN, TLMM_PULL_MASK, 0 },
+	};
+
+	/* Set the drive strength & pull control values */
+	//tlmm_set_hdrive_ctrl(sdc1_hdrv_cfg, ARRAY_SIZE(sdc1_hdrv_cfg));
+	//tlmm_set_pull_ctrl(sdc1_pull_cfg, ARRAY_SIZE(sdc1_pull_cfg));
+  gGpioTlmm->tlmm_set_hdrive_ctrl(sdc1_hdrv_cfg, ARRAY_SIZE(sdc1_hdrv_cfg));
+  gGpioTlmm->tlmm_set_pull_ctrl(sdc1_pull_cfg, ARRAY_SIZE(sdc1_pull_cfg));
+
+	/* RCLK is supported only with 8974 pro, set rclk to pull down
+	 * only for 8974 pro targets
+	 */
+	if (!mBoardProtocol->platform_is_8974())
+		//tlmm_set_pull_ctrl(sdc1_rclk_cfg, ARRAY_SIZE(sdc1_rclk_cfg));
+    gGpioTlmm->tlmm_set_pull_ctrl(sdc1_rclk_cfg, ARRAY_SIZE(sdc1_rclk_cfg));
+}
+
+static void target_mmc_sdhci_init(void)
+{
+	struct mmc_config_data config = {0};
+	uint32_t soc_ver = 0;
+
+	dprintf(CRITICAL, "target_mmc_sdhci_init()\n");
+
+	soc_ver = mBoardProtocol->board_soc_version();
+
+	/*
+	 * 8974 v1 fluid devices, have a hardware bug
+	 * which limits the bus width to 4 bit.
+	 */
+	switch(mBoardProtocol->board_hardware_id())
+	{
+		if (mBoardProtocol->platform_is_8974() && BOARD_SOC_VERSION1(soc_ver)) {
+      config.bus_width = DATA_BUS_WIDTH_4BIT;
+      dprintf(CRITICAL, "target_mmc_sdhci_init()\n");
+    }
+    else {
+      config.bus_width = DATA_BUS_WIDTH_8BIT;
+      dprintf(CRITICAL, "target_mmc_sdhci_init()\n");
+    }
+    break;
+		default:
+			config.bus_width = DATA_BUS_WIDTH_8BIT;
+	};
+
+	/* Trying Slot 1*/
+	config.slot = 1;
+	/*
+	 * For 8974 AC platform the software clock
+	 * plan recommends to use the following frequencies:
+	 * 200 MHz --> 192 MHZ
+	 * 400 MHZ --> 384 MHZ
+	 * only for emmc (slot 1)
+	 */
+	if (mBoardProtocol->platform_is_8974ac()) {
+		config.max_clk_rate = MMC_CLK_192MHZ;
+		config.hs400_support = 1;
+	} else {
+		config.max_clk_rate = MMC_CLK_200MHZ;
+	}
+	config.sdhc_base = mmc_sdhci_base[config.slot - 1];
+	config.pwrctl_base = mmc_pwrctl_base[config.slot - 1];
+	config.pwr_irq     = mmc_sdc_pwrctl_irq[config.slot - 1];
+
+	if (!(dev = mmc_init(&config))) {
+		/* Trying Slot 2 next */
+		config.slot = 2;
+		config.max_clk_rate = MMC_CLK_200MHZ;
+		config.sdhc_base = mmc_sdhci_base[config.slot - 1];
+		config.pwrctl_base = mmc_pwrctl_base[config.slot - 1];
+		config.pwr_irq     = mmc_sdc_pwrctl_irq[config.slot - 1];
+
+		if (!(dev = mmc_init(&config))) {
+			dprintf(CRITICAL, "mmc init failed!");
+			ASSERT(0);
+		}
+	}
+
+	/*
+	 * MMC initialization is complete, read the partition table info
+	 */
+	/*if (partition_read_table()) {
+		dprintf(CRITICAL, "Error reading the partition table info\n");
+		ASSERT(0);
+	}*/
+}
+
+//VOID MmcSdhciInit(INIT_SLOT_CB InitSlot)
+VOID TargetMmcSdhciInit()
+{
+  DEBUG((EFI_D_ERROR, "target_init()\n"));
+  /*
+	 * Set drive strength & pull ctrl for
+	 * emmc
+	 */
+  DEBUG((EFI_D_ERROR, "set_sdc_power_ctrl()\n"));
+	set_sdc_power_ctrl();
+
+  DEBUG((EFI_D_ERROR, "target_mmc_sdhci_init()\n"));
+  target_mmc_sdhci_init();
+
+  // Init SD card slot
+  /*if (InitSlot(&config) == NULL) {
+      DEBUG((DEBUG_ERROR, "Can't initialize mmc slot %u\n", config.slot));
+  }*/
+}
+
+// lk2nd target.c end
+
 EFI_STATUS
 EFIAPI
 MMCHSInitialize (
@@ -324,11 +501,22 @@ MMCHSInitialize (
   IN EFI_SYSTEM_TABLE   *SystemTable
   )
 {
+  // Locate Qualcomm Board Protocol
+  EFI_STATUS    Status = gBS->LocateProtocol(
+    &gQcomBoardProtocolGuid,
+    NULL,
+    (VOID *)&mBoardProtocol
+  );
+  ASSERT_EFI_ERROR(Status);
+
+  DEBUG((EFI_D_ERROR, "qcomBoard located, initing emmc/sd\n"));//
+
   // let the target register MMC devices
-  LibQcomTargetMmcSdhciInit (PlatformCallbackInitSlot);
+  //TargetMmcSdhciInit (PlatformCallbackInitSlot);
+  TargetMmcSdhciInit();
 
   DEBUG((EFI_D_ERROR, "EMMC init end, loop forever\n"));// hmm
   for(;;) {};
 
-  return EFI_SUCCESS;
+  return Status;
 }

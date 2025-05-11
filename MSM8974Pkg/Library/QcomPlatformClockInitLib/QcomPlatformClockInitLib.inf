@@ -21,4 +21,13 @@
 [LibraryClasses]
   IoLib
   ArmLib
+  DebugLib
+  BaseLib
+  UefiBootServicesTableLib
+
+[Protocols]
+  gQcomBoardProtocolGuid
+
+[Depex]
+  gQcomBoardProtocolGuid
 
