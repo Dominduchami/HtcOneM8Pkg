@@ -348,7 +348,11 @@ static void set_sdc_power_ctrl(void)
 	uint8_t tlmm_hdrv_clk = 0;
 	uint32_t platform_id = 0;
 
+  // here
+
 	platform_id = mBoardProtocol->board_platform_id();
+
+  dprintf(CRITICAL, "mBoard platform check??\n");
 
 	switch(platform_id)
 	{
@@ -358,14 +362,21 @@ static void set_sdc_power_ctrl(void)
 		case MSM8674AB:
 		case MSM8974AA:
 		case MSM8974AB:
-			if (mBoardProtocol->board_hardware_id() == HW_PLATFORM_MTP)
+			if (mBoardProtocol->board_hardware_id() == HW_PLATFORM_MTP) {
+        DEBUG((EFI_D_ERROR, "Board id = HW_PLATFORM_MTP, using 10MA"));
 				tlmm_hdrv_clk = TLMM_CUR_VAL_10MA;
-			else
+      }
+			else {
 				tlmm_hdrv_clk = TLMM_CUR_VAL_16MA;
-			break;
+        DEBUG((EFI_D_ERROR, "Board id check, using 16MA"));
+      }
+      break;
 		default:
 			tlmm_hdrv_clk = TLMM_CUR_VAL_16MA;
+      DEBUG((EFI_D_ERROR, "Using 16MA"));
 	};
+
+  // here
 
 	/* Drive strength configs for sdc pins */
 	struct tlmm_cfgs sdc1_hdrv_cfg[] =
@@ -389,17 +400,22 @@ static void set_sdc_power_ctrl(void)
 	};
 
 	/* Set the drive strength & pull control values */
+  DEBUG((EFI_D_ERROR, "Set the drive strength & pull control values"));
 	//tlmm_set_hdrive_ctrl(sdc1_hdrv_cfg, ARRAY_SIZE(sdc1_hdrv_cfg));
 	//tlmm_set_pull_ctrl(sdc1_pull_cfg, ARRAY_SIZE(sdc1_pull_cfg));
+  // We fail here :-(
   gGpioTlmm->tlmm_set_hdrive_ctrl(sdc1_hdrv_cfg, ARRAY_SIZE(sdc1_hdrv_cfg));
   gGpioTlmm->tlmm_set_pull_ctrl(sdc1_pull_cfg, ARRAY_SIZE(sdc1_pull_cfg));
 
 	/* RCLK is supported only with 8974 pro, set rclk to pull down
 	 * only for 8974 pro targets
 	 */
-	if (!mBoardProtocol->platform_is_8974())
+  // already dead
+	if (!mBoardProtocol->platform_is_8974()) {
 		//tlmm_set_pull_ctrl(sdc1_rclk_cfg, ARRAY_SIZE(sdc1_rclk_cfg));
+    DEBUG((EFI_D_ERROR, "Platform_is_8974 returned true"));
     gGpioTlmm->tlmm_set_pull_ctrl(sdc1_rclk_cfg, ARRAY_SIZE(sdc1_rclk_cfg));
+  }
 }
 
 static void target_mmc_sdhci_init(void)
@@ -419,14 +435,15 @@ static void target_mmc_sdhci_init(void)
 	{
 		if (mBoardProtocol->platform_is_8974() && BOARD_SOC_VERSION1(soc_ver)) {
       config.bus_width = DATA_BUS_WIDTH_4BIT;
-      dprintf(CRITICAL, "target_mmc_sdhci_init()\n");
+      dprintf(CRITICAL, "Fluid, data bus is 4bit\n");
     }
     else {
       config.bus_width = DATA_BUS_WIDTH_8BIT;
-      dprintf(CRITICAL, "target_mmc_sdhci_init()\n");
+      dprintf(CRITICAL, "Fluid, data bus is 8bit\n");
     }
     break;
 		default:
+      dprintf(CRITICAL, "NOT Fluid, data bus is 8bit\n");
 			config.bus_width = DATA_BUS_WIDTH_8BIT;
 	};
 
@@ -440,9 +457,11 @@ static void target_mmc_sdhci_init(void)
 	 * only for emmc (slot 1)
 	 */
 	if (mBoardProtocol->platform_is_8974ac()) {
+    dprintf(CRITICAL, "PLatform is AC\n");
 		config.max_clk_rate = MMC_CLK_192MHZ;
 		config.hs400_support = 1;
 	} else {
+    dprintf(CRITICAL, "Platform is not-AC\n");
 		config.max_clk_rate = MMC_CLK_200MHZ;
 	}
 	config.sdhc_base = mmc_sdhci_base[config.slot - 1];
@@ -450,6 +469,8 @@ static void target_mmc_sdhci_init(void)
 	config.pwr_irq     = mmc_sdc_pwrctl_irq[config.slot - 1];
 
 	if (!(dev = mmc_init(&config))) {
+    dprintf(CRITICAL, "EMMC init failed!!!, looping\n");
+    for(;;) {};
 		/* Trying Slot 2 next */
 		config.slot = 2;
 		config.max_clk_rate = MMC_CLK_200MHZ;
@@ -458,7 +479,7 @@ static void target_mmc_sdhci_init(void)
 		config.pwr_irq     = mmc_sdc_pwrctl_irq[config.slot - 1];
 
 		if (!(dev = mmc_init(&config))) {
-			dprintf(CRITICAL, "mmc init failed!");
+			dprintf(CRITICAL, "mmc/sd init failed!");
 			ASSERT(0);
 		}
 	}
@@ -480,7 +501,8 @@ VOID TargetMmcSdhciInit()
 	 * Set drive strength & pull ctrl for
 	 * emmc
 	 */
-  DEBUG((EFI_D_ERROR, "set_sdc_power_ctrl()\n"));
+  DEBUG((EFI_D_ERROR, "// Start 'emmcdxe' code //\n"));
+  DEBUG((EFI_D_ERROR, "Set emmc drive strength & pull ctrl\n"));
 	set_sdc_power_ctrl();
 
   DEBUG((EFI_D_ERROR, "target_mmc_sdhci_init()\n"));
@@ -500,7 +522,7 @@ MMCHSInitialize (
   IN EFI_HANDLE         ImageHandle,
   IN EFI_SYSTEM_TABLE   *SystemTable
   )
-{
+{ 
   // Locate Qualcomm Board Protocol
   EFI_STATUS    Status = gBS->LocateProtocol(
     &gQcomBoardProtocolGuid,

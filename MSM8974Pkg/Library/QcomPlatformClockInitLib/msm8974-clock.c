@@ -931,6 +931,8 @@ LibQcomPlatformClockInit (
 	*clist = msm_clocks_8974;
 	*num = ARRAY_SIZE(msm_clocks_8974);
 
+	dprintf(CRITICAL, "Clock init done!\n");
+
 	return Status;
 }
 
