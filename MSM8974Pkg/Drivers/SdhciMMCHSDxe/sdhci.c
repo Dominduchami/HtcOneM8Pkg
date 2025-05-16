@@ -189,6 +189,7 @@ clk_ctrl:
 	return 0;
 }
 
+#if 0
 /*
  * Function: sdhci stop sdcc clock
  * Arg     : Host structure
@@ -232,6 +233,7 @@ static uint32_t sdhci_change_freq_clk(struct sdhci_host *host, uint32_t clk)
 
 	return 0;
 }
+#endif
 
 /*
  * Function: sdhci set bus power
@@ -934,6 +936,9 @@ err:
  */
 void sdhci_init(struct sdhci_host *host)
 {
+	UINTN       Index;
+	EFI_STATUS  Status;
+
 	uint32_t caps[2];
 	uint32_t version;
 
@@ -989,7 +994,9 @@ void sdhci_init(struct sdhci_host *host)
 	sdhci_set_bus_power_on(host);
 
 	/* Wait for power interrupt to be handled */
-	event_wait(host->sdhc_event);
+	//event_wait(host->sdhc_event);
+	Status = gBS->WaitForEvent(1, &host->sdhc_event, &Index);
+	ASSERT_EFI_ERROR(Status);
 
 	/* Set bus width */
 	sdhci_set_bus_width(host, SDHCI_BUS_WITDH_1BIT);
