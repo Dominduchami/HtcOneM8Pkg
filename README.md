@@ -1,7 +1,8 @@
 # EDK2 UEFI Firmware for HTC One M8
 
 ## Status 
-Boots to shell, emmc driver needs some work, sd could be functional (not tested)
+
+Boots to shell, emmc and/or sd card doesn't init with the current code which obviously prevents windows for now
 
 ## Credits
  - Rick Liu for [Lumia930Pkg](https://github.com/rickliu2000/Lumia930Pkg)
