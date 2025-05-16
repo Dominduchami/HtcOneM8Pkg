@@ -44,6 +44,10 @@
   gQcomTokenSpaceGuid.PcdMmcHs200Caps
 
 [Pcd.common]
+  gQcomTokenSpaceGuid.PcdGpioTlmmBaseAddress
+  gQcomTokenSpaceGuid.PcdGicSpiStart
+  gQcomTokenSpaceGuid.PcdMmcSdc1HdrvPullCtlOffset
+  gQcomTokenSpaceGuid.PcdMmcSdc2HdrvPullCtlOffset
   gQcomTokenSpaceGuid.PcdSdccMciHcMode
   gQcomTokenSpaceGuid.PcdSdccHcPwrctlStatusReg
   gQcomTokenSpaceGuid.PcdSdccHcPwrctlMaskReg

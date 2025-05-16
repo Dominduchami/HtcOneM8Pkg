@@ -348,8 +348,6 @@ static void set_sdc_power_ctrl(void)
 	uint8_t tlmm_hdrv_clk = 0;
 	uint32_t platform_id = 0;
 
-  // here
-
 	platform_id = mBoardProtocol->board_platform_id();
 
   dprintf(CRITICAL, "mBoard platform check??\n");
@@ -375,8 +373,6 @@ static void set_sdc_power_ctrl(void)
 			tlmm_hdrv_clk = TLMM_CUR_VAL_16MA;
       DEBUG((EFI_D_ERROR, "Using 16MA"));
 	};
-
-  // here
 
 	/* Drive strength configs for sdc pins */
 	struct tlmm_cfgs sdc1_hdrv_cfg[] =

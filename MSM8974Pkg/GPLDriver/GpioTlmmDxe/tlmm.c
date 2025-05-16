@@ -28,10 +28,18 @@
 
 #include <Library/LKEnvLib.h>
 #include <Chipset/gpio.h>
+#include <Platform/iomap.h>
 
 static void tlmm_set_pins(struct tlmm_cfgs *cfg)
 {
 	uint32_t reg_val;
+
+	/* To support backward compatibility for this API
+	 * If the reg is not passed then use SDC1 TLMM as
+	 * the default value.
+	 */
+	if (!cfg->reg)
+		cfg->reg = SDC1_HDRV_PULL_CTL;
 
 	reg_val = readl(cfg->reg);
 
