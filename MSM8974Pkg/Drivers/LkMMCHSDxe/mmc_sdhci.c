@@ -34,6 +34,7 @@
 #include "sdhci_msm.h"
 #include "MMCHS.h"
 
+#include <Library/QcomPlatformClockInitLib.h>
 #include <Platform/clock.h>
 
 /* data access time unit in ns */
@@ -899,8 +900,8 @@ static uint32_t mmc_set_hs200_mode(struct sdhci_host *host,
 		* clock frequency
 		*/
 		sdhci_msm_set_mci_clk(host);
-		//clock_config_mmc(host->msm_host->slot, SDHCI_CLK_400MHZ);
-		LibQcomPlatformMmcClockConfig(host->msm_host->slot, SDHCI_CLK_400MHZ);
+		clock_config_mmc(host->msm_host->slot, SDHCI_CLK_400MHZ);
+		//LibQcomPlatformMmcClockConfig(host->msm_host->slot, SDHCI_CLK_400MHZ);
 	}
 
 	/* Execute Tuning for hs200 mode */
@@ -915,8 +916,8 @@ static uint32_t mmc_set_hs200_mode(struct sdhci_host *host,
 	{
 		MMC_SAVE_TIMING(host, MMC_HS200_TIMING);
 		sdhci_msm_set_mci_clk(host);
-		//clock_config_mmc(host->msm_host->slot, MMC_CLK_192MHZ);
-		LibQcomPlatformMmcClockConfig(host->msm_host->slot, MMC_CLK_192MHZ);
+		clock_config_mmc(host->msm_host->slot, MMC_CLK_192MHZ);
+		//LibQcomPlatformMmcClockConfig(host->msm_host->slot, MMC_CLK_192MHZ);
 	}
 	else
 	{
@@ -1072,8 +1073,8 @@ uint32_t mmc_set_hs400_mode(struct sdhci_host *host,
 	*/
 	sdhci_msm_set_mci_clk(host);
 	/* Set the clock back to 400 MHZ */
-	//clock_config_mmc(host->msm_host->slot, SDHCI_CLK_400MHZ);
-	LibQcomPlatformMmcClockConfig(host->msm_host->slot, SDHCI_CLK_400MHZ);
+	clock_config_mmc(host->msm_host->slot, SDHCI_CLK_400MHZ);
+	//LibQcomPlatformMmcClockConfig(host->msm_host->slot, SDHCI_CLK_400MHZ);
 	
 
 	/* 7. Execute Tuning for hs400 mode */
@@ -1127,12 +1128,12 @@ static uint8_t mmc_host_init(struct mmc_device *dev)
 	host->msm_host = data;
 
 	/* Initialize any clocks needed for SDC controller */
-	//clock_init_mmc(cfg->slot);
+	clock_init_mmc(cfg->slot);
 
-	//clock_config_mmc(cfg->slot, cfg->max_clk_rate);
-	LibQcomPlatformMmcClockInit(cfg->slot);
+	clock_config_mmc(cfg->slot, cfg->max_clk_rate);
+	//LibQcomPlatformMmcClockInit(cfg->slot);
 
-	LibQcomPlatformMmcClockConfig(cfg->slot, cfg->max_clk_rate);
+	//LibQcomPlatformMmcClockConfig(cfg->slot, cfg->max_clk_rate);
 
 	/* Configure the CDC clocks needed for emmc storage
 	 * we use slot '1' for emmc

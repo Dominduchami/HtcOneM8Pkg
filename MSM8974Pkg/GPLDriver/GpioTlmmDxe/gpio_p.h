@@ -16,5 +16,9 @@ EFI_STATUS msm_pinmux_set_pull(UINTN id, GPIO_PULL pull);
 void tlmm_set_hdrive_ctrl(struct tlmm_cfgs *, uint8_t);
 /* API:  Pull control for tlmm pins */
 void tlmm_set_pull_ctrl(struct tlmm_cfgs *, uint8_t);
+/* API: config */
+void gpio_tlmm_config(uint32_t gpio, uint8_t func,
+		      uint8_t dir, uint8_t pull,
+		      uint8_t drvstr, uint32_t enable);
 
 #endif // _GPIO_PRIVATE_H

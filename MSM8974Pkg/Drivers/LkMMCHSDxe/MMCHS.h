@@ -122,4 +122,7 @@ bool mmc_set_drv_type(struct sdhci_host *host, struct mmc_card *card, uint8_t dr
 /* API: Send the read & write command sequence to rpmb */
 uint32_t mmc_sdhci_rpmb_send(struct mmc_device *dev, struct mmc_command *cmd);
 
+/* Init emmc/sd */
+void target_init();
+
 #endif

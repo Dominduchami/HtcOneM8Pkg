@@ -30,9 +30,13 @@
   MallocLib
   CacheMaintenanceLib
   InterruptsLib
+  BoardLib
+  ClockLib
+  QcomPlatformClockInitLib
+  GpioTlmmLib
 
 [BuildOptions.ARM]
-  GCC:*_*_*_CC_FLAGS = -Wno-pointer-to-int-cast
+  GCC:*_*_*_CC_FLAGS = -Wno-pointer-to-int-cast -Werror -Wno-unused-function -Wno-unused-variable
 
 [Protocols]
   gEfiBlockIoProtocolGuid

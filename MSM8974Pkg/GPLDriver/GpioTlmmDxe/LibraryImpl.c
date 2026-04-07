@@ -2,6 +2,7 @@
 
 #include <Library/LKEnvLib.h>
 #include <Library/QcomGpioTlmmLib.h>
+#include <Platform/iomap.h>
 
 #include "gpio_p.h"
 
@@ -20,6 +21,7 @@ STATIC QCOM_GPIO_TLMM_PROTOCOL mInternalGpioTlmm = {
 
   tlmm_set_hdrive_ctrl,
   tlmm_set_pull_ctrl,
+  gpio_tlmm_config,
 };
 
 #if defined(MDE_CPU_ARM)
@@ -217,6 +219,19 @@ STATIC inline UINTN gpio_tlmm_platform_ctl_reg(UINTN id) {
 
 STATIC inline UINTN gpio_tlmm_platform_io_reg(UINTN id) {
   return PcdGet64 (PcdGpioTlmmIoOffset) + PcdGet64 (PcdGpioTlmmIoElementSize) * id;
+}
+
+void gpio_tlmm_config(uint32_t gpio, uint8_t func,
+		      uint8_t dir, uint8_t pull,
+		      uint8_t drvstr, uint32_t enable)
+{
+	uint32_t val = 0;
+	val |= pull;
+	val |= func << 2;
+	val |= drvstr << 6;
+	val |= enable << 9;
+	writel(val, (unsigned int *)GPIO_CONFIG_ADDR(gpio));
+	return;
 }
 
 EFI_STATUS msm_gpio_direction_input(UINTN id)

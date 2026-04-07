@@ -30,7 +30,7 @@
 #include <Library/LcmLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/MallocLib.h>
-#include <Chipset/sdhci.h>
+#include <Lk2nd/sdhci.h>
 #include "sdhci_msm.h"
 #include "MMCHS.h"
 
