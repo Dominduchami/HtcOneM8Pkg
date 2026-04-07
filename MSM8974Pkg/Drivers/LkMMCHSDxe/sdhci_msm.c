@@ -30,8 +30,8 @@
 #include <Library/InterruptsLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/MallocLib.h>
-#include <Chipset/mmc_sdhci.h>
-#include <Chipset/sdhci.h>
+#include <Lk2nd/mmc_sdhci.h>
+#include <Lk2nd/sdhci.h>
 #include "sdhci_msm.h"
 #include "MMCHS.h"
 

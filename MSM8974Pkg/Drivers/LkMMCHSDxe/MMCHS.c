@@ -325,7 +325,9 @@ MMCHSInitialize (
   )
 {
   // let the target register MMC devices
-  LibQcomTargetMmcSdhciInit (PlatformCallbackInitSlot);
+  //LibQcomTargetMmcSdhciInit (PlatformCallbackInitSlot);
+
+  target_init()
 
   return EFI_SUCCESS;
 }

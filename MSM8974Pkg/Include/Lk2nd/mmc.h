@@ -31,7 +31,7 @@
 
 #include <Chipset/bam.h>
 
-#define MMC_BOOT_MCI_REG(offset)          ((host->mci_base) + offset)
+//#define MMC_BOOT_MCI_REG(offset)          ((host->mci_base) + offset)
 extern unsigned int mmc_boot_mci_base;
 
 #define MMC_BOOT_MCI_REG(offset)          ((mmc_boot_mci_base) + offset)
@@ -634,5 +634,4 @@ uint64_t mmc_get_device_capacity(void);
 void mmc_put_card_to_sleep(void);
 
 void target_mmc_caps(struct mmc_host *host);
-#endif
 #endif

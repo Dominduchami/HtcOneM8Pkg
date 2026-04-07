@@ -1,9 +1,8 @@
 #include <PiDxe.h>
 #include <Library/LKEnvLib.h>
-#include <Library/QcomTargetMmcSdhciLib.h>
 #include <Library/QcomGpioTlmmLib.h>
 #include <Library/UefiBootServicesTableLib.h>
-#include <Chipset/mmc_sdhci.h>
+#include <Lk2nd/mmc_sdhci.h>
 #include <Platform/iomap.h>
 #include <Platform/irqs.h>
 

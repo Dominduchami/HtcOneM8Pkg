@@ -8,6 +8,7 @@
 
 [Sources.common]
   msm8974-clock.c
+  acpuclock.c
 
 [Packages]
   MdePkg/MdePkg.dec
@@ -21,4 +22,5 @@
 [LibraryClasses]
   IoLib
   ArmLib
+  ClockLib
 

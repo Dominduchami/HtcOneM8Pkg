@@ -12,6 +12,7 @@
   mmc_sdhci.c
   sdhci.c
   sdhci_msm.c
+  Lk2ndLib.c
 
 [Packages]
   MdePkg/MdePkg.dec
