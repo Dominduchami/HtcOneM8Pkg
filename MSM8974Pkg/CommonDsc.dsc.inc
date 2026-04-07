@@ -593,7 +593,8 @@
   MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
   MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
   MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
-  MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  # MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
+  MSM8974Pkg/Drivers/LkMMCHSDxe/SdhciMMCHS.inf
 
   #
   # ACPI Support 
