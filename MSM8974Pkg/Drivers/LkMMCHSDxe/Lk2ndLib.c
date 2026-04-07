@@ -85,7 +85,7 @@ static void set_sdc_power_ctrl(uint32_t slot)
 		/* RCLK is supported only with 8974 pro, set rclk to pull down
 		* only for 8974 pro targets
 		*/
-		if (!platform_is_8974())
+		if (!gBoard->platform_is_8974())
 			gGpioTlmm->tlmm_set_pull_ctrl(sdc1_rclk_cfg, ARRAY_SIZE(sdc1_rclk_cfg));
 	} else {
 		/* slot 3 is used via a GPIO pinmux. Use GPIO to set it up. */
@@ -154,7 +154,6 @@ static void target_mmc_sdhci_init(void)
 
 		if (!(dev = mmc_init(&config))) {
 			dprintf(CRITICAL, "mmc init failed!");
-            for(;;) {};
 			ASSERT(0);
 		}
 	}

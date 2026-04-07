@@ -23,4 +23,6 @@
   IoLib
   ArmLib
   ClockLib
+  BoardLib
+  QcomTargetBoardLib ##?
 

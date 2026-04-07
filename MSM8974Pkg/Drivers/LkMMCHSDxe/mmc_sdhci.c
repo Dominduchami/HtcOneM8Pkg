@@ -37,6 +37,9 @@
 #include <Library/QcomPlatformClockInitLib.h>
 #include <Platform/clock.h>
 
+extern void clock_init_mmc(uint32_t);
+extern void clock_config_mmc(uint32_t, uint32_t);
+
 /* data access time unit in ns */
 static const uint32_t taac_unit[] =
 {
@@ -588,7 +591,6 @@ static uint32_t mmc_select_card(struct sdhci_host *host, struct mmc_card *card)
 	return 0;
 }
 
-#if 0
 /*
  * Function: mmc set block len
  * Arg     : host, card structure & block length
@@ -629,7 +631,6 @@ static uint32_t mmc_set_block_len(struct sdhci_host *host,
 
 	return 0;
 }
-#endif
 
 /*
  * Function: mmc get card status
@@ -901,7 +902,6 @@ static uint32_t mmc_set_hs200_mode(struct sdhci_host *host,
 		*/
 		sdhci_msm_set_mci_clk(host);
 		clock_config_mmc(host->msm_host->slot, SDHCI_CLK_400MHZ);
-		//LibQcomPlatformMmcClockConfig(host->msm_host->slot, SDHCI_CLK_400MHZ);
 	}
 
 	/* Execute Tuning for hs200 mode */
@@ -917,7 +917,6 @@ static uint32_t mmc_set_hs200_mode(struct sdhci_host *host,
 		MMC_SAVE_TIMING(host, MMC_HS200_TIMING);
 		sdhci_msm_set_mci_clk(host);
 		clock_config_mmc(host->msm_host->slot, MMC_CLK_192MHZ);
-		//LibQcomPlatformMmcClockConfig(host->msm_host->slot, MMC_CLK_192MHZ);
 	}
 	else
 	{
@@ -1074,8 +1073,6 @@ uint32_t mmc_set_hs400_mode(struct sdhci_host *host,
 	sdhci_msm_set_mci_clk(host);
 	/* Set the clock back to 400 MHZ */
 	clock_config_mmc(host->msm_host->slot, SDHCI_CLK_400MHZ);
-	//LibQcomPlatformMmcClockConfig(host->msm_host->slot, SDHCI_CLK_400MHZ);
-	
 
 	/* 7. Execute Tuning for hs400 mode */
 	if ((mmc_ret = sdhci_msm_execute_tuning(host, card, width)))
@@ -1131,16 +1128,12 @@ static uint8_t mmc_host_init(struct mmc_device *dev)
 	clock_init_mmc(cfg->slot);
 
 	clock_config_mmc(cfg->slot, cfg->max_clk_rate);
-	//LibQcomPlatformMmcClockInit(cfg->slot);
-
-	//LibQcomPlatformMmcClockConfig(cfg->slot, cfg->max_clk_rate);
 
 	/* Configure the CDC clocks needed for emmc storage
 	 * we use slot '1' for emmc
 	 */
-	/*if (cfg->slot == 1)
+	if (cfg->slot == 1)
 		clock_config_cdc(cfg->slot);
-	*/
 
 	/*
 	 * MSM specific sdhc init

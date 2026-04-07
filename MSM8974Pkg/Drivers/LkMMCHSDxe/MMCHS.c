@@ -329,5 +329,7 @@ MMCHSInitialize (
 
   target_init();
 
+  for(;;) {};
+
   return EFI_SUCCESS;
 }

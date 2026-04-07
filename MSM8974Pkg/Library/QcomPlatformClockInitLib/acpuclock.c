@@ -40,6 +40,9 @@
 //#include <Lk2nd/mmc.h>
 #include <Lk2nd/mmc_sdhci.h>
 
+#include <Library/QcomBoardLib.h>
+#include <Library/QcomTargetBoardLib.h>
+
 #if 0
 void hsusb_clock_init(void)
 {
@@ -176,7 +179,6 @@ void clock_config_mmc(uint32_t interface, uint32_t freq)
 #endif
 }
 
-#if 0
 /* Configure clocks needed for CDCLP533 circuit */
 void clock_config_cdc(uint32_t interface)
 {
@@ -186,7 +188,7 @@ void clock_config_cdc(uint32_t interface)
 	/* CDC clocks are not supported for 8974 v1 & v2
 	 * only pro msm's support it
 	 */
-	if (platform_is_8974())
+	if (gBoard->platform_is_8974())
 		return;
 
 	snprintf(clk_name, sizeof(clk_name), "gcc_sdcc%u_cdccal_sleep_clk", interface);
@@ -205,7 +207,7 @@ void clock_config_cdc(uint32_t interface)
 		ASSERT(0);
 	}
 }
-
+#if 0
 /* Configure UART clock based on the UART block id*/
 void clock_config_uart_dm(uint8_t id)
 {
