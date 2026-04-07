@@ -1109,14 +1109,14 @@ static uint8_t mmc_host_init(struct mmc_device *dev)
 	ASSERT_EFI_ERROR(Status);
 
 	host->base = cfg->sdhc_base;
-	host->sdhc_event = &sdhc_event;
+	host->sdhc_event = sdhc_event;//yeah
 	host->caps.hs200_support = cfg->hs200_support;
 	host->caps.hs400_support = cfg->hs400_support;
 
 	data = (struct sdhci_msm_data *) malloc(sizeof(struct sdhci_msm_data));
 	ASSERT(data);
 
-	data->sdhc_event = &sdhc_event;
+	data->sdhc_event = sdhc_event;
 	data->pwrctl_base = cfg->pwrctl_base;
 	data->pwr_irq = cfg->pwr_irq;
 	data->slot = cfg->slot;
