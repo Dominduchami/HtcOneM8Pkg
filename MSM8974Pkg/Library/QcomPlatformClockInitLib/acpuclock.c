@@ -31,12 +31,13 @@
 //#include <platform.h>
 //#include <platform/timer.h>
 #include <Platform/iomap.h>
-#include <Lk2nd/mmc.h>
+
 //#include <clock.h>
 #include <Platform/clock.h>
 #include <Library/QcomClockLib.h>
 //#include <blsp_qup.h>
 //#include <pm8x41.h>
+//#include <Lk2nd/mmc.h>
 #include <Lk2nd/mmc_sdhci.h>
 
 #if 0
