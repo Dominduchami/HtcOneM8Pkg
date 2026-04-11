@@ -171,7 +171,6 @@
   KeypadDeviceImplLib|MSM8974Pkg/Library/KeypadDeviceImplLib/KeypadDeviceImplLib.inf
   DloadUtilLib|MSM8974Pkg/Library/DloadUtilLib/DloadUtilLib.inf
   QcomPlatformClockInitLib|MSM8974Pkg/Library/QcomPlatformClockInitLib/QcomPlatformClockInitLib.inf
-  QcomPlatformMmcLib|MSM8974Pkg/Library/PlatformMmcLib/QcomPlatformMmcLib.inf
   QcomPlatformMmcClockOverrideLib|MSM8974Pkg/Library/QcomPlatformMmcClockOverrideLib/QcomPlatformMmcClockOverrideLib.inf
   QcomTargetMmcSdhciLib|MSM8974Pkg/Library/TargetMmcSdhciLib/QcomTargetMmcSdhciLib.inf
   LcmLib|MSM8974Pkg/Library/LcmLib/LcmLib.inf
@@ -248,6 +247,9 @@
   SpmiLib|MSM8974Pkg/Drivers/SpmiDxe/SpmiLib.inf
   Pm8x41Lib|MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Lib.inf
   ClockLib|MSM8974Pkg/Drivers/ClockDxe/ClockImplLib.inf
+  QcomTargetBoardLib|MSM8974Pkg/Library/QcomTargetBoardLib/QcomTargetBoardLib.inf
+  BoardLib|MSM8974Pkg/Drivers/BoardDxe/BoardImplLib.inf
+  SmemLib|MSM8974Pkg/Drivers/SmemDxe/SmemImplLib.inf
 
 [LibraryClasses.common.UEFI_APPLICATION]
   UefiDecompressLib|MdePkg/Library/BaseUefiDecompressLib/BaseUefiTianoCustomDecompressLib.inf
@@ -260,6 +262,9 @@
   SpmiLib|MSM8974Pkg/Drivers/SpmiDxe/SpmiLib.inf
   Pm8x41Lib|MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Lib.inf
   ClockLib|MSM8974Pkg/Drivers/ClockDxe/ClockImplLib.inf
+  QcomTargetBoardLib|MSM8974Pkg/Library/QcomTargetBoardLib/QcomTargetBoardLib.inf
+  BoardLib|MSM8974Pkg/Drivers/BoardDxe/BoardImplLib.inf
+  SmemLib|MSM8974Pkg/Drivers/SmemDxe/SmemImplLib.inf
 
 [LibraryClasses.common.UEFI_DRIVER,LibraryClasses.common.UEFI_APPLICATION]
   DxeServicesLib|MdePkg/Library/DxeServicesLib/DxeServicesLib.inf
@@ -279,6 +284,9 @@
   SpmiLib|MSM8974Pkg/Drivers/SpmiDxe/SpmiLib.inf
   Pm8x41Lib|MSM8974Pkg/Drivers/Pm8x41Dxe/Pm8x41Lib.inf
   ClockLib|MSM8974Pkg/Drivers/ClockDxe/ClockImplLib.inf
+  QcomTargetBoardLib|MSM8974Pkg/Library/QcomTargetBoardLib/QcomTargetBoardLib.inf
+  BoardLib|MSM8974Pkg/Drivers/BoardDxe/BoardImplLib.inf
+  SmemLib|MSM8974Pkg/Drivers/SmemDxe/SmemImplLib.inf
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
@@ -585,6 +593,7 @@
   MSM8974Pkg/Drivers/LogoDxe/LogoDxe.inf
 
   # SoC Drivers (Cross-referenced from EFIDroid and Ben)
+  MSM8974Pkg/Drivers/BoardDxe/BoardDxe.inf
   MSM8974Pkg/Drivers/BamDxe/BamDxe.inf
   MSM8974Pkg/GPLDriver/GpioTlmmDxe/GpioTlmmDxe.inf
   MSM8974Pkg/GPLDriver/GpioTlmmInterruptDxe/GpioTlmmInterruptDxe.inf

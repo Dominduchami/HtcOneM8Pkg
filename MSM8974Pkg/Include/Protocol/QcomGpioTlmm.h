@@ -32,6 +32,9 @@ typedef EFI_STATUS (EFIAPI *msm_pinmux_set_pull_t)(UINTN id, GPIO_PULL pull);
 
 typedef void (EFIAPI *tlmm_set_hdrive_ctrl_t)(struct tlmm_cfgs *, uint8_t);
 typedef void (EFIAPI *tlmm_set_pull_ctrl_t)(struct tlmm_cfgs *, uint8_t);
+typedef void (EFIAPI *gpio_tlmm_config_t)(uint32_t gpio, uint8_t func,
+		      uint8_t dir, uint8_t pull,
+		      uint8_t drvstr, uint32_t enable);
 
 struct _QCOM_GPIO_TLMM_PROTOCOL {
   msm_gpio_direction_input_t          DirectionInput;
@@ -46,6 +49,7 @@ struct _QCOM_GPIO_TLMM_PROTOCOL {
 
   tlmm_set_hdrive_ctrl_t     tlmm_set_hdrive_ctrl;
   tlmm_set_pull_ctrl_t       tlmm_set_pull_ctrl;
+  gpio_tlmm_config_t         gpio_tlmm_config;
 };
 
 extern EFI_GUID gQcomGpioTlmmProtocolGuid;

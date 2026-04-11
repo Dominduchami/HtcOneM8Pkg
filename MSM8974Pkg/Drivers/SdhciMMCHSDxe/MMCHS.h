@@ -10,9 +10,7 @@
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/BaseMemoryLib.h>
-#include <Library/QcomPlatformMmcLib.h>
-#include <Library/QcomTargetMmcSdhciLib.h>
-#include <Chipset/mmc_sdhci.h>
+#include <Lk2nd/mmc_sdhci.h>
 
 #include <Protocol/BlockIo.h>
 #include <Protocol/DevicePath.h>
@@ -123,5 +121,8 @@ void mmc_put_card_to_sleep(struct mmc_device *dev);
 bool mmc_set_drv_type(struct sdhci_host *host, struct mmc_card *card, uint8_t drv_type);
 /* API: Send the read & write command sequence to rpmb */
 uint32_t mmc_sdhci_rpmb_send(struct mmc_device *dev, struct mmc_command *cmd);
+
+/* Init emmc/sd */
+void TargetSdhcInit();
 
 #endif
