@@ -33,7 +33,7 @@ static void set_sdc_power_ctrl(uint32_t slot)
 		return;
 	}
 
-	dprintf(CRITICAL, "Setting up SDC power and drive strength for slot %u\n", slot);
+	dprintf(INFO, "Setting up SDC power and drive strength for slot %u\n", slot);
 
 	if (slot < 3) {
 		uint32_t reg = (slot == 1 ? SDC1_HDRV_PULL_CTL : SDC2_HDRV_PULL_CTL);
@@ -106,11 +106,7 @@ static void target_mmc_sdhci_init(void)
 	struct mmc_config_data config = {0};
 	uint32_t soc_ver = 0;
 
-	dprintf(CRITICAL, "target_mmc_sdhci_init()\n");
-
 	soc_ver = gBoard->board_soc_version();
-
-	dprintf(CRITICAL, "Board soc ver = %d\n", soc_ver);
 
 	/*
 	 * 8974 v1 fluid devices, have a hardware bug
@@ -119,25 +115,16 @@ static void target_mmc_sdhci_init(void)
 	switch(gBoard->board_hardware_id())
 	{
 		case HW_PLATFORM_FLUID:
-			dprintf(CRITICAL, "target ID = FLUID\n");
-			if (gBoard->platform_is_8974() && BOARD_SOC_VERSION1(soc_ver)) {
+			if (gBoard->platform_is_8974() && BOARD_SOC_VERSION1(soc_ver))
 				config.bus_width = DATA_BUS_WIDTH_4BIT;
-				dprintf(CRITICAL, "4bit bus\n");
-			}
 			else
-			{
-				config.bus_width = DATA_BUS_WIDTH_8BIT;
-				dprintf(CRITICAL, "8bit bus\n");
-			
-			}
+				config.bus_width = DATA_BUS_WIDTH_8BIT;		
 			break;
 		default:
 			config.bus_width = DATA_BUS_WIDTH_8BIT;
-			dprintf(CRITICAL, "8bit bus (2)\n");
 	};
 
 	/* Trying Slot 1*/
-	dprintf(CRITICAL, "Trying slot 1\n");
 	config.slot = 1;
 	set_sdc_power_ctrl(config.slot);
 	/*
@@ -148,11 +135,9 @@ static void target_mmc_sdhci_init(void)
 	 * only for emmc (slot 1)
 	 */
 	if (gBoard->platform_is_8974ac()) {
-		dprintf(CRITICAL, "platform_is_8974ac=true\n");
 		config.max_clk_rate = MMC_CLK_192MHZ;
 		config.hs400_support = 1;
 	} else {
-		dprintf(CRITICAL, "platform_is_8974ac=false\n");
 		config.max_clk_rate = MMC_CLK_200MHZ;
 	}
 	config.sdhc_base = mmc_sdhci_base[config.slot - 1];
@@ -161,7 +146,6 @@ static void target_mmc_sdhci_init(void)
 
 	if (!(dev = mmc_init(&config))) {
 		/* Trying Slot 2 next */
-		dprintf(CRITICAL, "Slot 1 init failed, trying slot 2\n");
 		config.slot = 2;
 		set_sdc_power_ctrl(config.slot);
 		config.max_clk_rate = MMC_CLK_200MHZ;
@@ -174,8 +158,6 @@ static void target_mmc_sdhci_init(void)
 			ASSERT(0);
 		}
 	}
-
-	dprintf(CRITICAL, "MMC initialization is complete...\n");
 }
 
 
@@ -214,16 +196,15 @@ struct mmc_device *target_get_sd_mmc(void)
 #endif
 
 
-void target_init()
+void TargetSdhcInit()
 {
-    dprintf(CRITICAL, "target_init()\n");
-    dprintf(CRITICAL, "Set drive strength & pull ctrl\n");
+    dprintf(INFO, "TargetSdhcInit()\n");
     /*
 	 * Set drive strength & pull ctrl for
 	 * emmc
 	 */
 	set_sdc_power_ctrl(1);
 
-    dprintf(CRITICAL, "target_mmc_sdhci_init\n");
+    dprintf(INFO, "target_mmc_sdhci_init\n");
 	target_mmc_sdhci_init();
 }

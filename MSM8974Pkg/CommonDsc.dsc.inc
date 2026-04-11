@@ -171,7 +171,6 @@
   KeypadDeviceImplLib|MSM8974Pkg/Library/KeypadDeviceImplLib/KeypadDeviceImplLib.inf
   DloadUtilLib|MSM8974Pkg/Library/DloadUtilLib/DloadUtilLib.inf
   QcomPlatformClockInitLib|MSM8974Pkg/Library/QcomPlatformClockInitLib/QcomPlatformClockInitLib.inf
-  QcomPlatformMmcLib|MSM8974Pkg/Library/PlatformMmcLib/QcomPlatformMmcLib.inf
   QcomPlatformMmcClockOverrideLib|MSM8974Pkg/Library/QcomPlatformMmcClockOverrideLib/QcomPlatformMmcClockOverrideLib.inf
   QcomTargetMmcSdhciLib|MSM8974Pkg/Library/TargetMmcSdhciLib/QcomTargetMmcSdhciLib.inf
   LcmLib|MSM8974Pkg/Library/LcmLib/LcmLib.inf
@@ -603,8 +602,7 @@
   MSM8974Pkg/Drivers/GenericKeypadDeviceDxe/GenericKeypadDeviceDxe.inf
   MSM8974Pkg/Drivers/KeypadDxe/KeypadDxe.inf
   MSM8974Pkg/Drivers/ClockDxe/ClockDxe.inf
-  # MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
-  MSM8974Pkg/Drivers/LkMMCHSDxe/SdhciMMCHS.inf
+  MSM8974Pkg/Drivers/SdhciMMCHSDxe/SdhciMMCHS.inf
 
   #
   # ACPI Support 
