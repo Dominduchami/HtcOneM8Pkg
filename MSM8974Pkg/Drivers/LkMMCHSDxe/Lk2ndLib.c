@@ -10,6 +10,8 @@
 
 #include <Lk2nd/gpio.h>
 
+#include "Lk2ndLib.h"
+
 #define SDC3_GPIO_FUNC_NUM      2
 
 struct mmc_device *dev;
@@ -176,12 +178,14 @@ static void target_mmc_sdhci_init(void)
 	dprintf(CRITICAL, "MMC initialization is complete...\n");
 }
 
-#if 0
-void *target_mmc_device(void)
+
+//void *target_mmc_device(void)
+struct mmc_device *target_mmc_device(void)
 {
 	return (void *) dev;
 }
 
+#if 0
 struct mmc_device *target_get_sd_mmc(void)
 {
 	struct mmc_config_data config;

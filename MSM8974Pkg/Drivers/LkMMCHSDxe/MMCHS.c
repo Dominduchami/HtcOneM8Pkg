@@ -1,39 +1,5 @@
 #include "MMCHS.h"
-
-STATIC struct mmc_device* PlatformCallbackInitSlot (struct mmc_config_data *config)
-{
-  EFI_STATUS    Status;
-  BIO_INSTANCE  *Instance;
-  
-  // initialize MMC device
-  struct mmc_device *dev = mmc_init (config);
-  if (dev == NULL)
-    return NULL;
-
-  // allocate instance
-  Status = BioInstanceContructor (&Instance);
-  if (EFI_ERROR(Status)) {
-    return dev;
-  }
-
-  // set data
-  Instance->MmcDev               = dev;
-  Instance->BlockMedia.BlockSize = dev->card.block_size;
-  Instance->BlockMedia.LastBlock = dev->card.capacity/Instance->BlockMedia.BlockSize - 1;
-
-  // give every device a slighty different GUID
-  Instance->DevicePath.Mmc.Guid.Data4[7] = config->slot;
-
-  // Publish BlockIO
-  Status = gBS->InstallMultipleProtocolInterfaces (
-              &Instance->Handle,
-              &gEfiBlockIoProtocolGuid,    &Instance->BlockIo,
-              &gEfiDevicePathProtocolGuid, &Instance->DevicePath,
-              NULL
-              );
-
-  return dev;
-}
+#include "Lk2ndLib.h"
 
 STATIC BIO_INSTANCE mBioTemplate = {
   BIO_INSTANCE_SIGNATURE,
@@ -324,12 +290,44 @@ MMCHSInitialize (
   IN EFI_SYSTEM_TABLE   *SystemTable
   )
 {
+  EFI_STATUS    Status;
+  BIO_INSTANCE  *Instance;
+
   // let the target register MMC devices
   //LibQcomTargetMmcSdhciInit (PlatformCallbackInitSlot);
 
   target_init();
+  
+  // initialize MMC device
+  struct mmc_device *dev = target_mmc_device();//mmc_init (config);
+  if (dev == NULL) {
+    DEBUG((EFI_D_ERROR, "No device, loop!\n"));
+    return EFI_DEVICE_ERROR;
+  }
 
-  for(;;) {};
+  // allocate instance
+  Status = BioInstanceContructor (&Instance);
+  if (EFI_ERROR(Status)) {
+    return EFI_DEVICE_ERROR;
+  }
 
-  return EFI_SUCCESS;
+  // set data
+  Instance->MmcDev               = dev;
+  Instance->BlockMedia.BlockSize = dev->card.block_size;
+  Instance->BlockMedia.LastBlock = dev->card.capacity/Instance->BlockMedia.BlockSize - 1;
+
+  // give every device a slighty different GUID
+  Instance->DevicePath.Mmc.Guid.Data4[7] = dev->config.slot;//config->slot;
+
+  // Publish BlockIO
+  Status = gBS->InstallMultipleProtocolInterfaces (
+              &Instance->Handle,
+              &gEfiBlockIoProtocolGuid,    &Instance->BlockIo,
+              &gEfiDevicePathProtocolGuid, &Instance->DevicePath,
+              NULL
+              );
+
+  //for(;;) {};
+
+  return Status;
 }
