@@ -13,6 +13,7 @@
 #include "Lk2ndLib.h"
 
 #define SDC3_GPIO_FUNC_NUM      2
+#define FORCE_SD 				1
 
 struct mmc_device *dev;
 
@@ -123,7 +124,7 @@ static void target_mmc_sdhci_init(void)
 		default:
 			config.bus_width = DATA_BUS_WIDTH_8BIT;
 	};
-
+#ifndef FORCE_SD
 	/* Trying Slot 1*/
 	config.slot = 1;
 	set_sdc_power_ctrl(config.slot);
@@ -136,7 +137,7 @@ static void target_mmc_sdhci_init(void)
 	 */
 	if (gBoard->platform_is_8974ac()) {
 		config.max_clk_rate = MMC_CLK_192MHZ;
-		config.hs400_support = 1;
+		config.hs400_support = 0;
 	} else {
 		config.max_clk_rate = MMC_CLK_200MHZ;
 	}
@@ -145,19 +146,24 @@ static void target_mmc_sdhci_init(void)
 	config.pwr_irq     = mmc_sdc_pwrctl_irq[config.slot - 1];
 
 	if (!(dev = mmc_init(&config))) {
-		/* Trying Slot 2 next */
-		config.slot = 2;
-		set_sdc_power_ctrl(config.slot);
-		config.max_clk_rate = MMC_CLK_200MHZ;
-		config.sdhc_base = mmc_sdhci_base[config.slot - 1];
-		config.pwrctl_base = mmc_sdc_base[config.slot - 1];
-		config.pwr_irq     = mmc_sdc_pwrctl_irq[config.slot - 1];
-
-		if (!(dev = mmc_init(&config))) {
-			dprintf(CRITICAL, "mmc init failed!");
-			ASSERT(0);
-		}
+		dprintf(CRITICAL, "mmc init failed!");
 	}
+#else
+	/* Trying Slot 2 next */
+	config.slot = 2;
+	set_sdc_power_ctrl(config.slot);
+	config.max_clk_rate = MMC_CLK_200MHZ;
+	config.sdhc_base = mmc_sdhci_base[config.slot - 1];
+	config.pwrctl_base = mmc_sdc_base[config.slot - 1];
+	config.pwr_irq     = mmc_sdc_pwrctl_irq[config.slot - 1];
+
+	if (!(dev = mmc_init(&config))) {
+		dprintf(CRITICAL, "SD card init failed!");
+		ASSERT(0);
+		for(;;) {};
+	}
+#endif
+	
 }
 
 
