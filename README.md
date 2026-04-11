@@ -2,7 +2,7 @@
 
 ## Status 
 
-Boots to shell, emmc and/or sd card doesn't init with the current code which obviously prevents windows for now
+Boots to shell, emmc works
 
 ## Credits
  - Rick Liu for [Lumia930Pkg](https://github.com/rickliu2000/Lumia930Pkg)
