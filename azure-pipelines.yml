@@ -26,8 +26,10 @@ steps:
 
 - script: |
       cd /home/vsts/work/1/
-      git clone https://github.com/Tianocore/edk2.git --recursive --depth=1
-      git clone https://github.com/tianocore/edk2-platforms.git --depth=1
+      git clone https://github.com/Tianocore/edk2.git -b stable/202508 --recursive --depth=1
+      git clone https://github.com/tianocore/edk2-platforms.git
+      cd edk2-platforms
+      git reset --hard a5e5644d0e574da64ed908c7232d1cf5f6720c1f
   displayName: Clone sources
 
 - script:  |
@@ -45,7 +47,7 @@ steps:
     set -e
     export PACKAGES_PATH=$PWD/home/vsts/work/1/edk2:$PWD/home/vsts/work/1/edk2-platforms:$PWD
     export WORKSPACE=$PWD/workspace
-    . /home/vsts/work/1/edk2/edksetup.sh
+    source "/home/vsts/work/1/edk2/edksetup.sh"
     NUM_CPUS=$((`getconf _NPROCESSORS_ONLN` + 2))
     build -n $NUM_CPUS -a ARM -t CLANGDWARF -p Platforms/HtcOneM8/HtcOneM8Pkg.dsc -b DEBUG
     ./build_boot_shim.sh
