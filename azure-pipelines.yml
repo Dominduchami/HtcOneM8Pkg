@@ -18,7 +18,7 @@ steps:
     architecture: 'x64'
   displayName: Install correct Python
 
-- script:  sudo apt -y install build-essential uuid-dev iasl git nasm python3 crossbuild-essential-armel skales lld clang llvm
+- script:  sudo apt -y install build-essential uuid-dev iasl git nasm python3 crossbuild-essential-armel skales lld clang llvm gcc-arm-none-eabi
   displayName: 'Install VSTS dependencies'
 
 - script: sudo ln -sfn $(pwd) ../HtcOneM8Pkg
@@ -36,18 +36,19 @@ steps:
   displayName: Build BaseTools
 
 - script: |
-      cd /home/vsts/work/1/HtcOneM8Pkg
-      export PACKAGES_PATH=$PWD/home/vsts/work/1/edk2:$PWD/home/vsts/work/1/edk2-platforms:$PWD
-      export WORKSPACE=$PWD/workspace
-      . /home/vsts/work/1/edk2/edksetup.sh
-      chmod a+x *.sh
+    cd /home/vsts/work/1/HtcOneM8Pkg
+    chmod a+x *.sh
+  displayName: Setup scripts
 
 - script: |
+    cd /home/vsts/work/1/HtcOneM8Pkg
+    set -e
+    export PACKAGES_PATH=$PWD/home/vsts/work/1/edk2:$PWD/home/vsts/work/1/edk2-platforms:$PWD
+    export WORKSPACE=$PWD/workspace
+    . /home/vsts/work/1/edk2/edksetup.sh
     NUM_CPUS=$((`getconf _NPROCESSORS_ONLN` + 2))
     build -n $NUM_CPUS -a ARM -t CLANGDWARF -p Platforms/HtcOneM8/HtcOneM8Pkg.dsc -b DEBUG
-    chmod +x build_boot_shim.sh
     ./build_boot_shim.sh
-    chmod +x build_boot_images.sh
     ./build_boot_images.sh
   displayName: Build uefi m8
 
