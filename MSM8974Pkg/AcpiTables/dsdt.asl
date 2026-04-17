@@ -1,5 +1,5 @@
-// CreatorID=MSFT	CreatorRev=5.0.0
-// FileLength=129554	FileChkSum=0x57
+// CreatorID=MSFT	CreatorRev=4.0.0
+// FileLength=129576	FileChkSum=0x18
 
 DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
 {
@@ -53,32 +53,28 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         }
         Device(SDC2)
         {
-            Name(_DEP, Package(One)
+            Name(_DEP, Package(0x2)
             {
-                \_SB_.PEP0
+                \_SB_.PEP0,
+                \_SB_.GIO0
             })
             Name(_HID, "QCOM2466")
             Name(_CID, "ACPIQCOM2466")
-            Name(_UID, Zero)
+            Name(_UID, One)
             Method(_CRS, 0x0, NotSerialized)
             {
-                Name(RBUF, Buffer(0x17)
+                Name(RBUF, Buffer(0x5d)
                 {
 	0x86, 0x09, 0x00, 0x01, 0x00, 0x49, 0x8a, 0xf9, 0x00, 0x02, 0x00, 0x00,
-	0x89, 0x06, 0x00, 0x01, 0x01, 0x9d, 0x00, 0x00, 0x00, 0x79, 0x00
+	0x89, 0x06, 0x00, 0x01, 0x01, 0x9d, 0x00, 0x00, 0x00, 0x8c, 0x20, 0x00,
+	0x01, 0x00, 0x01, 0x00, 0x1d, 0x00, 0x01, 0x00, 0x00, 0x30, 0x75, 0x17,
+	0x00, 0x00, 0x19, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x06, 0x5c, 0x5f,
+	0x53, 0x42, 0x2e, 0x50, 0x4d, 0x30, 0x31, 0x00, 0x8c, 0x20, 0x00, 0x01,
+	0x01, 0x01, 0x00, 0x08, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x17, 0x00,
+	0x00, 0x19, 0x00, 0x23, 0x00, 0x00, 0x00, 0x00, 0x06, 0x5c, 0x5f, 0x53,
+	0x42, 0x2e, 0x50, 0x4d, 0x30, 0x31, 0x00, 0x79, 0x00
                 })
                 Return(RBUF)
-            }
-            Device(EMMC)
-            {
-                Method(_ADR, 0x0, NotSerialized)
-                {
-                    Return(0x8)
-                }
-                Method(_RMV, 0x0, NotSerialized)
-                {
-                    Return(Zero)
-                }
             }
             Method(_DIS, 0x0, NotSerialized)
             {
@@ -132,7 +128,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         }
         Device(UAR0)
         {
-            Name(_DEP, Package(One)
+            Name(_DEP, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -174,7 +170,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         }
         Device(UAR3)
         {
-            Name(_DEP, Package(One)
+            Name(_DEP, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -292,7 +288,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 While(One)
                 {
-                    Name(_T_0, Buffer(One)
+                    Name(_T_0, Buffer(0x1)
                     {
 	0x00
                     })
@@ -305,7 +301,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     {
                         While(One)
                         {
-                            Name(_T_1, Zero)
+                            Name(_T_1, 0x0)
                             Store(ToInteger(Arg2, ), _T_1)
                             If(LEqual(_T_1, Zero))
                             {
@@ -513,7 +509,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         Device(PRTC)
         {
             Name(_HID, "ACPI000E")
-            Name(_DEP, Package(One)
+            Name(_DEP, Package(0x1)
             {
                 "\\_SB.PMAP"
             })
@@ -1340,7 +1336,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(APCC)
             }
-            Name(APCC, Package(One)
+            Name(APCC, Package(0x1)
             {
                 Package(0x11)
                 {
@@ -1974,7 +1970,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(OCCC)
             }
-            Name(OCCC, Package(One)
+            Name(OCCC, Package(0x1)
             {
                 Package(0x4)
                 {
@@ -2111,7 +2107,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Method(GPMD, 0x0, NotSerialized)
             {
-                Name(GPCC, Package(One)
+                Name(GPCC, Package(0x1)
                 {
                     Package(0xb)
                     {
@@ -2143,7 +2139,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             0x4b00
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_SAVE"
                                     },
@@ -2316,7 +2312,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_RESTORE"
                                     },
@@ -3907,11 +3903,11 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_SAVE"
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_ADJUST"
                                     },
@@ -3969,7 +3965,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_RESTORE"
                                     },
@@ -4291,7 +4287,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_SAVE"
                                     },
@@ -4391,7 +4387,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_RESTORE"
                                     }
@@ -5608,7 +5604,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             Zero
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_SAVE"
                                     },
@@ -5688,7 +5684,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_RESTORE"
                                     }
@@ -6918,7 +6914,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_SAVE"
                                     },
@@ -7047,7 +7043,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_RESTORE"
                                     }
@@ -7123,7 +7119,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                     Package(0x2)
                                     {
                                         "DELAY",
-                                        Package(One)
+                                        Package(0x1)
                                         {
                                             One
                                         }
@@ -8457,7 +8453,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_SAVE"
                                     },
@@ -8513,7 +8509,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                                             One
                                         }
                                     },
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         "PSTATE_RESTORE"
                                     },
@@ -10594,7 +10590,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(MPCC)
             }
-            Name(MPCC, Package(Zero)
+            Name(MPCC, Package(0x0)
             {
             })
         }
@@ -10604,7 +10600,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(OPCC)
             }
-            Name(OPCC, Package(Zero)
+            Name(OPCC, Package(0x0)
             {
             })
         }
@@ -11261,7 +11257,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     }
                 }
             })
-            Name(SDFR, Package(One)
+            Name(SDFR, Package(0x1)
             {
                 Package(0x3)
                 {
@@ -11900,7 +11896,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(PRXC)
             }
-            Name(PRXC, Package(One)
+            Name(PRXC, Package(0x1)
             {
                 Package(0x4)
                 {
@@ -11955,7 +11951,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(CRCC)
             }
-            Name(CRCC, Package(One)
+            Name(CRCC, Package(0x1)
             {
                 Package(0x5)
                 {
@@ -12449,7 +12445,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(SCCC)
             }
-            Name(SCCC, Package(One)
+            Name(SCCC, Package(0x1)
             {
                 Package(0x3)
                 {
@@ -14772,7 +14768,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -14794,7 +14790,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -14833,7 +14829,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0xd
                                 }
@@ -14854,7 +14850,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -14875,7 +14871,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -14960,7 +14956,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -14982,7 +14978,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -15003,7 +14999,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -15674,7 +15670,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     }
                 }
             })
-            Name(BPXC, Package(Zero)
+            Name(BPXC, Package(0x0)
             {
             })
         }
@@ -15700,7 +15696,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                 }
                 Return(SD1Y)
             }
-            Name(SD1X, Package(One)
+            Name(SD1X, Package(0x1)
             {
                 Package(0x5)
                 {
@@ -15859,7 +15855,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     }
                 }
             })
-            Name(SD1Y, Package(One)
+            Name(SD1Y, Package(0x1)
             {
                 Package(0x5)
                 {
@@ -16359,7 +16355,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 Return(QDSC)
             }
-            Name(QDSC, Package(One)
+            Name(QDSC, Package(0x1)
             {
                 Package(0x3)
                 {
@@ -17770,7 +17766,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 }
@@ -17792,7 +17788,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 }
@@ -17814,7 +17810,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -17986,7 +17982,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -18008,7 +18004,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 }
@@ -18029,7 +18025,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 }
@@ -19395,7 +19391,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x2
                             }
@@ -19403,7 +19399,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x5
                             }
@@ -19424,7 +19420,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x5
                             }
@@ -19446,7 +19442,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x5
                             }
@@ -19575,7 +19571,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 One
                             }
@@ -19588,7 +19584,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 One
                             }
@@ -19731,7 +19727,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 One
                             }
@@ -19752,7 +19748,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 One
                             }
@@ -19760,7 +19756,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x5
                             }
@@ -19768,7 +19764,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x2
                             }
@@ -20385,7 +20381,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20398,7 +20394,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20411,7 +20407,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20424,7 +20420,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20437,7 +20433,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20450,7 +20446,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20463,7 +20459,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20476,7 +20472,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20489,7 +20485,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20502,7 +20498,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20515,7 +20511,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20528,7 +20524,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20541,7 +20537,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20554,7 +20550,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20567,7 +20563,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20580,7 +20576,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20593,7 +20589,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20606,7 +20602,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20619,7 +20615,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20632,7 +20628,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     One
                                 }
@@ -20679,7 +20675,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x23
                                 }
@@ -20721,7 +20717,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x23
                                 }
@@ -20751,7 +20747,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x23
                                 }
@@ -20798,7 +20794,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x23
                                 }
@@ -20845,7 +20841,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x2)
                             {
                                 "DELAY",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x23
                                 }
@@ -21701,7 +21697,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x19
                             }
@@ -21883,7 +21879,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0x2
                             }
@@ -21891,7 +21887,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         Package(0x2)
                         {
                             "DELAY",
-                            Package(One)
+                            Package(0x1)
                             {
                                 0xc8
                             }
@@ -21924,7 +21920,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         }
         Scope(\_SB_.PEP0)
         {
-            Name(DVMP, Package(One)
+            Name(DVMP, Package(0x1)
             {
                 Package(0x4)
                 {
@@ -22136,7 +22132,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             Name(_HID, "QCOM242B")
             Method(MANU, 0x0, NotSerialized)
             {
-                Name(RBUF, Package(One)
+                Name(RBUF, Package(0x1)
                 {
                     0x6be0baf
                 })
@@ -22144,7 +22140,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             }
             Method(CHLD, 0x0, NotSerialized)
             {
-                Return(Package(One)
+                Return(Package(0x1)
                 {
                     "ADSP\\QCOM240D"
                 })
@@ -22172,7 +22168,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                 }
                 Method(CHLD, 0x0, NotSerialized)
                 {
-                    Return(Package(One)
+                    Return(Package(0x1)
                     {
                         "SLM1\\QCOM242D"
                     })
@@ -22289,7 +22285,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     }
                     Method(CHLD, 0x0, NotSerialized)
                     {
-                        Return(Package(One)
+                        Return(Package(0x1)
                         {
                             "ADCM\\QCOM242E"
                         })
@@ -22328,7 +22324,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         }
                         Method(BFSZ, 0x0, NotSerialized)
                         {
-                            Name(SIZE, Package(One)
+                            Name(SIZE, Package(0x1)
                             {
                                 0x800
                             })
@@ -22596,7 +22592,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             }
                             Method(BFSZ, 0x0, NotSerialized)
                             {
-                                Name(SIZE, Package(One)
+                                Name(SIZE, Package(0x1)
                                 {
                                     0x800
                                 })
@@ -22613,7 +22609,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             }
                             Method(GPNF, 0x0, NotSerialized)
                             {
-                                Name(GPIO, Package(Zero)
+                                Name(GPIO, Package(0x0)
                                 {
                                 })
                                 Return(GPIO)
@@ -22624,9 +22620,9 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Name(_ADR, One)
                             Method(MSMT, 0x0, NotSerialized)
                             {
-                                Name(CFG_, Package(One)
+                                Name(CFG_, Package(0x1)
                                 {
-                                    Package(One)
+                                    Package(0x1)
                                     {
                                         Zero
                                     }
@@ -22903,7 +22899,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             }
                             Method(EFMA, 0x0, NotSerialized)
                             {
-                                Name(CFG_, Package(One)
+                                Name(CFG_, Package(0x1)
                                 {
                                     Package(0xb)
                                     {
@@ -23815,7 +23811,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2403")
             Name(_UID, Zero)
-            Name(_DEP, Package(One)
+            Name(_DEP, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -23923,7 +23919,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             }
             Method(MEMI, 0x0, NotSerialized)
             {
-                Return(Package(One)
+                Return(Package(0x1)
                 {
                     Package(0x8)
                     {
@@ -24121,11 +24117,11 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x3)
                             {
                                 "PERF_CONTROLS",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 },
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x4
                                 }
@@ -24142,11 +24138,11 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x3)
                             {
                                 "PERF_CONTROLS",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 },
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x4
                                 }
@@ -24163,15 +24159,15 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x4)
                             {
                                 "PERF_CONTROLS",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 },
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x4
                                 },
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x5
                                 }
@@ -24203,15 +24199,15 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x4)
                             {
                                 "PERF_CONTROLS",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x2
                                 },
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 },
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x4
                                 }
@@ -24227,11 +24223,11 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                             Package(0x3)
                             {
                                 "PERF_CONTROLS",
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x2
                                 },
-                                Package(One)
+                                Package(0x1)
                                 {
                                     0x3
                                 }
@@ -26485,7 +26481,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                         },
                         "ALWAYS_ACTIVE_WP",
                         "HW_BLOCK_NONE",
-                        Package(One)
+                        Package(0x1)
                         {
                             "UNMANAGED"
                         },
@@ -27380,7 +27376,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                 })
                 Return(RBUF)
             }
-            Name(_DOD, Package(One)
+            Name(_DOD, Package(0x1)
             {
                 0x24321
             })
@@ -27685,7 +27681,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             }
             Method(GCFG, 0x0, NotSerialized)
             {
-                Name(SCFG, Package(Zero)
+                Name(SCFG, Package(0x0)
                 {
                 })
                 Return(SCFG)
@@ -30297,7 +30293,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         }
         Device(QDSS)
         {
-            Name(_DEP, Package(One)
+            Name(_DEP, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -30647,7 +30643,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2471")
             Name(_UID, Zero)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.AMSS
             })
@@ -30742,7 +30738,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2475")
             Name(_UID, 0x64)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -30758,7 +30754,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 While(One)
                 {
-                    Name(_T_0, Buffer(One)
+                    Name(_T_0, Buffer(0x1)
                     {
 	0x00
                     })
@@ -30771,7 +30767,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     {
                         While(One)
                         {
-                            Name(_T_1, Zero)
+                            Name(_T_1, 0x0)
                             Store(ToInteger(Arg2, ), _T_1)
                             If(LEqual(_T_1, Zero))
                             {
@@ -30798,7 +30794,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2475")
             Name(_UID, Zero)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.CPU0
             })
@@ -30844,7 +30840,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2476")
             Name(_UID, 0x64)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -30860,7 +30856,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 While(One)
                 {
-                    Name(_T_0, Buffer(One)
+                    Name(_T_0, Buffer(0x1)
                     {
 	0x00
                     })
@@ -30873,7 +30869,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     {
                         While(One)
                         {
-                            Name(_T_1, Zero)
+                            Name(_T_1, 0x0)
                             Store(ToInteger(Arg2, ), _T_1)
                             If(LEqual(_T_1, Zero))
                             {
@@ -30900,7 +30896,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2476")
             Name(_UID, Zero)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.CPU1
             })
@@ -30946,7 +30942,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2477")
             Name(_UID, 0x64)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -30962,7 +30958,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 While(One)
                 {
-                    Name(_T_0, Buffer(One)
+                    Name(_T_0, Buffer(0x1)
                     {
 	0x00
                     })
@@ -30975,7 +30971,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     {
                         While(One)
                         {
-                            Name(_T_1, Zero)
+                            Name(_T_1, 0x0)
                             Store(ToInteger(Arg2, ), _T_1)
                             If(LEqual(_T_1, Zero))
                             {
@@ -31002,7 +30998,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2477")
             Name(_UID, Zero)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.CPU2
             })
@@ -31048,7 +31044,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2478")
             Name(_UID, 0x64)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.PEP0
             })
@@ -31064,7 +31060,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 While(One)
                 {
-                    Name(_T_0, Buffer(One)
+                    Name(_T_0, Buffer(0x1)
                     {
 	0x00
                     })
@@ -31077,7 +31073,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     {
                         While(One)
                         {
-                            Name(_T_1, Zero)
+                            Name(_T_1, 0x0)
                             Store(ToInteger(Arg2, ), _T_1)
                             If(LEqual(_T_1, Zero))
                             {
@@ -31104,7 +31100,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2478")
             Name(_UID, Zero)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.CPU3
             })
@@ -31209,7 +31205,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM2479")
             Name(_UID, Zero)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.GPU0.AVS0
             })
@@ -31255,7 +31251,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
         {
             Name(_HID, "QCOM247A")
             Name(_UID, Zero)
-            Name(_TZD, Package(One)
+            Name(_TZD, Package(0x1)
             {
                 \_SB_.GPU0.AVS0
             })
@@ -31518,7 +31514,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             {
                 While(One)
                 {
-                    Name(_T_0, Buffer(One)
+                    Name(_T_0, Buffer(0x1)
                     {
 	0x00
                     })
@@ -31531,7 +31527,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
                     {
                         While(One)
                         {
-                            Name(_T_1, Zero)
+                            Name(_T_1, 0x0)
                             Store(ToInteger(Arg2, ), _T_1)
                             If(LEqual(_T_1, Zero))
                             {
@@ -31578,7 +31574,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             }
             Method(PDEB, 0x1, NotSerialized)
             {
-                Name(CFG0, Package(One)
+                Name(CFG0, Package(0x1)
                 {
                     One
                 })
@@ -32535,7 +32531,7 @@ DefinitionBlock("dsdt.aml", "DSDT", 0x02, "QCOMM ", "MSM8960 ", 0x00000003)
             Name(_HID, "NXP_NFCC")
             Name(_CID, "ACPINXP_NFCC")
             Name(_UID, Zero)
-            Name(_DEP, Package(One)
+            Name(_DEP, Package(0x1)
             {
                 "\\_SB.PRXY"
             })
